@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  --gb-yellow: #ffe400;
+  --gb-blue: #00148c;
+  --gb-black: #111111;
+  --gb-cream: #fff8e7;
+
+  --background: var(--gb-cream);
+  --foreground: var(--gb-black);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-gb-yellow: var(--gb-yellow);
+  --color-gb-blue: var(--gb-blue);
+  --color-gb-black: var(--gb-black);
+  --color-gb-cream: var(--gb-cream);
+
+  /* Three-tier type system:
+     font-sans  -> Display (Amstrad PC): logo, hero, headings
+     font-body  -> Body (Space Grotesk): descriptions, bios, anything
+                   meant to be read in full sentences
+     font-label -> Label/Data (IBM VGA): small all-caps tags/badges AND
+                   short structured metadata (theater names, dates,
+                   runtimes) -- never full paragraphs. Kept as ONE font
+                   rather than splitting Data into a second monospace
+                   font (e.g. JetBrains Mono): two different monospace
+                   typefaces sitting near each other on a card reads as
+                   inconsistent rather than intentional, since monospace
+                   fonts read as a category to the eye. Visual hierarchy
+                   between tags and metadata is handled with color
+                   instead (see VideoCard.tsx) -- yellow tag badges vs.
+                   muted gray metadata text, same font either way. */
+  --font-sans: var(--font-display), Arial, sans-serif;
+  --font-body: var(--font-body), sans-serif;
+  --font-label: var(--font-label), monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+}
+
+/* Pixel fonts like IBM VGA look crisper without anti-aliasing softening
+   their edges, especially at small sizes (nav bar, tags, buttons). Only
+   applied to the Label tier -- Display and Body keep normal smoothing. */
+.font-label {
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+}
+
+/* Retro offset shadow used throughout the design system on cards/buttons */
+.gb-shadow {
+  box-shadow: 4px 4px 0px var(--gb-blue);
+}
+
+.gb-shadow:hover {
+  box-shadow: 6px 6px 0px var(--gb-blue);
+  transform: translate(-2px, -2px);
+}
