@@ -1,0 +1,895 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<title>Shelf Feedback Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Space+Grotesk:wght@300..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+  :root{
+    --gb-yellow:#FFE400;
+    --gb-blue:#00148C;
+    --gb-cream:#FFF8E7;
+    --gb-ink:#111111;
+    --gb-magenta:#FF3E80;
+    --gb-tangerine:#FF7A18;
+    --gb-turquoise:#00C2B2;
+    --gb-violet:#6B2FBF;
+    --font-display:"Bowlby One","Jost",Impact,sans-serif;
+    --font-ui:"Space Grotesk","Jost",system-ui,sans-serif;
+    --font-catalog:"Courier Prime","Courier New",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--gb-cream);
+    color:var(--gb-ink);
+    font-family:var(--font-ui);
+    -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(var(--gb-ink) 1.2px, transparent 1.4px);
+    background-size:20px 20px;
+    background-attachment:fixed;
+  }
+  button{font-family:inherit; cursor:pointer; background:none; border:none; color:inherit;}
+  :focus-visible{outline:3px solid var(--gb-blue); outline-offset:2px;}
+  h1,h2,h3{margin:0; text-wrap:balance;}
+  p{margin:0;}
+
+  .stage{
+    max-width:1100px;
+    margin:0 auto;
+    padding:clamp(20px,4vw,48px) clamp(16px,4vw,40px) 64px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:28px;
+  }
+
+  /* ---------------- intro ---------------- */
+  .intro{max-width:640px; text-align:center;}
+  .eyebrow{
+    display:inline-block;
+    font-family:var(--font-catalog);
+    font-size:.72rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    background:var(--gb-yellow);
+    color:var(--gb-ink);
+    border:2px solid var(--gb-ink);
+    border-radius:999px;
+    padding:.35em 1em;
+    box-shadow:3px 3px 0 var(--gb-ink);
+    transform:rotate(-1.5deg);
+    margin-bottom:1.1rem;
+  }
+  .intro h1{
+    font-family:var(--font-display);
+    color:var(--gb-blue);
+    font-size:clamp(1.9rem,4.5vw,2.75rem);
+  }
+  .intro p{
+    margin-top:.8rem;
+    font-size:1rem;
+    line-height:1.55;
+    opacity:.85;
+  }
+
+  /* ---------------- phone shell ---------------- */
+  .phone-wrap{position:relative;}
+  .phone{
+    position:relative;
+    width:min(375px,90vw);
+    aspect-ratio:375/790;
+    background:var(--gb-blue);
+    border:4px solid var(--gb-ink);
+    border-radius:44px;
+    box-shadow:8px 8px 0 var(--gb-ink);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .notch{
+    position:absolute;
+    top:10px; left:50%; transform:translateX(-50%);
+    width:34%; height:22px;
+    background:var(--gb-ink);
+    border-radius:999px;
+    z-index:20;
+  }
+  .statusbar{
+    flex:0 0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 22px 4px;
+    font-family:var(--font-catalog);
+    font-size:.68rem;
+    letter-spacing:.03em;
+    color:var(--gb-cream);
+    background:var(--gb-blue);
+  }
+  .statusbar .glyphs{display:flex; gap:5px; align-items:center;}
+  .statusbar .glyphs svg{display:block;}
+
+  .topbar{
+    flex:0 0 auto;
+    display:flex; align-items:center; gap:.6em;
+    padding:6px 18px 12px;
+    background:var(--gb-blue);
+  }
+  .topbar .mark{
+    font-family:var(--font-display);
+    color:var(--gb-yellow);
+    font-size:1.1rem;
+    letter-spacing:.02em;
+  }
+  .topbar .back{
+    display:none;
+    width:30px; height:30px;
+    border:2px solid var(--gb-cream);
+    border-radius:50%;
+    align-items:center; justify-content:center;
+    color:var(--gb-cream);
+    flex:0 0 auto;
+  }
+  .topbar.with-back .back{display:flex;}
+  .topbar.with-back .mark{font-size:1rem;}
+
+  .content{
+    flex:1 1 auto;
+    overflow-y:auto;
+    overflow-x:hidden;
+    background:var(--gb-blue);
+    -webkit-overflow-scrolling:touch;
+  }
+  .screen{padding:6px 18px 26px;}
+
+  .shelf-head{
+    font-family:var(--font-display);
+    font-size:1.55rem;
+    color:var(--gb-yellow);
+    margin:10px 0 12px;
+  }
+  .row{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    padding-bottom:8px;
+    scroll-snap-type:x proximity;
+  }
+  .hint-strip{
+    font-family:var(--font-catalog);
+    font-size:.68rem;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--gb-cream);
+    opacity:.7;
+    margin-bottom:10px;
+  }
+
+  /* ---------------- spine card ---------------- */
+  .card{
+    position:relative;
+    flex:0 0 146px;
+    scroll-snap-align:start;
+    border:2px solid var(--gb-ink);
+    border-radius:14px;
+    background:var(--gb-cream);
+    box-shadow:4px 4px 0 var(--gb-ink);
+    overflow:visible;
+  }
+  .card .clip{border-radius:12px; overflow:hidden;}
+  .card .thumb{
+    height:82px;
+    background:var(--thumb, var(--gb-violet));
+    border-bottom:2px solid var(--gb-ink);
+    position:relative;
+  }
+  .card .thumb::after{
+    content:"";
+    position:absolute; left:9px; top:9px;
+    width:0; height:0;
+    border-style:solid;
+    border-width:7px 0 7px 11px;
+    border-color:transparent transparent transparent rgba(255,248,231,.85);
+  }
+  .card .dur{
+    position:absolute; right:6px; bottom:6px;
+    font-family:var(--font-catalog);
+    font-size:.6rem;
+    background:var(--gb-ink);
+    color:var(--gb-cream);
+    padding:.1em .45em;
+    border-radius:4px;
+  }
+  .card .form-band{
+    font-family:var(--font-catalog);
+    font-size:.6rem;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    background:var(--gb-blue);
+    color:var(--gb-cream);
+    padding:.28em .55em;
+  }
+  .card .body{padding:.55em .65em .7em;}
+  .card .title{
+    font-weight:700;
+    font-size:.78rem;
+    line-height:1.25;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .card .meta{
+    font-family:var(--font-catalog);
+    font-size:.58rem;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    opacity:.65;
+    margin-top:.4em;
+  }
+  .card .dots{
+    position:absolute; top:5px; right:5px;
+    width:24px; height:24px;
+    border-radius:50%;
+    background:var(--gb-cream);
+    border:2px solid var(--gb-ink);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:.85rem; line-height:1;
+    z-index:3;
+  }
+  .card .dots:active{transform:translate(1px,1px);}
+  .sticker{
+    position:absolute; top:-9px; left:-6px;
+    transform:rotate(-6deg);
+    font-family:var(--font-catalog);
+    font-size:.56rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    background:var(--gb-tangerine);
+    color:var(--gb-ink);
+    border:2px solid var(--gb-ink);
+    border-radius:999px;
+    padding:.25em .6em;
+    box-shadow:2px 2px 0 var(--gb-ink);
+    z-index:4;
+    white-space:nowrap;
+  }
+
+  /* ---------------- pulled stub ---------------- */
+  .pulled{
+    flex:0 0 146px;
+    scroll-snap-align:start;
+    border:2px dashed var(--gb-cream);
+    border-radius:14px;
+    background:rgba(255,248,231,.08);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    gap:.5em;
+    padding:.9em .5em;
+    position:relative;
+    min-height:168px;
+  }
+  .pulled .stamp{
+    position:absolute; top:-12px; left:50%;
+    transform:translateX(-50%) rotate(-7deg);
+    background:var(--gb-cream);
+    border:2px solid var(--gb-magenta);
+    color:var(--gb-magenta);
+    font-family:var(--font-catalog);
+    font-weight:700;
+    font-size:.58rem;
+    letter-spacing:.08em;
+    padding:.2em .55em;
+    border-radius:6px;
+    white-space:nowrap;
+  }
+  .pulled .msg{font-weight:700; font-size:.75rem; color:var(--gb-cream);}
+  .pulled .links{display:flex; flex-direction:column; gap:.35em; font-family:var(--font-catalog); font-size:.62rem; letter-spacing:.04em; text-transform:uppercase;}
+  .pulled .links button{color:var(--gb-turquoise); text-decoration:underline;}
+
+  /* ---------------- tabbar ---------------- */
+  .tabbar{
+    flex:0 0 auto;
+    display:flex;
+    background:var(--gb-cream);
+    border-top:2px solid var(--gb-ink);
+  }
+  .tabbar button{
+    flex:1;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    padding:9px 4px 12px;
+    font-family:var(--font-catalog);
+    font-size:.58rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--gb-ink);
+    opacity:.55;
+  }
+  .tabbar button.active{opacity:1; color:var(--gb-blue);}
+  .tabbar svg{width:19px; height:19px;}
+
+  /* ---------------- account / prefs screens ---------------- */
+  .acct-row{
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--gb-cream);
+    color:var(--gb-ink);
+    border:2px solid var(--gb-ink);
+    border-radius:12px;
+    padding:.85em 1em;
+    margin-top:14px;
+    box-shadow:3px 3px 0 var(--gb-yellow);
+  }
+  .acct-row .label{font-weight:700; font-size:.88rem;}
+  .badge{
+    font-family:var(--font-catalog);
+    font-size:.65rem;
+    background:var(--gb-magenta);
+    color:var(--gb-cream);
+    border-radius:999px;
+    padding:.15em .55em;
+    margin-left:.5em;
+  }
+  .empty-state{
+    color:var(--gb-cream);
+    font-size:.85rem;
+    line-height:1.5;
+    margin-top:18px;
+    opacity:.85;
+    max-width:30ch;
+  }
+  .pref-list{display:flex; flex-direction:column; gap:.6em; margin-top:14px;}
+  .pref-row{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:.8em;
+    background:var(--gb-cream);
+    border:2px solid var(--gb-ink);
+    border-radius:12px;
+    padding:.7em .85em;
+    box-shadow:3px 3px 0 var(--gb-yellow);
+  }
+  .pref-row .who{font-weight:700; font-size:.78rem; line-height:1.3;}
+  .pref-row .when{
+    font-family:var(--font-catalog);
+    font-size:.6rem;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    opacity:.6;
+    display:block;
+    margin-top:.25em;
+  }
+
+  /* ---------------- buttons ---------------- */
+  .pill{
+    font-weight:700;
+    font-size:.72rem;
+    background:var(--gb-yellow);
+    color:var(--gb-ink);
+    border:2px solid var(--gb-ink);
+    border-radius:999px;
+    padding:.5em 1.1em;
+    box-shadow:2px 2px 0 var(--gb-ink);
+    white-space:nowrap;
+    transition:transform .12s, box-shadow .12s;
+  }
+  .pill:active{transform:translate(1px,1px); box-shadow:1px 1px 0 var(--gb-ink);}
+  .pill.outline{background:transparent; box-shadow:2px 2px 0 var(--gb-blue); color:var(--gb-ink);}
+
+  /* ---------------- scrim + sheets (inside phone) ---------------- */
+  .scrim{
+    position:absolute; inset:0;
+    background:rgba(17,17,17,.55);
+    opacity:0; pointer-events:none;
+    transition:opacity .18s ease;
+    z-index:30;
+  }
+  .scrim.show{opacity:1; pointer-events:auto;}
+
+  .sheet{
+    position:absolute; left:0; right:0; bottom:0;
+    background:var(--gb-cream);
+    border-top:2px solid var(--gb-ink);
+    border-radius:20px 20px 0 0;
+    box-shadow:0 -4px 0 var(--gb-ink);
+    transform:translateY(100%);
+    transition:transform .2s ease;
+    z-index:31;
+    padding:10px 6px 18px;
+  }
+  .sheet.show{transform:translateY(0);}
+  .sheet .grab{width:38px; height:4px; background:var(--gb-ink); opacity:.3; border-radius:999px; margin:2px auto 10px;}
+  .sheet button.opt{
+    display:flex; width:100%; align-items:center;
+    padding:.75em .9em;
+    font-size:.85rem; font-weight:700;
+    border-radius:10px;
+  }
+  .sheet button.opt:active{background:var(--gb-yellow);}
+  .sheet .divider{height:1px; background:var(--gb-ink); opacity:.2; margin:4px 8px;}
+  .sheet button.opt.warn{color:var(--gb-magenta);}
+  .sheet button.opt.warn2{color:var(--gb-violet);}
+
+  .modal-wrap{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    z-index:32;
+    padding:24px;
+    opacity:0; pointer-events:none;
+    transition:opacity .18s ease;
+  }
+  .modal-wrap.show{opacity:1; pointer-events:auto;}
+  .index-card{
+    width:100%;
+    background:var(--gb-cream);
+    border:2px solid var(--gb-ink);
+    border-radius:14px;
+    box-shadow:5px 5px 0 var(--gb-violet);
+    padding:1.2em 1.1em 1.1em;
+    transform:scale(.94);
+    transition:transform .18s ease;
+  }
+  .modal-wrap.show .index-card{transform:scale(1);}
+  .index-card h3{font-weight:700; font-size:1.02rem; color:var(--gb-blue);}
+  .index-card .rule{border-top:2px dashed var(--gb-ink); opacity:.3; margin:.7em 0;}
+  .check-row{
+    display:flex; align-items:center; gap:.6em;
+    font-size:.8rem; padding:.4em 0;
+  }
+  .box{
+    width:18px; height:18px; flex:0 0 18px;
+    border:2px solid var(--gb-ink); border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--gb-cream);
+  }
+  .check-row.checked .box{background:var(--gb-turquoise);}
+  .box svg{width:11px; height:11px; display:none;}
+  .check-row.checked .box svg{display:block;}
+  .index-card .actions{display:flex; align-items:center; gap:1em; margin-top:1em;}
+  .text-link{
+    font-family:var(--font-catalog);
+    font-size:.68rem; letter-spacing:.04em; text-transform:uppercase;
+    opacity:.6;
+  }
+
+  /* ---------------- toast ---------------- */
+  .toast{
+    position:absolute; top:14px; left:50%;
+    transform:translate(-50%,-140%);
+    display:inline-flex; align-items:center; gap:.5em;
+    background:var(--gb-cream);
+    border:2px solid var(--gb-ink);
+    border-radius:999px;
+    padding:.5em 1em;
+    font-weight:700; font-size:.72rem;
+    box-shadow:2px 2px 0 var(--gb-ink);
+    z-index:33;
+    transition:transform .25s ease;
+    white-space:nowrap;
+  }
+  .toast.show{transform:translate(-50%,0);}
+  .toast .pip{width:7px; height:7px; border-radius:50%; background:var(--gb-turquoise); flex:0 0 auto;}
+
+  /* ---------------- below-phone controls ---------------- */
+  .controls{
+    display:flex; align-items:center; gap:.9em;
+    font-family:var(--font-catalog);
+    font-size:.72rem; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--gb-ink); opacity:.75;
+    text-align:center;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .controls button{
+    text-decoration:underline;
+    opacity:1;
+    color:var(--gb-blue);
+    font-family:inherit;
+    letter-spacing:inherit;
+  }
+</style>
+
+<div class="stage">
+  <div class="intro">
+    <span class="eyebrow">Interactive · Mobile</span>
+    <h1>Shelf Feedback Prototype</h1>
+    <p>The customize-recommendations flow, click-through. Tap the dots on a set, skip it, undo it, or file a reason, then check the back room under Account.</p>
+  </div>
+
+  <div class="phone-wrap">
+    <div class="phone" id="phone">
+      <div class="notch"></div>
+
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="glyphs">
+          <svg width="14" height="10" viewBox="0 0 14 10"><rect x="0" y="6" width="2.4" height="4" fill="currentColor"/><rect x="3.8" y="4" width="2.4" height="6" fill="currentColor"/><rect x="7.6" y="2" width="2.4" height="8" fill="currentColor"/><rect x="11.4" y="0" width="2.4" height="10" fill="currentColor"/></svg>
+          <svg width="18" height="10" viewBox="0 0 18 10"><rect x="0.5" y="0.5" width="15" height="9" rx="2" stroke="currentColor" fill="none"/><rect x="16.3" y="3" width="1.4" height="4" fill="currentColor"/><rect x="2" y="2" width="11" height="6" fill="currentColor"/></svg>
+        </span>
+      </div>
+
+      <div class="topbar" id="topbar">
+        <button class="back" data-action="back" aria-label="Back">‹</button>
+        <span class="mark" id="topbarTitle">GUTBUSTER</span>
+      </div>
+
+      <div class="content">
+        <div class="screen" id="screen-home">
+          <div class="hint-strip">Home / Harold</div>
+          <div class="shelf-head">HAROLD</div>
+          <div class="row" id="home-row"></div>
+        </div>
+
+        <div class="screen" id="screen-account" hidden>
+          <div class="hint-strip">Account</div>
+          <div class="shelf-head" style="font-size:1.3rem;">YOUR ACCOUNT</div>
+          <button class="acct-row" data-action="nav" data-screen="prefs" style="width:100%; text-align:left; border:2px solid var(--gb-ink); cursor:pointer;">
+            <span class="label">Shelf Preferences<span class="badge" id="acctBadge" hidden></span></span>
+            <span>›</span>
+          </button>
+          <div class="acct-row" style="opacity:.6;">
+            <span class="label">Sign Out</span>
+            <span>›</span>
+          </div>
+        </div>
+
+        <div class="screen" id="screen-prefs" hidden>
+          <div class="hint-strip">Account / Shelf Preferences</div>
+          <div class="shelf-head" style="font-size:1.3rem;">SHELF PREFERENCES</div>
+          <div id="prefs-body"></div>
+        </div>
+      </div>
+
+      <nav class="tabbar">
+        <button data-action="nav" data-screen="home" class="active" id="tab-home" aria-label="Home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+          Home
+        </button>
+        <button data-action="none" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          Search
+        </button>
+        <button data-action="nav" data-screen="account" id="tab-account" aria-label="Account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+          Account
+        </button>
+      </nav>
+
+      <div class="scrim" id="scrim"></div>
+
+      <div class="sheet" id="sheet-menu">
+        <div class="grab"></div>
+        <button class="opt" data-action="menu-queue">Add to Watch List</button>
+        <button class="opt" data-action="menu-share">Share This Set</button>
+        <div class="divider"></div>
+        <button class="opt warn" data-action="menu-skip-set">Not My Kind of Set</button>
+        <button class="opt warn2" data-action="menu-skip-team">Skip This Team</button>
+        <div class="divider"></div>
+        <button class="opt" data-action="menu-report">Report a Problem</button>
+      </div>
+
+      <div class="modal-wrap" id="modal-feedback">
+        <div class="index-card">
+          <h3>Why'd you pull it?</h3>
+          <div class="rule"></div>
+          <div class="check-row" id="check-watched" data-action="toggle-check" data-key="watched">
+            <span class="box"><svg viewBox="0 0 12 12"><path d="M1,6 L4.5,9.5 L11,2" stroke="#111" stroke-width="2" fill="none"/></svg></span>
+            <span>Already caught this one</span>
+          </div>
+          <div class="check-row" id="check-kind" data-action="toggle-check" data-key="kind">
+            <span class="box"><svg viewBox="0 0 12 12"><path d="M1,6 L4.5,9.5 L11,2" stroke="#111" stroke-width="2" fill="none"/></svg></span>
+            <span>Not my kind of improv</span>
+          </div>
+          <div class="actions">
+            <button class="pill" data-action="file-feedback">File It</button>
+            <button class="text-link" data-action="cancel-feedback">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="toast" id="toast"><span class="pip"></span><span id="toastText"></span></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <span>Tap ⋯ on any set to start</span>
+    <button data-action="reset">Reset demo</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var THUMBS = ["var(--gb-violet)","var(--gb-tangerine)","var(--gb-turquoise)","var(--gb-magenta)"];
+  var thumbCursor = 0;
+  function nextThumb(){ var t = THUMBS[thumbCursor % THUMBS.length]; thumbCursor++; return t; }
+
+  function makeInitialState(){
+    thumbCursor = 3; // pool cards continue the cycle below
+    return {
+      home: [
+        {slotId:"s1", type:"card", card:{id:"breakfast", title:"Breakfast (Full Set)", team:"No Scene Unturned", theater:"UCB", year:"2019", dur:"52 MIN", thumb:"var(--gb-violet)"}},
+        {slotId:"s2", type:"card", card:{id:"funeral", title:"Grandma's Funeral (Full Set)", team:"The Big Something", theater:"IO", year:"2021", dur:"44 MIN", thumb:"var(--gb-tangerine)"}},
+        {slotId:"s3", type:"card", card:{id:"dmv", title:"DMV Line (Full Set)", team:"Coalition Players", theater:"Coalition Theater", year:"2018", dur:"49 MIN", thumb:"var(--gb-turquoise)"}}
+      ],
+      pool: [
+        {id:"yawn", title:"The Longest Yawn (Full Set)", team:"Westside Regulars", theater:"Westside Comedy", year:"2022", dur:"38 MIN", thumb:"var(--gb-magenta)"},
+        {id:"latenight", title:"Late Night at Second City (Full Set)", team:"Second City Players", theater:"Second City", year:"2020", dur:"41 MIN", thumb:"var(--gb-violet)"}
+      ],
+      prefs: [],
+      slotCounter: 4
+    };
+  }
+
+  var state = makeInitialState();
+  var screen = "home";
+  var openSheet = null;      // null | "menu" | "feedback"
+  var activeSlotId = null;
+  var checks = {watched:false, kind:false};
+  var toastTimer = null;
+
+  var $ = function(sel, root){ return (root||document).querySelector(sel); };
+  var $$ = function(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); };
+
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+  function cardHTML(entry){
+    var c = entry.card;
+    var sticker = entry.isNew ? '<span class="sticker">New on shelf</span>' : "";
+    return (
+      '<div class="card" data-slot="'+entry.slotId+'">' +
+        sticker +
+        '<button class="dots" data-action="open-menu" data-slot="'+entry.slotId+'" aria-label="More options for '+esc(c.title)+'">&#8942;</button>' +
+        '<div class="clip">' +
+          '<div class="thumb" style="--thumb:'+c.thumb+'"><span class="dur">'+c.dur+'</span></div>' +
+          '<div class="form-band">Harold</div>' +
+          '<div class="body">' +
+            '<div class="title">'+esc(c.title)+'</div>' +
+            '<div class="meta">'+esc(c.team)+'<br>'+esc(c.theater)+' / '+esc(c.year)+'</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function pulledHTML(entry){
+    var msg = entry.skipType === "team" ? "Team skipped." : "Set pulled.";
+    return (
+      '<div class="pulled" data-slot="'+entry.slotId+'">' +
+        '<span class="stamp">Skipped</span>' +
+        '<span class="msg">'+msg+'</span>' +
+        '<span class="links">' +
+          '<button data-action="undo" data-slot="'+entry.slotId+'">Undo</button>' +
+          '<button data-action="open-feedback" data-slot="'+entry.slotId+'">Tell us why</button>' +
+        '</span>' +
+      '</div>'
+    );
+  }
+
+  function renderHome(){
+    var row = $("#home-row");
+    row.innerHTML = state.home.map(function(entry){
+      return entry.type === "pulled" ? pulledHTML(entry) : cardHTML(entry);
+    }).join("");
+  }
+
+  function renderPrefs(){
+    var body = $("#prefs-body");
+    if(state.prefs.length === 0){
+      body.innerHTML = '<p class="empty-state">Nothing skipped yet. Pull something from the shelf and it turns up here. That is the whole system.</p>';
+    } else {
+      body.innerHTML = '<div class="pref-list">' + state.prefs.map(function(p){
+        var label = p.skipType === "team" ? (p.card.team + " (team)") : p.card.title;
+        var when = p.skipType === "team" ? "Team skipped &middot; just now" : "Set skipped &middot; just now";
+        return (
+          '<div class="pref-row">' +
+            '<div><div class="who">'+esc(label)+'</div><span class="when">'+when+'</span></div>' +
+            '<button class="pill outline" data-action="restore" data-pref="'+p.prefId+'">Put It Back</button>' +
+          '</div>'
+        );
+      }).join("") + '</div>';
+    }
+    var badge = $("#acctBadge");
+    if(state.prefs.length > 0){ badge.hidden = false; badge.textContent = state.prefs.length; }
+    else { badge.hidden = true; }
+  }
+
+  function showScreen(next){
+    screen = next;
+    $("#screen-home").hidden = next !== "home";
+    $("#screen-account").hidden = next !== "account";
+    $("#screen-prefs").hidden = next !== "prefs";
+
+    $("#tab-home").classList.toggle("active", next === "home");
+    $("#tab-account").classList.toggle("active", next === "account" || next === "prefs");
+
+    var topbar = $("#topbar");
+    var title = $("#topbarTitle");
+    if(next === "prefs"){
+      topbar.classList.add("with-back");
+      title.textContent = "SHELF PREFS";
+    } else {
+      topbar.classList.remove("with-back");
+      title.textContent = "GUTBUSTER";
+    }
+    $(".content").scrollTop = 0;
+  }
+
+  function setScrim(on){ $("#scrim").classList.toggle("show", on); }
+
+  function openMenu(slotId){
+    activeSlotId = slotId;
+    openSheet = "menu";
+    setScrim(true);
+    $("#sheet-menu").classList.add("show");
+  }
+  function closeMenu(){
+    openSheet = null;
+    $("#sheet-menu").classList.remove("show");
+    if(!isFeedbackOpen()) setScrim(false);
+  }
+  function isFeedbackOpen(){ return $("#modal-feedback").classList.contains("show"); }
+
+  function openFeedback(slotId){
+    activeSlotId = slotId;
+    checks = {watched:false, kind:false};
+    updateChecks();
+    setScrim(true);
+    $("#modal-feedback").classList.add("show");
+  }
+  function closeFeedback(){
+    $("#modal-feedback").classList.remove("show");
+    if(openSheet !== "menu") setScrim(false);
+  }
+  function updateChecks(){
+    $("#check-watched").classList.toggle("checked", checks.watched);
+    $("#check-kind").classList.toggle("checked", checks.kind);
+  }
+
+  function showToast(msg){
+    var t = $("#toast");
+    $("#toastText").textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2400);
+  }
+
+  function findSlot(slotId){
+    for(var i=0;i<state.home.length;i++){ if(state.home[i].slotId === slotId) return i; }
+    return -1;
+  }
+
+  function skip(slotId, skipType){
+    var i = findSlot(slotId);
+    if(i === -1) return;
+    var entry = state.home[i];
+    if(entry.type !== "card") return;
+    var card = entry.card;
+    var prefId = "p" + Date.now() + Math.floor(Math.random()*1000);
+    state.home[i] = {slotId: slotId, type:"pulled", card: card, skipType: skipType};
+    state.prefs.unshift({prefId: prefId, card: card, skipType: skipType, homeSlot: slotId});
+    renderHome();
+    renderPrefs();
+  }
+
+  function undo(slotId){
+    var i = findSlot(slotId);
+    if(i === -1) return;
+    var entry = state.home[i];
+    if(entry.type !== "pulled") return;
+    state.prefs = state.prefs.filter(function(p){ return p.homeSlot !== slotId; });
+    state.home[i] = {slotId: slotId, type:"card", card: entry.card};
+    renderHome();
+    renderPrefs();
+    showToast("Restored. Same as it was.");
+  }
+
+  function fileFeedback(){
+    var i = findSlot(activeSlotId);
+    closeFeedback();
+    if(i === -1) return;
+    var entry = state.home[i];
+    if(entry.type !== "pulled") return;
+    if(state.pool.length > 0){
+      var repl = state.pool.shift();
+      state.home[i] = {slotId: activeSlotId, type:"card", card: repl, isNew:true};
+    } else {
+      state.home = state.home.filter(function(e){ return e.slotId !== activeSlotId; });
+    }
+    renderHome();
+    showToast("Got it. Restocking the shelf.");
+  }
+
+  function restore(prefId){
+    var idx = -1;
+    for(var i=0;i<state.prefs.length;i++){ if(state.prefs[i].prefId === prefId){ idx = i; break; } }
+    if(idx === -1) return;
+    var pref = state.prefs[idx];
+    state.prefs.splice(idx,1);
+    state.slotCounter++;
+    state.home.push({slotId:"s"+state.slotCounter, type:"card", card: pref.card});
+    renderPrefs();
+    renderHome();
+    showToast(pref.card.title + " is back on the shelf.");
+  }
+
+  function resetAll(){
+    state = makeInitialState();
+    closeMenu();
+    closeFeedback();
+    setScrim(false);
+    showScreen("home");
+    renderHome();
+    renderPrefs();
+  }
+
+  document.addEventListener("click", function(e){
+    var el = e.target.closest("[data-action]");
+
+    if(e.target.id === "scrim"){
+      closeMenu();
+      closeFeedback();
+      return;
+    }
+
+    if(!el) return;
+    var action = el.getAttribute("data-action");
+
+    switch(action){
+      case "open-menu":
+        openMenu(el.getAttribute("data-slot"));
+        break;
+      case "menu-queue":
+        closeMenu();
+        showToast("Added to your watch list.");
+        break;
+      case "menu-share":
+        closeMenu();
+        showToast("Link copied.");
+        break;
+      case "menu-skip-set":
+        closeMenu();
+        skip(activeSlotId, "set");
+        break;
+      case "menu-skip-team":
+        closeMenu();
+        skip(activeSlotId, "team");
+        break;
+      case "menu-report":
+        closeMenu();
+        showToast("Reported. Thanks for the heads up.");
+        break;
+      case "undo":
+        undo(el.getAttribute("data-slot"));
+        break;
+      case "open-feedback":
+        openFeedback(el.getAttribute("data-slot"));
+        break;
+      case "toggle-check":
+        var key = el.getAttribute("data-key");
+        checks[key] = !checks[key];
+        updateChecks();
+        break;
+      case "file-feedback":
+        fileFeedback();
+        break;
+      case "cancel-feedback":
+        closeFeedback();
+        break;
+      case "restore":
+        restore(el.getAttribute("data-pref"));
+        break;
+      case "nav":
+        showScreen(el.getAttribute("data-screen"));
+        break;
+      case "back":
+        showScreen("account");
+        break;
+      case "reset":
+        resetAll();
+        break;
+      default: break;
+    }
+  });
+
+  renderHome();
+  renderPrefs();
+  showScreen("home");
+})();
+</script>
+
+</body></html>

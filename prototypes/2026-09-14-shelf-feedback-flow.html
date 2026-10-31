@@ -1,0 +1,769 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<title>Shelf Feedback Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Space+Grotesk:wght@300..700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+  :root{
+    --gb-yellow:#FFE400;
+    --gb-blue:#00148C;
+    --gb-cream:#FFF8E7;
+    --gb-ink:#111111;
+    --gb-magenta:#FF3E80;
+    --gb-tangerine:#FF7A18;
+    --gb-turquoise:#00C2B2;
+    --gb-violet:#6B2FBF;
+    --font-display:"Bowlby One","Jost",Impact,sans-serif;
+    --font-ui:"Space Grotesk","Jost",system-ui,sans-serif;
+    --font-catalog:"Courier Prime","Courier New",ui-monospace,monospace;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--gb-cream);
+    color:var(--gb-ink);
+    font-family:var(--font-ui);
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;}
+  h1,h2,h3{margin:0; text-wrap:balance;}
+  p{margin:0;}
+  button{font-family:inherit; cursor:pointer;}
+  :focus-visible{outline:3px solid var(--gb-yellow); outline-offset:2px;}
+
+  .wrap{
+    max-width:1160px;
+    margin:0 auto;
+    padding-inline:clamp(16px,4vw,48px);
+  }
+
+  /* ---------- halftone / pattern helpers ---------- */
+  .halftone{
+    background-image:radial-gradient(currentColor 1.4px, transparent 1.6px);
+    background-size:14px 14px;
+  }
+
+  /* ---------- scallop divider ---------- */
+  .wave{
+    display:block;
+    width:100%;
+    height:30px;
+  }
+
+  /* ================= HERO ================= */
+  .hero{
+    background:var(--gb-blue);
+    color:var(--gb-cream);
+    position:relative;
+    overflow:hidden;
+    padding-block:clamp(48px,8vw,88px) 8px;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    color:var(--gb-cream);
+    opacity:.08;
+    background-image:radial-gradient(currentColor 2px, transparent 2.2px);
+    background-size:22px 22px;
+  }
+  .hero-inner{position:relative;}
+  .eyebrow{
+    display:inline-block;
+    font-family:var(--font-catalog);
+    font-size:.75rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    background:var(--gb-yellow);
+    color:var(--gb-ink);
+    border:2px solid var(--gb-ink);
+    border-radius:999px;
+    padding:.35em 1em;
+    box-shadow:4px 4px 0 var(--gb-ink);
+    transform:rotate(-2deg);
+    margin-bottom:1.5rem;
+  }
+  .hero h1{
+    font-family:var(--font-display);
+    font-size:clamp(2.5rem, 6vw, 4.25rem);
+    line-height:1.02;
+    color:var(--gb-yellow);
+    max-width:14ch;
+  }
+  .hero p.lede{
+    font-size:1.25rem;
+    max-width:56ch;
+    margin-top:1.25rem;
+    color:var(--gb-cream);
+    opacity:.92;
+  }
+  .hero .source{
+    font-family:var(--font-catalog);
+    font-size:.75rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    margin-top:2rem;
+    padding-top:1.5rem;
+    border-top:1px dashed rgba(255,248,231,.4);
+    max-width:60ch;
+  }
+  .hero .source a{color:var(--gb-turquoise);}
+
+  /* ================= SECTIONS ================= */
+  section.step{padding-block:clamp(48px,7vw,80px);}
+  section.step.on-blue{background:var(--gb-blue); color:var(--gb-cream);}
+  section.step.on-cream{background:var(--gb-cream); color:var(--gb-ink);}
+
+  .step-grid{
+    display:grid;
+    grid-template-columns:minmax(230px,340px) 1fr;
+    gap:clamp(24px,4vw,56px);
+    align-items:start;
+  }
+  @media (max-width:760px){
+    .step-grid{grid-template-columns:1fr;}
+  }
+
+  .step-tag{
+    font-family:var(--font-catalog);
+    font-size:.75rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.7;
+  }
+  .step-title{
+    font-family:var(--font-ui);
+    font-weight:700;
+    font-size:1.75rem;
+    margin-top:.4rem;
+  }
+  .on-blue .step-title{color:var(--gb-yellow);}
+  .step-copy{
+    margin-top:1rem;
+    font-size:1rem;
+    line-height:1.55;
+    max-width:42ch;
+  }
+  .versus{
+    margin-top:1.5rem;
+    display:inline-flex;
+    flex-direction:column;
+    gap:.35rem;
+    font-family:var(--font-catalog);
+    font-size:.7rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    border:2px solid currentColor;
+    border-radius:12px;
+    padding:.75em 1em;
+    max-width:34ch;
+  }
+  .versus b{font-family:var(--font-ui); font-weight:700; letter-spacing:0; text-transform:none; font-size:.85rem;}
+
+  /* ---------- device frame ---------- */
+  .device{
+    border:3px solid var(--gb-ink);
+    border-radius:18px;
+    overflow:hidden;
+    background:var(--gb-cream);
+    max-width:640px;
+  }
+  .on-blue .device{box-shadow:6px 6px 0 var(--gb-ink);}
+  .on-cream .device{box-shadow:6px 6px 0 var(--gb-blue);}
+  .device-bar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:.6em 1em;
+    background:var(--gb-yellow);
+    border-bottom:2px solid var(--gb-ink);
+  }
+  .device-bar .dot{width:9px; height:9px; border-radius:50%; background:var(--gb-ink); opacity:.75;}
+  .device-bar .url{
+    font-family:var(--font-catalog);
+    font-size:.7rem;
+    letter-spacing:.04em;
+    color:var(--gb-ink);
+    margin-left:.4em;
+  }
+  .device-body{
+    padding:clamp(16px,3vw,26px);
+    position:relative;
+  }
+  .device-body.blue{background:var(--gb-blue);}
+  .device-body.cream{background:var(--gb-cream);}
+
+  .shelf-head{
+    font-family:var(--font-display);
+    font-size:2rem;
+    color:var(--gb-yellow);
+    margin-bottom:1rem;
+  }
+  .device-body.cream .shelf-head{color:var(--gb-blue);}
+
+  .row{display:flex; gap:14px; overflow-x:auto; padding-bottom:6px;}
+
+  /* ---------- spine card ---------- */
+  .card{
+    position:relative;
+    flex:0 0 168px;
+    border:2px solid var(--gb-ink);
+    border-radius:14px;
+    background:var(--gb-cream);
+    box-shadow:4px 4px 0 var(--card-shadow, var(--gb-ink));
+    overflow:hidden;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover{transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--card-shadow, var(--gb-ink));}
+  .card .thumb{
+    height:96px;
+    display:flex; align-items:flex-end; justify-content:flex-end;
+    background:var(--thumb-bg, var(--gb-violet));
+    border-bottom:2px solid var(--gb-ink);
+    position:relative;
+  }
+  .card .thumb::after{
+    content:"";
+    position:absolute; left:10px; top:10px;
+    width:0; height:0;
+    border-style:solid;
+    border-width:8px 0 8px 13px;
+    border-color:transparent transparent transparent rgba(255,248,231,.85);
+  }
+  .card .dur{
+    font-family:var(--font-catalog);
+    font-size:.65rem;
+    background:var(--gb-ink);
+    color:var(--gb-cream);
+    padding:.15em .5em;
+    margin:6px;
+    border-radius:4px;
+  }
+  .card .form-band{
+    font-family:var(--font-catalog);
+    font-size:.65rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    background:var(--band-bg, var(--gb-blue));
+    color:var(--gb-cream);
+    padding:.3em .6em;
+  }
+  .card .body{padding:.6em .7em .8em;}
+  .card .title{
+    font-family:var(--font-ui);
+    font-weight:700;
+    font-size:.85rem;
+    line-height:1.25;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .card .meta{
+    font-family:var(--font-catalog);
+    font-size:.62rem;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--gb-ink);
+    opacity:.65;
+    margin-top:.4em;
+  }
+  .card .dots{
+    position:absolute; top:6px; right:6px;
+    width:24px; height:24px;
+    border-radius:50%;
+    background:var(--gb-cream);
+    border:2px solid var(--gb-ink);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-ui); font-weight:700; font-size:.8rem;
+    line-height:1;
+    z-index:3;
+  }
+  .card .dots:hover{transform:translate(-1px,-1px);}
+
+  .sticker{
+    position:absolute;
+    font-family:var(--font-catalog);
+    font-size:.62rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    background:var(--gb-tangerine);
+    color:var(--gb-ink);
+    border:2px solid var(--gb-ink);
+    border-radius:999px;
+    padding:.3em .7em;
+    box-shadow:3px 3px 0 var(--gb-ink);
+  }
+
+  /* ---------- popover menu (step 2) ---------- */
+  .menu-anchor{position:relative;}
+  .menu{
+    position:absolute;
+    top:32px; right:-6px;
+    width:206px;
+    background:var(--gb-cream);
+    border:2px solid var(--gb-ink);
+    border-radius:12px;
+    box-shadow:4px 4px 0 var(--gb-ink);
+    z-index:5;
+    overflow:hidden;
+  }
+  .menu button{
+    all:unset;
+    display:block;
+    width:100%;
+    padding:.65em .9em;
+    font-family:var(--font-ui);
+    font-size:.8rem;
+    color:var(--gb-ink);
+    box-sizing:border-box;
+  }
+  .menu button:hover{background:var(--gb-yellow);}
+  .menu .divider{height:1px; background:var(--gb-ink); opacity:.25; margin:2px 0;}
+  .menu button.warn{color:var(--gb-magenta); font-weight:700;}
+  .menu button.warn2{color:var(--gb-violet); font-weight:700;}
+
+  /* ---------- pulled placeholder (step 3) ---------- */
+  .pulled{
+    flex:0 0 168px;
+    border:2px dashed var(--gb-ink);
+    border-radius:14px;
+    background:rgba(255,248,231,.5);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    gap:.5em;
+    padding:1em .6em;
+    position:relative;
+  }
+  .pulled .stamp{
+    position:absolute; top:-14px; left:50%;
+    transform:translateX(-50%) rotate(-8deg);
+    background:var(--gb-cream);
+    border:2px solid var(--gb-magenta);
+    color:var(--gb-magenta);
+    font-family:var(--font-catalog);
+    font-weight:700;
+    font-size:.65rem;
+    letter-spacing:.1em;
+    padding:.2em .6em;
+    border-radius:6px;
+  }
+  .pulled .msg{font-family:var(--font-ui); font-weight:700; font-size:.8rem; color:var(--gb-cream);}
+  .device-body.cream .pulled .msg{color:var(--gb-ink);}
+  .pulled .links{display:flex; gap:.8em; font-family:var(--font-catalog); font-size:.68rem; letter-spacing:.05em; text-transform:uppercase;}
+  .pulled .links a{color:var(--gb-turquoise); text-decoration:underline;}
+
+  /* ---------- index card dialog (step 4) ---------- */
+  .index-card{
+    max-width:300px;
+    margin:0 auto;
+    background:var(--gb-cream);
+    border:2px solid var(--gb-ink);
+    border-radius:14px;
+    box-shadow:5px 5px 0 var(--gb-violet);
+    padding:1.4em 1.3em 1.2em;
+  }
+  .index-card h3{
+    font-family:var(--font-ui);
+    font-weight:700;
+    font-size:1.15rem;
+    color:var(--gb-blue);
+  }
+  .index-card .rule{border-top:2px dashed var(--gb-ink); opacity:.3; margin:.8em 0;}
+  .check-row{
+    display:flex; align-items:center; gap:.6em;
+    font-size:.85rem;
+    padding:.35em 0;
+    cursor:pointer;
+    user-select:none;
+  }
+  .box{
+    width:18px; height:18px; flex:0 0 18px;
+    border:2px solid var(--gb-ink);
+    border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--gb-cream);
+  }
+  .check-row.checked .box{background:var(--gb-turquoise);}
+  .box svg{width:11px; height:11px; display:none;}
+  .check-row.checked .box svg{display:block;}
+  .index-card .actions{
+    display:flex; align-items:center; gap:1.1em;
+    margin-top:1.1em;
+  }
+  .pill{
+    font-family:var(--font-ui);
+    font-weight:700;
+    font-size:.8rem;
+    background:var(--gb-yellow);
+    color:var(--gb-ink);
+    border:2px solid var(--gb-ink);
+    border-radius:999px;
+    padding:.55em 1.3em;
+    box-shadow:3px 3px 0 var(--gb-ink);
+    transition:transform .15s, box-shadow .15s;
+  }
+  .pill:hover{transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--gb-ink);}
+  .pill:active{transform:translate(0,0); box-shadow:1px 1px 0 var(--gb-ink);}
+  .pill.outline{background:transparent; color:var(--gb-cream); border-color:var(--gb-cream); box-shadow:3px 3px 0 var(--gb-cream);}
+  .pill.outline:hover{box-shadow:5px 5px 0 var(--gb-cream);}
+  .text-link{
+    font-family:var(--font-catalog);
+    font-size:.72rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--gb-ink);
+    opacity:.6;
+  }
+
+  /* ---------- toast (step 5) ---------- */
+  .toast{
+    display:inline-flex;
+    align-items:center;
+    gap:.6em;
+    background:var(--gb-cream);
+    color:var(--gb-ink);
+    border:2px solid var(--gb-ink);
+    border-radius:999px;
+    padding:.5em 1.1em;
+    font-family:var(--font-ui);
+    font-weight:700;
+    font-size:.8rem;
+    box-shadow:3px 3px 0 var(--gb-ink);
+    margin-bottom:1rem;
+  }
+  .toast .pip{width:8px; height:8px; border-radius:50%; background:var(--gb-turquoise);}
+  .new-badge{
+    position:absolute; top:-10px; left:-8px;
+    transform:rotate(-6deg);
+  }
+
+  /* ---------- back room list (step 6) ---------- */
+  .pref-list{display:flex; flex-direction:column; gap:.6em;}
+  .pref-row{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:1em;
+    background:var(--gb-cream);
+    border:2px solid var(--gb-ink);
+    border-radius:12px;
+    padding:.7em 1em;
+    box-shadow:3px 3px 0 var(--gb-blue);
+  }
+  .pref-row .who{font-family:var(--font-ui); font-weight:700; font-size:.85rem;}
+  .pref-row .when{
+    font-family:var(--font-catalog);
+    font-size:.65rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    opacity:.6;
+    display:block;
+    margin-top:.2em;
+  }
+  .pref-row .pill{font-size:.68rem; padding:.4em .9em;}
+
+  /* ================= FOOTER ================= */
+  footer{
+    background:var(--gb-blue);
+    color:var(--gb-cream);
+    padding-block:56px;
+  }
+  footer h2{
+    font-family:var(--font-display);
+    color:var(--gb-yellow);
+    font-size:clamp(1.75rem,3.5vw,2.5rem);
+    max-width:16ch;
+  }
+  footer p{margin-top:1rem; max-width:52ch; line-height:1.6; opacity:.9;}
+  footer .voice{
+    font-family:var(--font-catalog);
+    font-size:.75rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    margin-top:2rem;
+    opacity:.7;
+  }
+</style>
+
+<!-- ============================================================ HERO -->
+<header class="hero">
+  <div class="wrap hero-inner">
+    <span class="eyebrow">Flow Spec · Recommendations</span>
+    <h1>Customize Your Shelf</h1>
+    <p class="lede">A Gutbuster take on YouTube's "not interested" loop: how a viewer tells the shelf what to stop showing them, right from the card, with a back room to review the damage.</p>
+    <p class="source">Reference: YouTube web, "Hiding a video" &amp; history-management flows, via <a href="https://mobbin.com/flows/6c46c41a-da08-4bab-add1-a073a36ab475" target="_blank" rel="noopener">Mobbin</a>. Rebuilt in Gutbuster's rental-shelf logic below, six steps, no lifted UI.</p>
+  </div>
+</header>
+<svg class="wave" viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0,15 C50,0 100,30 150,15 C200,0 250,30 300,15 C350,0 400,30 450,15 C500,0 550,30 600,15 C650,0 700,30 750,15 C800,0 850,30 900,15 C950,0 1000,30 1050,15 C1100,0 1150,30 1200,15 L1200,30 L0,30 Z" fill="#FFF8E7"/></svg>
+
+<!-- ============================================================ STEP 1 -->
+<section class="step on-cream">
+  <div class="wrap step-grid">
+    <div>
+      <span class="step-tag">Step 1 / 6</span>
+      <h2 class="step-title">The shelf, as usual</h2>
+      <p class="step-copy">The Harold row on the homepage. Every spine carries a small dots button in the corner, same as any other card. Nothing announces "customize me." It shouldn't have to.</p>
+      <div class="versus"><b>Vs. YouTube</b>The kebab menu on a thumbnail becomes a dots button on a spine, same corner, same job.</div>
+    </div>
+    <div class="device">
+      <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">gutbuster.tv / harold</span></div>
+      <div class="device-body blue">
+        <div class="shelf-head">HAROLD</div>
+        <div class="row">
+          <div class="card" style="--card-shadow:var(--gb-ink); --thumb-bg:var(--gb-violet); --band-bg:var(--gb-blue);">
+            <div class="dots">⋯</div>
+            <div class="thumb"><span class="dur">52 MIN</span></div>
+            <div class="form-band">Harold</div>
+            <div class="body">
+              <div class="title">Breakfast (Full Set)</div>
+              <div class="meta">No Scene Unturned<br>UCB / 2019</div>
+            </div>
+          </div>
+          <div class="card" style="--card-shadow:var(--gb-ink); --thumb-bg:var(--gb-tangerine); --band-bg:var(--gb-blue);">
+            <div class="dots">⋯</div>
+            <div class="thumb"><span class="dur">44 MIN</span></div>
+            <div class="form-band">Harold</div>
+            <div class="body">
+              <div class="title">Grandma's Funeral (Full Set)</div>
+              <div class="meta">The Big Something<br>IO / 2021</div>
+            </div>
+          </div>
+          <div class="card" style="--card-shadow:var(--gb-ink); --thumb-bg:var(--gb-turquoise); --band-bg:var(--gb-blue);">
+            <div class="dots">⋯</div>
+            <div class="thumb"><span class="dur">49 MIN</span></div>
+            <div class="form-band">Harold</div>
+            <div class="body">
+              <div class="title">DMV Line (Full Set)</div>
+              <div class="meta">Coalition Players<br>Coalition Theater / 2018</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<svg class="wave" viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0,15 C50,30 100,0 150,15 C200,30 250,0 300,15 C350,30 400,0 450,15 C500,30 550,0 600,15 C650,30 700,0 750,15 C800,30 850,0 900,15 C950,30 1000,0 1050,15 C1100,30 1150,0 1200,15 L1200,30 L0,30 Z" fill="#00148C"/></svg>
+
+<!-- ============================================================ STEP 2 -->
+<section class="step on-blue">
+  <div class="wrap step-grid">
+    <div>
+      <span class="step-tag">Step 2 / 6</span>
+      <h2 class="step-title">Open the case</h2>
+      <p class="step-copy">Tap the dots. A short stamped list pops open: queue it, share it, or two ways to say "less of this." One aimed at the set, one aimed at the whole team.</p>
+      <div class="versus"><b>Vs. YouTube</b>"Not interested" and "Don't recommend channel" become "Not my kind of set" and "Skip this team." Same split, Gutbuster words.</div>
+    </div>
+    <div class="device">
+      <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">gutbuster.tv / harold</span></div>
+      <div class="device-body blue">
+        <div class="shelf-head">HAROLD</div>
+        <div class="row">
+          <div class="card menu-anchor" style="--card-shadow:var(--gb-ink); --thumb-bg:var(--gb-violet); --band-bg:var(--gb-blue);">
+            <button class="dots" type="button" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='none' ? 'block' : 'none';">⋯</button>
+            <div class="menu">
+              <button type="button">Add to Watch List</button>
+              <button type="button">Share This Set</button>
+              <div class="divider"></div>
+              <button type="button" class="warn">Not My Kind of Set</button>
+              <button type="button" class="warn2">Skip This Team</button>
+              <div class="divider"></div>
+              <button type="button">Report a Problem</button>
+            </div>
+            <div class="thumb"><span class="dur">52 MIN</span></div>
+            <div class="form-band">Harold</div>
+            <div class="body">
+              <div class="title">Breakfast (Full Set)</div>
+              <div class="meta">No Scene Unturned<br>UCB / 2019</div>
+            </div>
+          </div>
+          <div class="card" style="--card-shadow:var(--gb-ink); --thumb-bg:var(--gb-tangerine); --band-bg:var(--gb-blue);">
+            <div class="dots">⋯</div>
+            <div class="thumb"><span class="dur">44 MIN</span></div>
+            <div class="form-band">Harold</div>
+            <div class="body">
+              <div class="title">Grandma's Funeral (Full Set)</div>
+              <div class="meta">The Big Something<br>IO / 2021</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<svg class="wave" viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0,15 C50,0 100,30 150,15 C200,0 250,30 300,15 C350,0 400,30 450,15 C500,0 550,30 600,15 C650,0 700,30 750,15 C800,0 850,30 900,15 C950,0 1000,30 1050,15 C1100,0 1150,30 1200,15 L1200,30 L0,30 Z" fill="#FFF8E7"/></svg>
+
+<!-- ============================================================ STEP 3 -->
+<section class="step on-cream">
+  <div class="wrap step-grid">
+    <div>
+      <span class="step-tag">Step 3 / 6</span>
+      <h2 class="step-title">Pulled from the shelf</h2>
+      <p class="step-copy">The spine is gone. In its place, a torn stub: what happened, and two ways out. Undo puts it right back. Tell us why takes one more second and helps the next shelf.</p>
+      <div class="versus"><b>Vs. YouTube</b>Their gray "Video removed / Undo / Tell us why" strip becomes a perforated stub with a SKIPPED stamp, in the same slot the card left.</div>
+    </div>
+    <div class="device">
+      <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">gutbuster.tv / harold</span></div>
+      <div class="device-body blue">
+        <div class="shelf-head">HAROLD</div>
+        <div class="row">
+          <div class="pulled">
+            <span class="stamp">Skipped</span>
+            <span class="msg">Set pulled.</span>
+            <span class="links"><a href="#">Undo</a><a href="#">Tell us why</a></span>
+          </div>
+          <div class="card" style="--card-shadow:var(--gb-ink); --thumb-bg:var(--gb-tangerine); --band-bg:var(--gb-blue);">
+            <div class="dots">⋯</div>
+            <div class="thumb"><span class="dur">44 MIN</span></div>
+            <div class="form-band">Harold</div>
+            <div class="body">
+              <div class="title">Grandma's Funeral (Full Set)</div>
+              <div class="meta">The Big Something<br>IO / 2021</div>
+            </div>
+          </div>
+          <div class="card" style="--card-shadow:var(--gb-ink); --thumb-bg:var(--gb-turquoise); --band-bg:var(--gb-blue);">
+            <div class="dots">⋯</div>
+            <div class="thumb"><span class="dur">49 MIN</span></div>
+            <div class="form-band">Harold</div>
+            <div class="body">
+              <div class="title">DMV Line (Full Set)</div>
+              <div class="meta">Coalition Players<br>Coalition Theater / 2018</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<svg class="wave" viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0,15 C50,30 100,0 150,15 C200,30 250,0 300,15 C350,30 400,0 450,15 C500,30 550,0 600,15 C650,30 700,0 750,15 C800,30 850,0 900,15 C950,30 1000,0 1050,15 C1100,30 1150,0 1200,15 L1200,30 L0,30 Z" fill="#00148C"/></svg>
+
+<!-- ============================================================ STEP 4 -->
+<section class="step on-blue">
+  <div class="wrap step-grid">
+    <div>
+      <span class="step-tag">Step 4 / 6</span>
+      <h2 class="step-title">Tell us why (optional)</h2>
+      <p class="step-copy">One index card, two boxes. Already caught this one, or not your kind of improv. No essay question, no required field. Filing it closes the card and confirms the skip.</p>
+      <div class="versus"><b>Vs. YouTube</b>Their two-checkbox "Tell us why" dialog, same shape, filed as a stamped index card instead of a plain modal.</div>
+    </div>
+    <div class="device">
+      <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">gutbuster.tv / harold</span></div>
+      <div class="device-body blue">
+        <div class="index-card">
+          <h3>Why'd you pull it?</h3>
+          <div class="rule"></div>
+          <div class="check-row checked" onclick="this.classList.toggle('checked')">
+            <span class="box"><svg viewBox="0 0 12 12"><path d="M1,6 L4.5,9.5 L11,2" stroke="#111" stroke-width="2" fill="none"/></svg></span>
+            <span>Already caught this one</span>
+          </div>
+          <div class="check-row" onclick="this.classList.toggle('checked')">
+            <span class="box"><svg viewBox="0 0 12 12"><path d="M1,6 L4.5,9.5 L11,2" stroke="#111" stroke-width="2" fill="none"/></svg></span>
+            <span>Not my kind of improv</span>
+          </div>
+          <div class="actions">
+            <button class="pill" type="button">File It</button>
+            <span class="text-link">Cancel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<svg class="wave" viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0,15 C50,0 100,30 150,15 C200,0 250,30 300,15 C350,0 400,30 450,15 C500,0 550,30 600,15 C650,0 700,30 750,15 C800,0 850,30 900,15 C950,0 1000,30 1050,15 C1100,0 1150,30 1200,15 L1200,30 L0,30 Z" fill="#FFF8E7"/></svg>
+
+<!-- ============================================================ STEP 5 -->
+<section class="step on-cream">
+  <div class="wrap step-grid">
+    <div>
+      <span class="step-tag">Step 5 / 6</span>
+      <h2 class="step-title">Shelf, restocked</h2>
+      <p class="step-copy">A short toast confirms the file, and the row quietly reshuffles. Something else slides into that slot. No page reload, no ceremony, the shelf just looks a little different next time you glance at it.</p>
+      <div class="versus"><b>Vs. YouTube</b>No equivalent toast on their side, ours names the action instead of leaving the reshuffle silent.</div>
+    </div>
+    <div class="device">
+      <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">gutbuster.tv / harold</span></div>
+      <div class="device-body blue">
+        <span class="toast"><span class="pip"></span>Got it. Restocking the shelf.</span>
+        <div class="shelf-head">HAROLD</div>
+        <div class="row">
+          <div class="card" style="--card-shadow:var(--gb-ink); --thumb-bg:var(--gb-magenta); --band-bg:var(--gb-blue); overflow:visible;">
+            <span class="sticker new-badge">New on shelf</span>
+            <div class="dots">⋯</div>
+            <div class="thumb"><span class="dur">38 MIN</span></div>
+            <div class="form-band">Harold</div>
+            <div class="body">
+              <div class="title">The Longest Yawn (Full Set)</div>
+              <div class="meta">Westside Regulars<br>Westside Comedy / 2022</div>
+            </div>
+          </div>
+          <div class="card" style="--card-shadow:var(--gb-ink); --thumb-bg:var(--gb-tangerine); --band-bg:var(--gb-blue);">
+            <div class="dots">⋯</div>
+            <div class="thumb"><span class="dur">44 MIN</span></div>
+            <div class="form-band">Harold</div>
+            <div class="body">
+              <div class="title">Grandma's Funeral (Full Set)</div>
+              <div class="meta">The Big Something<br>IO / 2021</div>
+            </div>
+          </div>
+          <div class="card" style="--card-shadow:var(--gb-ink); --thumb-bg:var(--gb-turquoise); --band-bg:var(--gb-blue);">
+            <div class="dots">⋯</div>
+            <div class="thumb"><span class="dur">49 MIN</span></div>
+            <div class="form-band">Harold</div>
+            <div class="body">
+              <div class="title">DMV Line (Full Set)</div>
+              <div class="meta">Coalition Players<br>Coalition Theater / 2018</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<svg class="wave" viewBox="0 0 1200 30" preserveAspectRatio="none"><path d="M0,15 C50,30 100,0 150,15 C200,30 250,0 300,15 C350,30 400,0 450,15 C500,30 550,0 600,15 C650,30 700,0 750,15 C800,30 850,0 900,15 C950,30 1000,0 1050,15 C1100,30 1150,0 1200,15 L1200,30 L0,30 Z" fill="#00148C"/></svg>
+
+<!-- ============================================================ STEP 6 -->
+<section class="step on-blue">
+  <div class="wrap step-grid">
+    <div>
+      <span class="step-tag">Step 6 / 6</span>
+      <h2 class="step-title">The back room</h2>
+      <p class="step-copy">Every skip lands here too, under Account. Nothing is gone for good until you say so twice: once at the shelf, once in the file box. Put it back and it's eligible again next restock.</p>
+      <div class="versus"><b>Vs. YouTube</b>Their Watch History / Manage-all-history screen, rebuilt as a plain list of what you've skipped instead of everything you've watched.</div>
+    </div>
+    <div class="device">
+      <div class="device-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">gutbuster.tv / account / shelf-preferences</span></div>
+      <div class="device-body cream">
+        <div class="shelf-head">SHELF PREFERENCES</div>
+        <div class="pref-list">
+          <div class="pref-row">
+            <div>
+              <div class="who">Breakfast (Full Set)</div>
+              <span class="when">Set skipped · Sep 2</span>
+            </div>
+            <button class="pill" type="button" style="background:transparent; box-shadow:3px 3px 0 var(--gb-blue);">Put It Back</button>
+          </div>
+          <div class="pref-row">
+            <div>
+              <div class="who">The Overnight Shift (team)</div>
+              <span class="when">Team skipped · Aug 21</span>
+            </div>
+            <button class="pill" type="button" style="background:transparent; box-shadow:3px 3px 0 var(--gb-blue);">Put It Back</button>
+          </div>
+          <div class="pref-row">
+            <div>
+              <div class="who">Late Night at Second City (Full Set)</div>
+              <span class="when">Set skipped · Jul 30</span>
+            </div>
+            <button class="pill" type="button" style="background:transparent; box-shadow:3px 3px 0 var(--gb-blue);">Put It Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ FOOTER -->
+<footer>
+  <div class="wrap">
+    <h2>Six steps, one clerk's logic</h2>
+    <p>Every control names the thing it does and keeps that name through the flow: Skip, Undo, File It, Put It Back. No arrows on buttons, no dashes in the copy, and the reshuffle always gets a line of text instead of happening silently.</p>
+    <p class="voice">Gutbuster · Shelf Feedback Flow · v1</p>
+  </div>
+</footer>
+
+</body></html>

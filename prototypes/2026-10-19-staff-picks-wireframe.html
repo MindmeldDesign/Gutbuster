@@ -1,0 +1,584 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Staff Picks Wireframe</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Layout: a simulated phone centered on a plain desktop backdrop; bezel drops away and the
+     phone fills the viewport below ~460px so the page itself becomes the device on a real phone. */
+  :root{
+    --cream:#FFF8E7;
+    --blue:#00148C;
+    --yellow:#FFE400;
+    --ink:#111111;
+    --ink-soft:#111111b3;
+    --placeholder:#00148c1f;
+
+    --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Courier New", monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --desk-bg:#15151a; --desk-fg:#eceae2;
+    }
+  }
+  :root[data-theme="dark"]{ --desk-bg:#15151a; --desk-fg:#eceae2; }
+  :root{ --desk-bg:#eceae2; --desk-fg:#15151a; }
+
+  *{ box-sizing:border-box; }
+  body{
+    background:var(--desk-bg);
+    color:var(--desk-fg);
+    font-family:var(--font-ui);
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    padding-left:max(16px, env(safe-area-inset-left,0px));
+    padding-right:max(16px, env(safe-area-inset-right,0px));
+    padding-block:32px;
+  }
+
+  .blurb{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--desk-fg);
+    opacity:.5;
+    text-align:center;
+  }
+
+  /* ---------- device shell ---------- */
+  .device{
+    width:390px;
+    height:780px;
+    max-height:90vh;
+    background:var(--cream);
+    border:10px solid var(--ink);
+    border-radius:38px;
+    overflow:hidden;
+    position:relative;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.45);
+    display:flex;
+    flex-direction:column;
+  }
+
+  .screen{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    -webkit-overflow-scrolling:touch;
+    display:flex;
+    flex-direction:column;
+  }
+  .screen[hidden]{ display:none; }
+
+  /* ---------- shared bits ---------- */
+  .topbar{
+    background:var(--blue);
+    color:var(--cream);
+    padding:14px 18px 12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex:0 0 auto;
+  }
+  .wordmark{
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:.14em;
+    background:var(--yellow);
+    color:var(--ink);
+    padding:4px 8px;
+    border:2px solid var(--ink);
+  }
+  .screen-title{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.85;
+  }
+
+  .filter-chip{
+    font-family:var(--font-mono);
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    background:var(--yellow);
+    color:var(--ink);
+    border:2px solid var(--ink);
+    padding:4px 8px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    cursor:pointer;
+    margin:10px 18px 0;
+    align-self:flex-start;
+  }
+  .filter-chip .x{ font-weight:700; }
+  .filter-row{ display:flex; min-height:0; }
+  .filter-row[hidden]{ display:none; }
+
+  .section-head{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink);
+    padding:18px 18px 8px;
+  }
+
+  .row-scroll{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding:2px 18px 6px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .row-scroll::-webkit-scrollbar{ display:none; }
+
+  .pick{
+    flex:0 0 auto;
+    width:118px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .thumb{
+    width:118px;
+    height:72px;
+    border:2px solid var(--ink);
+    background:
+      repeating-linear-gradient(135deg, var(--placeholder) 0 6px, transparent 6px 14px),
+      var(--cream);
+    position:relative;
+  }
+  .thumb::after{
+    content:"";
+    position:absolute; inset:0;
+  }
+  .pick-title{
+    font-size:12px;
+    font-weight:600;
+    line-height:1.25;
+    color:var(--ink);
+  }
+  .pick-meta{
+    font-family:var(--font-mono);
+    font-size:9px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+
+  .spacer{ height:18px; flex:0 0 auto; }
+
+  /* ---------- bottom nav ---------- */
+  .navbar{
+    flex:0 0 auto;
+    display:flex;
+    border-top:2px solid var(--ink);
+    background:var(--cream);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .navbtn{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+    padding:9px 4px 8px;
+    background:none;
+    border:none;
+    font-family:var(--font-mono);
+    font-size:9px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    cursor:pointer;
+  }
+  .navbtn svg{ width:20px; height:20px; stroke:var(--ink-soft); fill:none; stroke-width:1.8; }
+  .navbtn.active{ color:var(--blue); }
+  .navbtn.active svg{ stroke:var(--blue); }
+  .navbtn.active .navlabel{ position:relative; }
+  .navbtn[aria-pressed="true"]{ color:var(--blue); }
+  .navbtn[aria-pressed="true"] svg{ stroke:var(--blue); }
+
+  /* ---------- favorites segmented control ---------- */
+  .segment{
+    display:flex;
+    gap:0;
+    margin:14px 18px 4px;
+    border:2px solid var(--ink);
+  }
+  .segbtn{
+    flex:1;
+    padding:7px 4px;
+    font-family:var(--font-mono);
+    font-size:10px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    background:var(--cream);
+    color:var(--ink);
+    border:none;
+    border-right:2px solid var(--ink);
+    cursor:pointer;
+  }
+  .segbtn:last-child{ border-right:none; }
+  .segbtn.active{ background:var(--blue); color:var(--cream); }
+
+  .list{ display:flex; flex-direction:column; }
+  .list[hidden]{ display:none; }
+  .listrow{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 18px;
+    border-bottom:1px solid #1111111f;
+  }
+  .avatar{
+    flex:0 0 auto;
+    width:34px; height:34px;
+    border:2px solid var(--ink);
+    background:var(--placeholder);
+  }
+  .avatar.round{ border-radius:50%; }
+  .listrow-main{ flex:1; min-width:0; }
+  .listrow-title{ font-size:13px; font-weight:600; color:var(--ink); }
+  .listrow-sub{
+    font-family:var(--font-mono);
+    font-size:9px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
+  .chev{ color:var(--ink-soft); font-size:16px; flex:0 0 auto; }
+  .star{
+    flex:0 0 auto;
+    font-size:14px;
+    color:var(--yellow);
+    -webkit-text-stroke:1px var(--ink);
+  }
+
+  /* ---------- you screen ---------- */
+  .you-head{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:20px 18px;
+  }
+  .you-avatar{
+    width:56px; height:56px;
+    border-radius:50%;
+    border:2px solid var(--ink);
+    background:var(--placeholder);
+    flex:0 0 auto;
+  }
+  .you-name{ font-size:15px; font-weight:700; color:var(--ink); }
+  .you-sub{
+    font-family:var(--font-mono);
+    font-size:9px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-top:3px;
+  }
+
+  /* ---------- bottom sheet ---------- */
+  .scrim{
+    position:absolute; inset:0;
+    background:#111111b3;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s ease;
+    z-index:5;
+  }
+  .scrim.open{ opacity:1; pointer-events:auto; }
+
+  .sheet{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    background:var(--cream);
+    border-top:2px solid var(--ink);
+    transform:translateY(100%);
+    transition:transform .22s ease;
+    z-index:6;
+    padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  }
+  .sheet.open{ transform:translateY(0); }
+  .sheet-handle{
+    width:36px; height:4px;
+    background:var(--ink);
+    opacity:.3;
+    border-radius:2px;
+    margin:10px auto 6px;
+  }
+  .sheet-title{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink);
+    padding:4px 18px 10px;
+  }
+  .sheet-option{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    padding:14px 18px;
+    background:none;
+    border:none;
+    border-top:1px solid #1111111f;
+    font-family:var(--font-ui);
+    font-size:14px;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+    text-align:left;
+  }
+  .sheet-check{
+    width:16px; height:16px;
+    border:2px solid var(--ink);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:10px;
+    color:transparent;
+  }
+  .sheet-option.selected .sheet-check{
+    background:var(--yellow);
+    color:var(--ink);
+  }
+
+  @media (max-width: 460px){
+    body{ padding:0; justify-content:flex-start; }
+    .blurb{ display:none; }
+    .device{
+      width:100%;
+      height:100dvh;
+      max-height:none;
+      border:none;
+      border-radius:0;
+      box-shadow:none;
+    }
+  }
+</style>
+
+<div class="blurb">Low-fidelity &middot; interactive &middot; tap around</div>
+<div class="device">
+
+  <!-- HOME / STAFF PICKS -->
+  <section class="screen" id="screen-home">
+    <div class="topbar">
+      <span class="wordmark">GUTBUSTER</span>
+      <span class="screen-title">Home</span>
+    </div>
+    <div class="filter-row" id="filter-row" hidden>
+      <span class="filter-chip" id="filter-chip" role="button" tabindex="0">
+        <span id="filter-label">FORM: IMPROV</span><span class="x">&times;</span>
+      </span>
+    </div>
+
+    <div class="section-head">Staff Picks</div>
+    <div class="row-scroll">
+      <div class="pick"><div class="thumb"></div><div class="pick-title">Breakfast (Full Set)</div><div class="pick-meta">Overnight Shift &middot; UCB</div></div>
+      <div class="pick"><div class="thumb"></div><div class="pick-title">No Scene Unturned</div><div class="pick-meta">Monday Night Live &middot; IO</div></div>
+      <div class="pick"><div class="thumb"></div><div class="pick-title">Cagematch: Late Show</div><div class="pick-meta">House Team &middot; Coalition</div></div>
+      <div class="pick"><div class="thumb"></div><div class="pick-title">Group Mind, Vol. 3</div><div class="pick-meta">Group Mind &middot; Westside</div></div>
+      <div class="pick"><div class="thumb"></div><div class="pick-title">The Object Lesson</div><div class="pick-meta">No Context &middot; 2nd City</div></div>
+    </div>
+
+    <div class="section-head">New Releases</div>
+    <div class="row-scroll">
+      <div class="pick"><div class="thumb"></div><div class="pick-title">Uploaded Tuesday</div><div class="pick-meta">Scene Partners &middot; Armando</div></div>
+      <div class="pick"><div class="thumb"></div><div class="pick-title">Warmup: Group Pass</div><div class="pick-meta">Westside &middot; Exercise</div></div>
+      <div class="pick"><div class="thumb"></div><div class="pick-title">Slacker Night, Ep. 9</div><div class="pick-meta">Overnight Shift &middot; UCB</div></div>
+      <div class="pick"><div class="thumb"></div><div class="pick-title">Object Work Jam</div><div class="pick-meta">No Context &middot; 2nd City</div></div>
+    </div>
+
+    <div class="spacer"></div>
+  </section>
+
+  <!-- FAVORITES / SUBSCRIPTIONS -->
+  <section class="screen" id="screen-favorites" hidden>
+    <div class="topbar">
+      <span class="wordmark">GUTBUSTER</span>
+      <span class="screen-title">Favorites</span>
+    </div>
+    <div class="segment">
+      <button class="segbtn active" data-seg="teams">Teams</button>
+      <button class="segbtn" data-seg="comedians">Comedians</button>
+      <button class="segbtn" data-seg="forms">Forms</button>
+    </div>
+
+    <div class="list" data-seglist="teams">
+      <div class="listrow"><div class="avatar"></div><div class="listrow-main"><div class="listrow-title">The Overnight Shift</div><div class="listrow-sub">UCB &middot; 41 sets</div></div><span class="chev">&rsaquo;</span></div>
+      <div class="listrow"><div class="avatar"></div><div class="listrow-main"><div class="listrow-title">Monday Night Live</div><div class="listrow-sub">IO &middot; 28 sets</div></div><span class="chev">&rsaquo;</span></div>
+      <div class="listrow"><div class="avatar"></div><div class="listrow-main"><div class="listrow-title">No Context</div><div class="listrow-sub">Second City &middot; 17 sets</div></div><span class="chev">&rsaquo;</span></div>
+      <div class="listrow"><div class="avatar"></div><div class="listrow-main"><div class="listrow-title">Group Mind</div><div class="listrow-sub">Indie &middot; 9 sets</div></div><span class="chev">&rsaquo;</span></div>
+    </div>
+
+    <div class="list" data-seglist="comedians" hidden>
+      <div class="listrow"><div class="avatar round"></div><div class="listrow-main"><div class="listrow-title">Jordan Ellis</div><div class="listrow-sub">Overnight Shift</div></div><span class="chev">&rsaquo;</span></div>
+      <div class="listrow"><div class="avatar round"></div><div class="listrow-main"><div class="listrow-title">Mara Chen</div><div class="listrow-sub">Monday Night Live</div></div><span class="chev">&rsaquo;</span></div>
+      <div class="listrow"><div class="avatar round"></div><div class="listrow-main"><div class="listrow-title">Devon Price</div><div class="listrow-sub">No Context</div></div><span class="chev">&rsaquo;</span></div>
+    </div>
+
+    <div class="list" data-seglist="forms" hidden>
+      <div class="listrow"><div class="avatar"></div><div class="listrow-main"><div class="listrow-title">Harold</div><div class="listrow-sub">Long-form &middot; 3 beats</div></div><span class="star">&#9733;</span></div>
+      <div class="listrow"><div class="avatar"></div><div class="listrow-main"><div class="listrow-title">Armando</div><div class="listrow-sub">Monologue-driven</div></div><span class="star">&#9733;</span></div>
+      <div class="listrow"><div class="avatar"></div><div class="listrow-main"><div class="listrow-title">Slacker</div><div class="listrow-sub">Loose, scene to scene</div></div><span class="chev">&rsaquo;</span></div>
+      <div class="listrow"><div class="avatar"></div><div class="listrow-main"><div class="listrow-title">Montage</div><div class="listrow-sub">Theme-driven</div></div><span class="chev">&rsaquo;</span></div>
+    </div>
+    <div class="spacer"></div>
+  </section>
+
+  <!-- YOU -->
+  <section class="screen" id="screen-you" hidden>
+    <div class="topbar">
+      <span class="wordmark">GUTBUSTER</span>
+      <span class="screen-title">You</span>
+    </div>
+    <div class="you-head">
+      <div class="you-avatar"></div>
+      <div>
+        <div class="you-name">Chris N.</div>
+        <div class="you-sub">Member since 2024</div>
+      </div>
+    </div>
+    <div class="list">
+      <div class="listrow"><div class="listrow-main"><div class="listrow-title">Account</div></div><span class="chev">&rsaquo;</span></div>
+      <div class="listrow"><div class="listrow-main"><div class="listrow-title">Notifications</div></div><span class="chev">&rsaquo;</span></div>
+      <div class="listrow"><div class="listrow-main"><div class="listrow-title">Playback &amp; downloads</div></div><span class="chev">&rsaquo;</span></div>
+      <div class="listrow"><div class="listrow-main"><div class="listrow-title">Help</div></div><span class="chev">&rsaquo;</span></div>
+      <div class="listrow"><div class="listrow-main"><div class="listrow-title">Sign out</div></div><span class="chev">&rsaquo;</span></div>
+    </div>
+    <div class="spacer"></div>
+  </section>
+
+  <!-- FORM PICKER (bottom sheet, overlays whichever screen is behind it) -->
+  <div class="scrim" id="scrim"></div>
+  <div class="sheet" id="form-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Jump to a form</div>
+    <button class="sheet-option" data-form="Improv"><span>Improv</span><span class="sheet-check">&#10003;</span></button>
+    <button class="sheet-option" data-form="Standup"><span>Standup</span><span class="sheet-check">&#10003;</span></button>
+    <button class="sheet-option" data-form="Sketch"><span>Sketch</span><span class="sheet-check">&#10003;</span></button>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="navbar">
+    <button class="navbtn" id="nav-form" data-nav="form" aria-pressed="false">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 6l2 14h12l2-14M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      <span class="navlabel">Form</span>
+    </button>
+    <button class="navbtn active" id="nav-home" data-nav="home">
+      <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
+      <span class="navlabel">Home</span>
+    </button>
+    <button class="navbtn" id="nav-favorites" data-nav="favorites">
+      <svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+      <span class="navlabel">Favorites</span>
+    </button>
+    <button class="navbtn" id="nav-you" data-nav="you">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg>
+      <span class="navlabel">You</span>
+    </button>
+  </nav>
+</div>
+
+<script>
+(function(){
+  var screens = {
+    home: document.getElementById('screen-home'),
+    favorites: document.getElementById('screen-favorites'),
+    you: document.getElementById('screen-you')
+  };
+  var navBtns = {
+    home: document.getElementById('nav-home'),
+    favorites: document.getElementById('nav-favorites'),
+    you: document.getElementById('nav-you'),
+    form: document.getElementById('nav-form')
+  };
+  var current = 'home';
+
+  function showScreen(name){
+    Object.keys(screens).forEach(function(key){
+      screens[key].hidden = key !== name;
+    });
+    Object.keys(navBtns).forEach(function(key){
+      if (key === 'form') return;
+      navBtns[key].classList.toggle('active', key === name);
+    });
+    current = name;
+  }
+
+  navBtns.home.addEventListener('click', function(){ showScreen('home'); });
+  navBtns.favorites.addEventListener('click', function(){ showScreen('favorites'); });
+  navBtns.you.addEventListener('click', function(){ showScreen('you'); });
+
+  // --- favorites segmented control ---
+  var segBtns = document.querySelectorAll('.segbtn');
+  var segLists = document.querySelectorAll('[data-seglist]');
+  segBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      segBtns.forEach(function(b){ b.classList.toggle('active', b === btn); });
+      var target = btn.getAttribute('data-seg');
+      segLists.forEach(function(list){
+        list.hidden = list.getAttribute('data-seglist') !== target;
+      });
+    });
+  });
+
+  // --- form bottom sheet ---
+  var scrim = document.getElementById('scrim');
+  var sheet = document.getElementById('form-sheet');
+  var filterRow = document.getElementById('filter-row');
+  var filterLabel = document.getElementById('filter-label');
+  var filterChip = document.getElementById('filter-chip');
+  var sheetOptions = document.querySelectorAll('.sheet-option');
+
+  function openSheet(){
+    scrim.classList.add('open');
+    sheet.classList.add('open');
+    navBtns.form.setAttribute('aria-pressed', 'true');
+  }
+  function closeSheet(){
+    scrim.classList.remove('open');
+    sheet.classList.remove('open');
+    navBtns.form.setAttribute('aria-pressed', 'false');
+  }
+
+  navBtns.form.addEventListener('click', openSheet);
+  scrim.addEventListener('click', closeSheet);
+
+  sheetOptions.forEach(function(opt){
+    opt.addEventListener('click', function(){
+      sheetOptions.forEach(function(o){ o.classList.toggle('selected', o === opt); });
+      var form = opt.getAttribute('data-form');
+      filterLabel.textContent = 'FORM: ' + form.toUpperCase();
+      filterRow.hidden = false;
+      showScreen('home');
+      setTimeout(closeSheet, 140);
+    });
+  });
+
+  function clearFilter(){
+    sheetOptions.forEach(function(o){ o.classList.remove('selected'); });
+    filterRow.hidden = true;
+  }
+  filterChip.addEventListener('click', clearFilter);
+  filterChip.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') clearFilter();
+  });
+})();
+</script>
+
+</body></html>

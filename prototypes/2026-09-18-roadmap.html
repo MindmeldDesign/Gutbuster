@@ -1,0 +1,507 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Gutbuster Roadmap</title>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Space+Grotesk:wght@300..700&family=Courier+Prime:wght@400;700&display=swap">
+
+<style>
+  :root {
+    --gb-yellow: #FFE400;
+    --gb-blue: #00148C;
+    --gb-cream: #FFF8E7;
+    --gb-ink: #111111;
+    --gb-magenta: #FF3E80;
+    --gb-tangerine: #FF7A18;
+    --gb-turquoise: #00C2B2;
+    --gb-violet: #6B2FBF;
+
+    --font-display: "Bowlby One", "Jost", Impact, sans-serif;
+    --font-ui: "Space Grotesk", "Jost", system-ui, sans-serif;
+    --font-catalog: "Courier Prime", "Courier New", ui-monospace, monospace;
+
+    --text-catalog: 0.75rem;
+    --text-body: 1rem;
+    --text-card: 1.25rem;
+    --text-sub-quiet: 1.5rem;
+    --text-sub-loud: 1.75rem;
+    --text-shelf: 2rem;
+    --text-section: 2.5rem;
+    --text-section-lg: 3rem;
+    --text-hero-sm: 3.5rem;
+    --text-hero: 4.25rem;
+
+    --gb-tracking-catalog: 0.12em;
+    --gb-outline: 3px solid var(--gb-ink);
+    --gb-shadow: 4px 4px 0 var(--gb-ink);
+    --gb-shadow-blue: 4px 4px 0 var(--gb-blue);
+    --gb-shadow-hover: 6px 6px 0 var(--gb-ink);
+    --gb-radius-pill: 999px;
+
+    background: var(--gb-cream);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--gb-cream);
+    color: var(--gb-ink);
+    font-family: var(--font-ui);
+    font-size: var(--text-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img { max-width: 100%; }
+
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; text-wrap: balance; }
+
+  p { margin: 0 0 1em; max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+
+  ul, ol { margin: 0 0 1em; padding-left: 1.3em; max-width: 66ch; }
+  li { margin-bottom: 0.5em; }
+  li:last-child { margin-bottom: 0; }
+
+  a { color: inherit; }
+
+  code {
+    font-family: var(--font-catalog);
+    background: rgba(17,17,17,0.08);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+  .gb-panel-blue code { background: rgba(255,255,255,0.15); }
+
+  :focus-visible { outline: 3px solid var(--gb-ink); outline-offset: 2px; }
+  .gb-panel-blue :focus-visible { outline-color: var(--gb-yellow); }
+
+  .catalog {
+    font-family: var(--font-catalog);
+    font-size: var(--text-catalog);
+    text-transform: uppercase;
+    letter-spacing: var(--gb-tracking-catalog);
+  }
+
+  /* ---------- layout shell ---------- */
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+  section { position: relative; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    background: var(--gb-blue);
+    color: var(--gb-cream);
+    padding: 56px 20px 84px;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 900px; height: 900px;
+    margin: -450px 0 0 -450px;
+    background: repeating-conic-gradient(var(--gb-yellow) 0deg 8deg, transparent 8deg 20deg);
+    opacity: 0.16;
+    border-radius: 50%;
+    animation: spin 90s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .hero::before { animation: none; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hero-inner { position: relative; max-width: 780px; margin: 0 auto; text-align: left; }
+  .eyebrow {
+    display: inline-block;
+    background: var(--gb-yellow);
+    color: var(--gb-ink);
+    border: var(--gb-outline);
+    box-shadow: var(--gb-shadow);
+    padding: 5px 14px;
+    border-radius: var(--gb-radius-pill);
+    transform: rotate(-2deg);
+    margin-bottom: 22px;
+  }
+  .hero h1 {
+    font-size: var(--text-hero-sm);
+    line-height: 1.1;
+    color: var(--gb-yellow);
+  }
+  @media (min-width: 640px) { .hero h1 { font-size: var(--text-hero); } }
+  .hero-tagline {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: var(--text-sub-quiet);
+    max-width: 46ch;
+    margin: 20px 0 0;
+    line-height: 1.3;
+  }
+  .hero-meta {
+    margin-top: 28px;
+    color: var(--gb-cream);
+    opacity: 0.85;
+  }
+
+  /* ---------- shelves (alternating panels) ---------- */
+  .shelf { padding: 64px 20px; }
+  .shelf.cream { background: var(--gb-cream); color: var(--gb-ink); }
+  .shelf.blue { background: var(--gb-blue); color: var(--gb-cream); }
+
+  .shelf-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+  .shelf-head h2 { font-size: var(--text-shelf); line-height: 1.25; }
+  .shelf.blue h2 { color: var(--gb-yellow); }
+
+  .sticker {
+    font-family: var(--font-catalog);
+    font-size: var(--text-catalog);
+    text-transform: uppercase;
+    letter-spacing: var(--gb-tracking-catalog);
+    color: var(--gb-ink);
+    border: var(--gb-outline);
+    padding: 6px 12px;
+    border-radius: var(--gb-radius-pill);
+    white-space: nowrap;
+  }
+  .sticker.a { background: var(--gb-turquoise); transform: rotate(-3deg); box-shadow: var(--gb-shadow); }
+  .sticker.b { background: var(--gb-tangerine); transform: rotate(2deg); box-shadow: var(--gb-shadow); }
+  .sticker.c { background: var(--gb-magenta); color: var(--gb-cream); transform: rotate(-2deg); box-shadow: var(--gb-shadow); }
+  .sticker.plain { background: var(--gb-yellow); transform: rotate(2deg); box-shadow: var(--gb-shadow); }
+
+  .card {
+    background: var(--gb-cream);
+    color: var(--gb-ink);
+    border: var(--gb-outline);
+    box-shadow: var(--gb-shadow);
+    padding: 24px 26px;
+    border-radius: 14px;
+  }
+  .shelf.blue .card { box-shadow: var(--gb-shadow-blue); }
+  .card + .card { margin-top: 20px; }
+
+  .callout {
+    background: var(--gb-yellow);
+    color: var(--gb-ink);
+    border: var(--gb-outline);
+    box-shadow: var(--gb-shadow);
+    padding: 20px 24px;
+    border-radius: 14px;
+    margin-top: 20px;
+  }
+  .callout .catalog { display: block; margin-bottom: 8px; }
+
+  .lede { font-size: var(--text-sub-quiet); font-weight: 700; line-height: 1.3; max-width: 34ch; }
+
+  /* ---------- tables ---------- */
+  .table-wrap { overflow-x: auto; margin-top: 8px; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 560px;
+    background: var(--gb-cream);
+    color: var(--gb-ink);
+    border: var(--gb-outline);
+    box-shadow: var(--gb-shadow);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .shelf.blue table { box-shadow: var(--gb-shadow-blue); }
+  th, td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 2px solid rgba(17,17,17,0.15);
+    vertical-align: top;
+    font-size: 0.95rem;
+  }
+  th {
+    font-family: var(--font-catalog);
+    font-size: var(--text-catalog);
+    text-transform: uppercase;
+    letter-spacing: var(--gb-tracking-catalog);
+    background: var(--gb-blue);
+    color: var(--gb-cream);
+  }
+  tr:last-child td { border-bottom: none; }
+
+  /* ---------- Q&A ---------- */
+  .qa-grid { display: grid; gap: 16px; }
+  .qa-card {
+    background: var(--gb-cream);
+    color: var(--gb-ink);
+    border: var(--gb-outline);
+    box-shadow: var(--gb-shadow);
+    border-radius: 14px;
+    padding: 20px 22px;
+  }
+  .shelf.blue .qa-card { box-shadow: var(--gb-shadow-blue); }
+  .qa-q {
+    font-family: var(--font-catalog);
+    text-transform: uppercase;
+    letter-spacing: var(--gb-tracking-catalog);
+    font-size: 0.8rem;
+    color: var(--gb-blue);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .shelf.blue .qa-q { color: var(--gb-tangerine); }
+  .qa-a { font-family: var(--font-ui); }
+
+  /* ---------- roadmap grid (Track A/B/C) ---------- */
+  .track-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .track-card { border: var(--gb-outline); border-radius: 14px; padding: 18px 20px; background: var(--gb-cream); color: var(--gb-ink); box-shadow: var(--gb-shadow); }
+  .track-card h3 { font-family: var(--font-ui); font-weight: 700; font-size: var(--text-card); margin-bottom: 8px; }
+  .track-card .stage { font-family: var(--font-catalog); text-transform: uppercase; letter-spacing: var(--gb-tracking-catalog); font-size: 0.7rem; color: var(--gb-blue); display: block; margin-bottom: 10px; }
+  .track-card.a { border-top: 8px solid var(--gb-turquoise); }
+  .track-card.b { border-top: 8px solid var(--gb-tangerine); }
+  .track-card.c { border-top: 8px solid var(--gb-magenta); }
+
+  /* ---------- wavy divider ---------- */
+  .wave { display: block; width: 100%; height: 34px; margin: 0; }
+  .wave.to-blue { fill: var(--gb-blue); }
+  .wave.to-cream { fill: var(--gb-cream); }
+  .shelf { position: relative; }
+
+  /* ---------- footer ---------- */
+  footer {
+    background: var(--gb-ink);
+    color: var(--gb-cream);
+    padding: 40px 20px 60px;
+    text-align: center;
+  }
+  footer a {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: var(--font-catalog);
+    text-transform: uppercase;
+    letter-spacing: var(--gb-tracking-catalog);
+    color: var(--gb-yellow);
+    text-decoration: none;
+    border-bottom: 2px solid var(--gb-yellow);
+    padding-bottom: 2px;
+    transition: transform 0.15s;
+  }
+  footer a:hover { transform: translate(-2px, -2px); }
+
+  @media (max-width: 480px) {
+    .hero { padding: 44px 16px 64px; }
+    .shelf { padding: 44px 16px; }
+  }
+</style>
+
+<div class="hero">
+  <svg width="0" height="0" style="position:absolute"></svg>
+  <div class="hero-inner">
+    <span class="eyebrow catalog">Catalog #GB-2026-09</span>
+    <h1>THE ROADMAP</h1>
+    <p class="hero-tagline">Are.na prototype today. Official build tracking right behind it. Here's the shelf plan.</p>
+    <p class="hero-meta catalog">3 TRACKS / UPDATED SEP 18 2026 / STATUS: IN PROGRESS</p>
+  </div>
+</div>
+
+<svg class="wave to-cream" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0,34 C150,0 350,0 500,20 C650,34 850,34 1000,10 C1100,-4 1150,4 1200,20 L1200,34 L0,34 Z"/></svg>
+
+<section class="shelf cream">
+  <div class="wrap">
+    <div class="shelf-head">
+      <span class="sticker plain">Overview</span>
+      <h2>Why Are.na First</h2>
+    </div>
+    <p class="lede">Are.na is scaffolding, not the destination.</p>
+    <div class="card">
+      <p>It's a cheap way to test whether people actually want this content, organized this way, before investing further in the real product. Three tracks run in parallel from here: populate the Are.na prototype fast (Track A), make it good enough to actually learn from (Track B), and keep building the official Next.js / Airtable app toward launch (Track C).</p>
+      <p><strong>Airtable is not required for Track A.</strong> YouTube metadata can go straight into Are.na through a spreadsheet QA step.</p>
+    </div>
+  </div>
+</section>
+
+<svg class="wave to-blue" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0,10 C150,34 350,34 500,14 C650,0 850,0 1000,24 C1100,32 1150,24 1200,14 L1200,34 L0,34 L0,10 Z"/></svg>
+
+<section class="shelf blue">
+  <div class="wrap">
+    <div class="shelf-head">
+      <span class="sticker a">Track A</span>
+      <h2>Content Population</h2>
+    </div>
+    <div class="card">
+      <p><strong>Pipeline:</strong></p>
+      <ol>
+        <li>You send channel or playlist URLs.</li>
+        <li>A script pulls title, uploader, duration, publish date, thumbnail and description via the official YouTube Data API v3, not a scraper.</li>
+        <li>It writes a QA spreadsheet, one row per video, with an approve checkbox and a target Are.na page picked from your site map.</li>
+        <li>You review in Excel, check approve, and assign each video to a page.</li>
+        <li>A script reads the approved rows and writes <code>populate-data.json</code>, ready to push into Are.na via <code>arena-populate.mjs</code>.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <tr><th>Column</th><th>Purpose</th></tr>
+          <tr><td>Approve</td><td>Checkbox, include this row in the Are.na push</td></tr>
+          <tr><td>Target page</td><td>Dropdown pulled from <code>site-map.json</code></td></tr>
+          <tr><td>Title</td><td>Editable override of the scraped title</td></tr>
+          <tr><td>Team / Theater / Cut Type / Form</td><td>Optional, blank by default, kept for a future Airtable import</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="catalog">Why the official API, not a scraper</span>
+      <p>YouTube's Developer Policies push all automated access through the Data API, not tools like yt-dlp. It's free at this scale and the defensible answer if anyone asks how the catalog was built.</p>
+    </div>
+  </div>
+</section>
+
+<svg class="wave to-cream" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0,34 C150,0 350,0 500,20 C650,34 850,34 1000,10 C1100,-4 1150,4 1200,20 L1200,34 L0,34 Z"/></svg>
+
+<section class="shelf cream">
+  <div class="wrap">
+    <div class="shelf-head">
+      <span class="sticker b">Track B</span>
+      <h2>Are.na MVP</h2>
+    </div>
+    <p class="lede">"Optimizing" means four concrete things, not a redesign.</p>
+    <div class="track-grid">
+      <div class="track-card b"><span class="stage">01</span><h3>Nesting</h3><p>Sub-pages sit inside their parent channel (Improv Teams inside Improv Aisle), via <code>arena-populate.mjs nest</code>.</p></div>
+      <div class="track-card b"><span class="stage">02</span><h3>Tagging</h3><p>Blocks and connections accept a free-form <code>metadata</code> object, the closest thing Are.na has to a custom field.</p></div>
+      <div class="track-card b"><span class="stage">03</span><h3>Depth</h3><p>Pages actually have content in them, fed by Track A.</p></div>
+      <div class="track-card b"><span class="stage">04</span><h3>Measurement</h3><p><code>arena-metrics.mjs</code> logs counts and connections on a schedule, so there's a real trend line.</p></div>
+    </div>
+    <div class="callout" style="background:var(--gb-cream); border-color:var(--gb-ink);">
+      <span class="catalog">The honest ceiling</span>
+      <p>No custom video player, no Gutbuster design system, no Gutbuster-specific accounts, no moderation, no SEO Gutbuster owns, no mobile path. Fine, even ideal, for testing whether the content lands. Not a foundation to keep building on past that test.</p>
+    </div>
+    <p style="margin-top:20px;">Milestone shape: nest every page, populate through Track A, run metrics on a regular cadence, and put it in front of real improv-community testers, not just friends. The output of this track is a decision, not a launch.</p>
+  </div>
+</section>
+
+<svg class="wave to-blue" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0,10 C150,34 350,34 500,14 C650,0 850,0 1000,24 C1100,32 1150,24 1200,14 L1200,34 L0,34 L0,10 Z"/></svg>
+
+<section class="shelf blue">
+  <div class="wrap">
+    <div class="shelf-head">
+      <span class="sticker c">Track C</span>
+      <h2>Official Product</h2>
+    </div>
+    <div class="card">
+      <p>This track does not wait on Are.na. The two tracks test different things: Are.na tests whether people want this content, organized this way; the Next.js app tests whether the real product works end to end.</p>
+      <p><strong>Sequenced by what unblocks a real demo fastest:</strong></p>
+      <ol>
+        <li><strong>Ship what already works</strong>, GitHub push and a Vercel deploy, so the current build is demoable at all.</li>
+        <li><strong>Watch page</strong>, the core interaction still missing.</li>
+        <li><strong>NavBar routing + Team/Theater pages</strong>, makes the site navigable past the homepage.</li>
+        <li><strong>Polish</strong>, Spotlight row, Runtime field, Date display.</li>
+        <li><strong>Comments</strong>, stays v2, deliberately last, it also depends on accounts that don't exist yet.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<svg class="wave to-cream" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0,34 C150,0 350,0 500,20 C650,34 850,34 1000,10 C1100,-4 1150,4 1200,20 L1200,34 L0,34 Z"/></svg>
+
+<section class="shelf cream">
+  <div class="wrap">
+    <div class="shelf-head">
+      <span class="sticker plain">Special edition</span>
+      <h2>Video Hosting</h2>
+    </div>
+    <div class="card">
+      <p>Gutbuster doesn't host video today, in either track, and shouldn't for the foreseeable roadmap. Airtable's Embed URL field and Are.na's blocks both point at video hosted elsewhere. That's a deliberate choice to keep making, not a gap to close.</p>
+      <p>Embedding a video via its original platform's player reads as linking to it, not copying it, the same posture as Letterboxd linking to a streaming service. Re-hosting a copy would need real rights clearance from every theater and team, and is genuinely expensive at any real traffic.</p>
+    </div>
+    <div class="callout">
+      <span class="catalog">The honest exception</span>
+      <p>If Gutbuster secures a direct relationship with a theater to be the first-party home for its archival footage, self-hosting (Mux or Cloudflare Stream) becomes a real, differentiated feature: the archive, not just a directory of links. A business-development milestone, not an engineering task to schedule.</p>
+    </div>
+  </div>
+</section>
+
+<svg class="wave to-blue" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0,10 C150,34 350,34 500,14 C650,0 850,0 1000,24 C1100,32 1150,24 1200,14 L1200,34 L0,34 L0,10 Z"/></svg>
+
+<section class="shelf blue">
+  <div class="wrap">
+    <div class="shelf-head">
+      <span class="sticker plain">Ask the clerk</span>
+      <h2>Q&amp;A</h2>
+    </div>
+    <div class="qa-grid">
+      <div class="qa-card">
+        <span class="qa-q">Why prototype in Are.na instead of just finishing the real app faster?</span>
+        <p class="qa-a">"Can we build this" is already answered, the Next.js app proves that. The open question is whether improv fans actually want to browse a site organized this way, and Are.na tests that for near-zero engineering cost.</p>
+      </div>
+      <div class="qa-card">
+        <span class="qa-q">What's the legal exposure of showing other people's video?</span>
+        <p class="qa-a">Embedding video hosted by its original uploader is a curated directory, closer to linking than publishing. Re-serving copies would need explicit rights clearance, which is exactly why hosting stays embed-only.</p>
+      </div>
+      <div class="qa-card">
+        <span class="qa-q">Is scraping YouTube for metadata against their Terms of Service?</span>
+        <p class="qa-a">In spirit, yes. YouTube's Developer Policies push automated access through the official Data API, not scraping tools. That's why Track A is built on the official API rather than yt-dlp, even though yt-dlp works.</p>
+      </div>
+      <div class="qa-card">
+        <span class="qa-q">Why Airtable and not a real database?</span>
+        <p class="qa-a">Airtable rate-limits at 5 requests/second per base with a 30-second lockout past that. It was the right call to move fast without a backend. At real scale it becomes a real constraint, not a hypothetical one.</p>
+      </div>
+      <div class="qa-card">
+        <span class="qa-q">What's the moat? Anyone could copy an Are.na channel structure.</span>
+        <p class="qa-a">Correct, and that's fine, nothing about Are.na is meant to be defensible. It's disposable scaffolding. Whatever works gets rebuilt as the proprietary, designed official product.</p>
+      </div>
+      <div class="qa-card">
+        <span class="qa-q">How does content migrate out of Are.na later?</span>
+        <p class="qa-a">The same API that populates it reads it back out. Relational fields the official schema needs, Team, Theater, Show, Cut Type, aren't native to Are.na blocks, and should be carried forward as block metadata rather than reconstructed by hand.</p>
+      </div>
+      <div class="qa-card">
+        <span class="qa-q">What if Are.na itself changes pricing or its API, or goes away?</span>
+        <p class="qa-a">A real risk of building on someone else's platform, worth naming plainly. The mitigation: the QA spreadsheet, not Are.na's UI, is the source of truth for what's been curated, so nothing unique lives only inside Are.na.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="wave to-cream" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0,34 C150,0 350,0 500,20 C650,34 850,34 1000,10 C1100,-4 1150,4 1200,20 L1200,34 L0,34 Z"/></svg>
+
+<section class="shelf cream">
+  <div class="wrap">
+    <div class="shelf-head">
+      <span class="sticker plain">Fine print</span>
+      <h2>Tech Stack Fit</h2>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <tr><th>Piece</th><th>Fine today because</th><th>Outgrows itself when</th><th>Suggested change</th></tr>
+          <tr><td>Airtable</td><td>Small catalog, one founder managing it, near-zero cost</td><td>Video/contributor count grows past 5 req/sec or manual schema upkeep</td><td>Migrate to Postgres via Supabase, which also solves auth for Comments v2. Not urgent now.</td></tr>
+          <tr><td>Are.na</td><td>Disposable, cheap, has its own discovery features built in</td><td>The moment Track B's test is answered, either way</td><td>Decide the exit now: sunset once Track C ships nav/watch page/team pages, or keep it running long-term. Don't let this happen by default.</td></tr>
+          <tr><td><code>unstable_cache</code> polling Airtable</td><td>15-minute staleness is invisible to a small audience</td><td>You want near-real-time updates, or traffic spikes exhaust the rate limit</td><td>Airtable automations pushing a webhook, or move with the database migration above.</td></tr>
+          <tr><td>Video hosting</td><td>Zero infrastructure cost, minimal legal exposure</td><td>A theater offers an exclusive footage relationship</td><td>Mux or Cloudflare Stream, only once a specific rights deal exists.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="wave to-blue" viewBox="0 0 1200 34" preserveAspectRatio="none"><path d="M0,10 C150,34 350,34 500,14 C650,0 850,0 1000,24 C1100,32 1150,24 1200,14 L1200,34 L0,34 L0,10 Z"/></svg>
+
+<section class="shelf blue">
+  <div class="wrap">
+    <div class="shelf-head">
+      <span class="sticker plain">Now showing</span>
+      <h2>Three Tracks, In Parallel</h2>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <tr><th>Track</th><th>Now</th><th>Next</th><th>Later</th></tr>
+          <tr><td>A. Content</td><td>Get a YouTube API key, fill in <code>site-map.json</code>, run the first batch</td><td>Repeat weekly; start filling Team/Theater/Cut Type if Track C is close</td><td>Keep the QA spreadsheet as the permanent source of truth</td></tr>
+          <tr><td>B. Are.na MVP</td><td>Nest pages, populate from Track A, run metrics</td><td>Put it in front of real improv-community testers</td><td>Decide go/no-go on official build priority</td></tr>
+          <tr><td>C. Official</td><td>GitHub push + Vercel deploy</td><td>Watch page, then nav + Team/Theater pages</td><td>Polish, then Comments (v2)</td></tr>
+        </table>
+      </div>
+      <p style="margin-top:18px;">Tracks A and B feed each other directly. Track C runs on its own clock and doesn't block on either, it's answering a different question.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="catalog">Gutbuster / Roadmap / Catalog #GB-2026-09</p>
+  <p style="max-width:52ch; margin:10px auto 0; opacity:0.8;">Styled to the Gutbuster catalog aesthetic. The living, editable version of this roadmap stays in Claude Docs.</p>
+  <a href="https://claude.ai/artifact/DW6E296sZCUci7apJURrGP" target="_blank" rel="noopener">Open the editable doc</a>
+</footer>
+
+</body></html>

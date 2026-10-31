@@ -1,0 +1,536 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Gutbuster Floor Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gb-yellow:#FFE400;
+    --gb-blue:#00148C;
+    --gb-black:#111111;
+    --gb-cream:#FFF8E7;
+    --gb-slate:#585B78;
+    --gb-line:#D9D0B0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--gb-cream);
+    color:var(--gb-black);
+    font-family:'Space Grotesk',system-ui,sans-serif;
+    line-height:1.55;
+  }
+  .wrap{
+    max-width:880px;
+    margin:0 auto;
+    padding:56px 24px 90px;
+  }
+  h1,h2,h3{
+    font-family:'Silkscreen','Courier New',monospace;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    text-wrap:balance;
+    margin:0;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gb-blue);
+    margin:0 0 14px;
+  }
+  h1{
+    font-size:clamp(32px,5.6vw,52px);
+    color:var(--gb-blue);
+    text-shadow:6px 6px 0 var(--gb-yellow);
+    line-height:1.15;
+    max-width:11ch;
+  }
+  .sub{
+    font-size:17px;
+    color:var(--gb-black);
+    max-width:62ch;
+    margin:22px 0 0;
+  }
+  .masthead{
+    border-bottom:3px solid var(--gb-black);
+    padding-bottom:38px;
+    margin-bottom:48px;
+  }
+  section{margin-bottom:56px;}
+  h2{
+    font-size:22px;
+    color:var(--gb-blue);
+    margin-bottom:6px;
+  }
+  .section-note{
+    font-size:15px;
+    color:var(--gb-slate);
+    max-width:64ch;
+    margin:0 0 22px;
+  }
+
+  /* Rosetta stone table */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+  }
+  th{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    text-align:left;
+    color:var(--gb-blue);
+    padding:8px 12px;
+    border-bottom:2px solid var(--gb-black);
+  }
+  td{
+    padding:10px 12px;
+    border-bottom:1px solid var(--gb-line);
+    vertical-align:top;
+  }
+  td.fixture{font-weight:600;}
+  td.field{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    color:var(--gb-slate);
+  }
+  tr:last-child td{border-bottom:2px solid var(--gb-black);}
+
+  /* Aisle cards */
+  .aisle{
+    border:3px solid var(--gb-black);
+    box-shadow:7px 7px 0 var(--gb-blue);
+    background:#fff;
+    margin-bottom:40px;
+  }
+  .aisle-head{
+    background:var(--gb-blue);
+    color:var(--gb-cream);
+    padding:14px 20px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .aisle-head .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    background:var(--gb-yellow);
+    color:var(--gb-black);
+    padding:3px 9px;
+  }
+  .aisle-head h3{
+    font-size:19px;
+    color:var(--gb-cream);
+  }
+  .aisle-body{padding:22px 20px 24px;}
+  .aisle-body p{font-size:15px;margin:0 0 16px;}
+  .diagram-wrap{
+    overflow-x:auto;
+    background:var(--gb-cream);
+    border:1px solid var(--gb-line);
+    padding:14px 10px;
+    margin-bottom:18px;
+  }
+  figcaption{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:var(--gb-slate);
+    margin-top:8px;
+  }
+  .calls{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  @media (max-width:560px){.calls{grid-template-columns:1fr;}}
+  .call{
+    padding:12px 14px;
+    font-size:13.5px;
+  }
+  .call .k{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:5px;
+  }
+  .call.verdict{background:rgba(255,228,0,0.28);border-left:4px solid var(--gb-yellow);}
+  .call.verdict .k{color:#7A6900;}
+  .call.tradeoff{background:rgba(0,20,140,0.06);border-left:4px solid var(--gb-blue);}
+  .call.tradeoff .k{color:var(--gb-blue);}
+
+  /* Recommended route */
+  .rec{
+    border:3px solid var(--gb-blue);
+    background:#fff;
+    padding:26px 26px 28px;
+  }
+  .rec h2{color:var(--gb-black);}
+  .rec .eyebrow{color:var(--gb-black);}
+  .rec p{font-size:15px;max-width:66ch;}
+
+  /* Receipt */
+  .receipt{
+    background:#fff;
+    border:1px solid var(--gb-line);
+    box-shadow:7px 7px 0 var(--gb-black);
+    max-width:460px;
+    margin:0 auto;
+    padding:26px 26px 20px;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .receipt-top{
+    text-align:center;
+    font-size:14px;
+    letter-spacing:0.08em;
+    padding-bottom:14px;
+    border-bottom:1px dashed var(--gb-black);
+    margin-bottom:14px;
+  }
+  .receipt-top .store{font-weight:600;font-size:15px;}
+  .receipt-top .addr{color:var(--gb-slate);font-size:11px;margin-top:4px;}
+  .rline{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-size:12.5px;
+    padding:7px 0;
+    border-bottom:1px dotted var(--gb-line);
+  }
+  .rline .desc{max-width:290px;}
+  .rline .status{
+    white-space:nowrap;
+    font-size:11px;
+    letter-spacing:0.05em;
+  }
+  .status.todo{color:var(--gb-blue);}
+  .status.decide{color:#B14A00;}
+  .status.stock{color:#1E7A34;}
+  .receipt-total{
+    border-top:1px dashed var(--gb-black);
+    margin-top:8px;
+    padding-top:12px;
+    font-size:11.5px;
+    color:var(--gb-slate);
+  }
+  .receipt-foot{
+    text-align:center;
+    font-size:10.5px;
+    color:var(--gb-slate);
+    margin-top:16px;
+    letter-spacing:0.05em;
+  }
+
+  svg text{font-family:'IBM Plex Mono',monospace;}
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <p class="eyebrow">Gutbuster &middot; Information Architecture</p>
+    <h1>Floor Plan</h1>
+    <p class="sub">Three ways to lay out the aisles so finding a Harold beats a Netflix category, and browsing improv, standup, and sketch feels like walking a store, not filtering a database.</p>
+  </div>
+
+  <section>
+    <p class="eyebrow">Before the aisles</p>
+    <h2>Translating the store</h2>
+    <p class="section-note">Every fixture below already exists somewhere in the Airtable base. None of these floor plans need new schema, only new doors cut into the one that's there.</p>
+    <table>
+      <tr><th>Store fixture</th><th>Gutbuster field</th></tr>
+      <tr><td class="fixture">New Release Wall</td><td class="field">Tags &rarr; "Featured"</td></tr>
+      <tr><td class="fixture">Feature Presentation</td><td class="field">Cut Type &rarr; "Full Set"</td></tr>
+      <tr><td class="fixture">Trailer / Preview</td><td class="field">Cut Type &rarr; "Scene Clip"</td></tr>
+      <tr><td class="fixture">Coming Attractions</td><td class="field">Cut Type &rarr; "Promo"</td></tr>
+      <tr><td class="fixture">Bonus Features</td><td class="field">Cut Type &rarr; "Exercise Demo"</td></tr>
+      <tr><td class="fixture">Genre aisle / shelf</td><td class="field">Form &rarr; Harold, Armando, Slacker, Montage</td></tr>
+      <tr><td class="fixture">Distributor shelf</td><td class="field">Theater</td></tr>
+      <tr><td class="fixture">Franchise card</td><td class="field">Team</td></tr>
+      <tr><td class="fixture">Store department</td><td class="field">Discipline &rarr; Improv / Standup / Sketch</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <p class="eyebrow">Three floor plans</p>
+    <h2>Three bets on how someone decides what to rent</h2>
+    <p class="section-note">Same shelves, three different front doors. Each reads left to right, the way you'd actually walk the aisle.</p>
+
+    <div class="aisle">
+      <div class="aisle-head">
+        <h3>Aisle One &middot; The Genre Floor</h3>
+        <span class="tag">discipline first</span>
+      </div>
+      <div class="aisle-body">
+        <p>Top nav is the department sign: Improv, Standup, Sketch. Walk into Improv and the shelves are Form: Harold, Armando, Slacker, Montage, exactly the rows already built on the homepage. Standup and Sketch would need their own shelving logic, since Form doesn't cover them.</p>
+        <figure class="diagram-wrap">
+          <svg viewBox="0 0 760 220" role="img" aria-label="Home leads to Improv, Standup and Sketch. Improv leads to four shelves, Harold, Armando, Slacker, Montage. All paths lead to Watch.">
+            <defs>
+              <marker id="arrA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <polygon points="0,0 7,3 0,6" fill="#00148C"/>
+              </marker>
+            </defs>
+            <g fill="none" stroke="#00148C" stroke-width="2" marker-end="url(#arrA)">
+              <line x1="130" y1="110" x2="185" y2="35"/>
+              <line x1="130" y1="110" x2="185" y2="110"/>
+              <line x1="130" y1="110" x2="185" y2="185"/>
+              <line x1="340" y1="35" x2="425" y2="18"/>
+              <line x1="340" y1="35" x2="425" y2="55"/>
+              <line x1="340" y1="35" x2="425" y2="92"/>
+              <line x1="340" y1="35" x2="425" y2="129"/>
+              <line x1="520" y1="20" x2="575" y2="98"/>
+              <line x1="520" y1="57" x2="575" y2="102"/>
+              <line x1="520" y1="94" x2="575" y2="106"/>
+              <line x1="520" y1="131" x2="575" y2="110"/>
+              <line x1="340" y1="110" x2="575" y2="112"/>
+              <line x1="340" y1="185" x2="575" y2="120"/>
+            </g>
+            <rect x="20" y="90" width="110" height="40" fill="#FFF8E7" stroke="#111111" stroke-width="2"/>
+            <text x="75" y="115" text-anchor="middle" font-size="12" font-weight="600">HOME</text>
+
+            <rect x="190" y="15" width="150" height="40" fill="#00148C" stroke="#111111" stroke-width="2"/>
+            <text x="265" y="40" text-anchor="middle" font-size="12" fill="#FFF8E7" font-weight="600">IMPROV</text>
+            <rect x="190" y="90" width="150" height="40" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+            <text x="265" y="115" text-anchor="middle" font-size="12" font-weight="600">STANDUP</text>
+            <rect x="190" y="165" width="150" height="40" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+            <text x="265" y="190" text-anchor="middle" font-size="12" font-weight="600">SKETCH</text>
+
+            <rect x="425" y="3" width="95" height="30" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+            <text x="472" y="22" text-anchor="middle" font-size="10" font-weight="600">HAROLD</text>
+            <rect x="425" y="40" width="95" height="30" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+            <text x="472" y="59" text-anchor="middle" font-size="10" font-weight="600">ARMANDO</text>
+            <rect x="425" y="77" width="95" height="30" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+            <text x="472" y="96" text-anchor="middle" font-size="10" font-weight="600">SLACKER</text>
+            <rect x="425" y="114" width="95" height="30" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+            <text x="472" y="133" text-anchor="middle" font-size="10" font-weight="600">MONTAGE</text>
+
+            <rect x="580" y="90" width="140" height="40" fill="#FFF8E7" stroke="#111111" stroke-width="2.5"/>
+            <text x="650" y="115" text-anchor="middle" font-size="12" font-weight="600">WATCH PAGE</text>
+          </svg>
+          <figcaption>Improv already has four working shelves. Standup and Sketch currently have none.</figcaption>
+        </figure>
+        <div class="calls">
+          <div class="call verdict"><span class="k">Verdict</span>Cheapest to ship. IMPROV / STANDUP / SKETCH are already placeholder links in the NavBar, and the Form rows already exist on the homepage.</div>
+          <div class="call tradeoff"><span class="k">Tradeoff</span>Someone who came for a specific theater or team has to already know which form that team runs before they can find them.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="aisle">
+      <div class="aisle-head">
+        <h3>Aisle Two &middot; The Distributor Shelf</h3>
+        <span class="tag">theater first</span>
+      </div>
+      <div class="aisle-body">
+        <p>Top nav is the theater wall: UCB, iO, Second City, Coalition, Westside, the way a store once shelved by studio. Pick a theater and its teams line up like a franchise rack. This is the closest thing Gutbuster has to browsing by "who made it" instead of "what it is."</p>
+        <figure class="diagram-wrap">
+          <svg viewBox="0 0 780 300" role="img" aria-label="Home leads to a list of theaters. UCB leads to its teams. Teams lead to Watch.">
+            <defs>
+              <marker id="arrB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <polygon points="0,0 7,3 0,6" fill="#00148C"/>
+              </marker>
+            </defs>
+            <g fill="none" stroke="#00148C" stroke-width="2" marker-end="url(#arrB)">
+              <line x1="130" y1="150" x2="185" y2="26"/>
+              <line x1="130" y1="150" x2="185" y2="68"/>
+              <line x1="130" y1="150" x2="185" y2="110"/>
+              <line x1="130" y1="150" x2="185" y2="152"/>
+              <line x1="130" y1="150" x2="185" y2="194"/>
+              <line x1="360" y1="26" x2="415" y2="66"/>
+              <line x1="415" y1="106" x2="600" y2="145"/>
+              <line x1="415" y1="66" x2="600" y2="150"/>
+              <line x1="415" y1="146" x2="600" y2="155"/>
+            </g>
+            <rect x="20" y="130" width="110" height="40" fill="#FFF8E7" stroke="#111111" stroke-width="2"/>
+            <text x="75" y="155" text-anchor="middle" font-size="12" font-weight="600">HOME</text>
+
+            <rect x="190" y="10" width="170" height="32" fill="#00148C" stroke="#111111" stroke-width="2"/>
+            <text x="275" y="31" text-anchor="middle" font-size="11" fill="#FFF8E7" font-weight="600">UCB (SELECTED)</text>
+            <rect x="190" y="52" width="170" height="32" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+            <text x="275" y="73" text-anchor="middle" font-size="11" font-weight="600">IO</text>
+            <rect x="190" y="94" width="170" height="32" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+            <text x="275" y="115" text-anchor="middle" font-size="11" font-weight="600">SECOND CITY</text>
+            <rect x="190" y="136" width="170" height="32" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+            <text x="275" y="157" text-anchor="middle" font-size="11" font-weight="600">COALITION</text>
+            <rect x="190" y="178" width="170" height="32" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+            <text x="275" y="199" text-anchor="middle" font-size="11" font-weight="600">WESTSIDE</text>
+
+            <rect x="420" y="50" width="130" height="30" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+            <text x="485" y="69" text-anchor="middle" font-size="10" font-weight="600">TEAM A</text>
+            <rect x="420" y="88" width="130" height="30" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+            <text x="485" y="107" text-anchor="middle" font-size="10" font-weight="600">TEAM B</text>
+            <rect x="420" y="126" width="130" height="30" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+            <text x="485" y="145" text-anchor="middle" font-size="10" font-weight="600">TEAM C</text>
+
+            <rect x="600" y="130" width="140" height="40" fill="#FFF8E7" stroke="#111111" stroke-width="2.5"/>
+            <text x="670" y="155" text-anchor="middle" font-size="12" font-weight="600">WATCH PAGE</text>
+          </svg>
+          <figcaption>Shown: UCB selected, its teams unfold. Every theater in the wall works the same way.</figcaption>
+        </figure>
+        <div class="calls">
+          <div class="call verdict"><span class="k">Verdict</span>Matches how improv nerds actually think: people follow a theater or team long before they think in terms of "Form."</div>
+          <div class="call tradeoff"><span class="k">Tradeoff</span>Theater and Team pages don't exist yet, and a first-time visitor with no theater loyalty has nowhere obvious to start.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="aisle">
+      <div class="aisle-head">
+        <h3>Aisle Three &middot; The New Release Wall</h3>
+        <span class="tag">format first</span>
+      </div>
+      <div class="aisle-body">
+        <p>Top nav sorts by how much time you have, not what it's about: Full Sets, Scene Clips, Promos, Bonus Features. It's the rack by the register, not the aisle you browse to learn something.</p>
+        <figure class="diagram-wrap">
+          <svg viewBox="0 0 760 210" role="img" aria-label="Home leads to Full Sets, Scene Clips, Promos and Bonus Features. All lead to Watch.">
+            <defs>
+              <marker id="arrC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <polygon points="0,0 7,3 0,6" fill="#00148C"/>
+              </marker>
+            </defs>
+            <g fill="none" stroke="#00148C" stroke-width="2" marker-end="url(#arrC)">
+              <line x1="130" y1="100" x2="185" y2="24"/>
+              <line x1="130" y1="100" x2="185" y2="69"/>
+              <line x1="130" y1="100" x2="185" y2="114"/>
+              <line x1="130" y1="100" x2="185" y2="159"/>
+              <line x1="340" y1="24" x2="580" y2="98"/>
+              <line x1="340" y1="69" x2="580" y2="103"/>
+              <line x1="340" y1="114" x2="580" y2="108"/>
+              <line x1="340" y1="159" x2="580" y2="113"/>
+            </g>
+            <rect x="20" y="80" width="110" height="40" fill="#FFF8E7" stroke="#111111" stroke-width="2"/>
+            <text x="75" y="105" text-anchor="middle" font-size="12" font-weight="600">HOME</text>
+
+            <rect x="190" y="6" width="150" height="36" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+            <text x="265" y="22" text-anchor="middle" font-size="10.5" font-weight="600">FULL SETS</text>
+            <text x="265" y="35" text-anchor="middle" font-size="8" fill="#585B78" font-style="italic">Feature Presentation</text>
+
+            <rect x="190" y="51" width="150" height="36" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+            <text x="265" y="67" text-anchor="middle" font-size="10.5" font-weight="600">SCENE CLIPS</text>
+            <text x="265" y="80" text-anchor="middle" font-size="8" fill="#585B78" font-style="italic">Trailer / Preview</text>
+
+            <rect x="190" y="96" width="150" height="36" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+            <text x="265" y="112" text-anchor="middle" font-size="10.5" font-weight="600">PROMOS</text>
+            <text x="265" y="125" text-anchor="middle" font-size="8" fill="#585B78" font-style="italic">Coming Attractions</text>
+
+            <rect x="190" y="141" width="150" height="36" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+            <text x="265" y="157" text-anchor="middle" font-size="10.5" font-weight="600">BONUS FEATURES</text>
+            <text x="265" y="170" text-anchor="middle" font-size="8" fill="#585B78" font-style="italic">Exercise Demo</text>
+
+            <rect x="580" y="80" width="140" height="40" fill="#FFF8E7" stroke="#111111" stroke-width="2.5"/>
+            <text x="650" y="105" text-anchor="middle" font-size="12" font-weight="600">WATCH PAGE</text>
+          </svg>
+          <figcaption>Every box here is already a real Cut Type value. Nothing to build in Airtable, only the routes.</figcaption>
+        </figure>
+        <div class="calls">
+          <div class="call verdict"><span class="k">Verdict</span>Best for someone with five minutes who wants a clip, not a night's rental. Zero new schema, all four boxes already exist as Cut Type values.</div>
+          <div class="call tradeoff"><span class="k">Tradeoff</span>Weak as a front door on its own: it ignores what a video is actually about, which is the first thing most people decide by.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The route we'd actually walk</p>
+    <h2 style="margin-bottom:16px;">The floor plan we'd build</h2>
+    <div class="rec">
+      <p>Keep Aisle One as the front door. It's the cheapest to finish and half-built already. But bolt on the other two aisles as a filter rail instead of a second front door: exactly what a real store did when the aisles were genre, but the clerk behind the counter could still pull something by studio or off the new-release wall on request.</p>
+      <p>Standup and Sketch stay unsolved by this plan. They need their own categorization field before they can have real shelves. Until then, they can point straight at their Cut Type / Featured rows, the same shortcut the front window already uses.</p>
+      <figure class="diagram-wrap" style="background:#fff;border-color:var(--gb-black);">
+        <svg viewBox="0 0 900 430" role="img" aria-label="Home leads to a front window shortcut and to Improv, Standup and Sketch. Improv leads to its four shelves. Standup and Sketch lead to a box marked no shared field yet. Shelves and that box feed a facet rail for Theater and Cut Type, which leads to Watch. The front window shortcut bypasses the aisles and goes straight to Watch.">
+          <defs>
+            <marker id="arrD" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <polygon points="0,0 7,3 0,6" fill="#00148C"/>
+            </marker>
+          </defs>
+          <g fill="none" stroke="#00148C" stroke-width="2" marker-end="url(#arrD)">
+            <line x1="75" y1="90" x2="75" y2="18" marker-end="none"/>
+            <line x1="75" y1="18" x2="330" y2="45"/>
+            <line x1="130" y1="105" x2="300" y2="70"/>
+            <line x1="130" y1="110" x2="300" y2="115"/>
+            <line x1="130" y1="115" x2="300" y2="160"/>
+            <line x1="470" y1="65" x2="530" y2="18"/>
+            <line x1="470" y1="65" x2="530" y2="56"/>
+            <line x1="470" y1="65" x2="530" y2="94"/>
+            <line x1="470" y1="65" x2="530" y2="132"/>
+            <line x1="360" y1="160" x2="500" y2="230"/>
+            <line x1="655" y1="18" x2="655" y2="230" marker-end="none"/>
+            <line x1="655" y1="230" x2="700" y2="235"/>
+            <line x1="655" y1="55" x2="700" y2="245"/>
+            <line x1="655" y1="93" x2="700" y2="255"/>
+            <line x1="655" y1="131" x2="700" y2="265"/>
+            <line x1="580" y1="230" x2="700" y2="275"/>
+            <line x1="75" y1="18" x2="75" y2="345" marker-end="none"/>
+            <line x1="75" y1="345" x2="800" y2="345"/>
+            <line x1="800" y1="300" x2="800" y2="345" marker-end="none"/>
+            <line x1="800" y1="300" x2="800" y2="345"/>
+          </g>
+          <rect x="20" y="90" width="110" height="40" fill="#FFF8E7" stroke="#111111" stroke-width="2"/>
+          <text x="75" y="115" text-anchor="middle" font-size="12" font-weight="600">HOME</text>
+
+          <rect x="330" y="3" width="150" height="30" fill="#FFE400" stroke="#111111" stroke-width="2"/>
+          <text x="405" y="23" text-anchor="middle" font-size="10" font-weight="600">FRONT WINDOW</text>
+
+          <rect x="140" y="0" width="1" height="1" fill="none"/>
+
+          <rect x="300" y="55" width="170" height="32" fill="#00148C" stroke="#111111" stroke-width="2"/>
+          <text x="385" y="76" text-anchor="middle" font-size="11" fill="#FFF8E7" font-weight="600">IMPROV</text>
+          <rect x="300" y="99" width="170" height="32" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+          <text x="385" y="120" text-anchor="middle" font-size="11" font-weight="600">STANDUP</text>
+          <rect x="300" y="144" width="170" height="32" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+          <text x="385" y="165" text-anchor="middle" font-size="11" font-weight="600">SKETCH</text>
+
+          <rect x="530" y="4" width="95" height="28" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+          <text x="577" y="22" text-anchor="middle" font-size="9.5" font-weight="600">HAROLD</text>
+          <rect x="530" y="42" width="95" height="28" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+          <text x="577" y="60" text-anchor="middle" font-size="9.5" font-weight="600">ARMANDO</text>
+          <rect x="530" y="80" width="95" height="28" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+          <text x="577" y="98" text-anchor="middle" font-size="9.5" font-weight="600">SLACKER</text>
+          <rect x="530" y="118" width="95" height="28" fill="#FFE400" stroke="#111111" stroke-width="1.5"/>
+          <text x="577" y="136" text-anchor="middle" font-size="9.5" font-weight="600">MONTAGE</text>
+
+          <rect x="400" y="205" width="220" height="42" fill="#FFFFFF" stroke="#111111" stroke-width="2" stroke-dasharray="5,4"/>
+          <text x="510" y="222" text-anchor="middle" font-size="10.5" font-weight="600">NO SHARED FIELD YET</text>
+          <text x="510" y="236" text-anchor="middle" font-size="8.5" fill="#585B78" font-style="italic">(decision needed)</text>
+
+          <rect x="700" y="220" width="200" height="80" fill="#FFE400" stroke="#111111" stroke-width="2.5"/>
+          <text x="800" y="250" text-anchor="middle" font-size="12" font-weight="700">FACET RAIL</text>
+          <text x="800" y="268" text-anchor="middle" font-size="10">Theater &middot; Cut Type</text>
+
+          <rect x="730" y="345" width="140" height="42" fill="#FFF8E7" stroke="#111111" stroke-width="2.5"/>
+          <text x="800" y="371" text-anchor="middle" font-size="12" font-weight="600">WATCH PAGE</text>
+        </svg>
+      </figure>
+      <p style="font-size:13px;color:var(--gb-slate);margin-top:-4px;">The long line down the left is the front window: Featured videos skip the aisles entirely and cut straight to Watch, same as the Spotlight row does today.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Checkout</p>
+    <h2 style="margin-bottom:20px;">What's already in stock, what still needs building</h2>
+    <div class="receipt">
+      <div class="receipt-top">
+        <div class="store">GUTBUSTER VIDEO EXCHANGE</div>
+        <div class="addr">FLOOR PLAN &middot; RECEIPT NO. 1</div>
+      </div>
+      <div class="rline"><span class="desc">1. Wire NavBar IMPROV / STANDUP / SKETCH to real filtered routes</span><span class="status todo">TO DO</span></div>
+      <div class="rline"><span class="desc">2. Build Theater and Team pages</span><span class="status todo">TO DO</span></div>
+      <div class="rline"><span class="desc">3. Add a facet rail (Theater &times; Cut Type) to listing pages</span><span class="status todo">TO DO</span></div>
+      <div class="rline"><span class="desc">4. Pick a categorization field for Standup and Sketch</span><span class="status decide">DECISION NEEDED</span></div>
+      <div class="rline"><span class="desc">Spotlight row (Featured)</span><span class="status stock">IN STOCK</span></div>
+      <div class="rline"><span class="desc">Full Sets row (Cut Type)</span><span class="status stock">IN STOCK</span></div>
+      <div class="rline"><span class="desc">Harold / Armando / Slacker / Montage rows</span><span class="status stock">IN STOCK</span></div>
+      <div class="rline"><span class="desc">Object Work / Group Games / Warmups rows</span><span class="status stock">IN STOCK</span></div>
+      <div class="receipt-total">4 items to build &middot; 1 decision pending &middot; the rest is already on the shelf</div>
+      <div class="receipt-foot">THANK YOU FOR RENTING WITH GUTBUSTER</div>
+    </div>
+  </section>
+
+</div>
+
+</body></html>
