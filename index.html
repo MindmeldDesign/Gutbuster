@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gutbuster / The comedy video store</title>
+  <meta name="description" content="The comedy video store. Without the late fees. Improv, standup and sketch, shelved by form, team and theater.">
+  <meta name="theme-color" content="#00148C">
+  <link rel="preload" href="fonts/BowlbyOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="fonts/SpaceGrotesk-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ============================== HEADER ============================== -->
+  <header class="site-header gb-panel-blue">
+    <div class="wrap">
+      <a class="logo" href="/" aria-label="Gutbuster home">Gutbuster</a>
+      <nav class="nav" aria-label="Aisles">
+        <a href="#aisles">Improv</a>
+        <a href="#aisles">Standup</a>
+        <a href="#aisles">Sketch</a>
+        <a class="nav-extra" href="#staff-picks">Staff Picks</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============================== HERO ============================== -->
+    <section class="hero gb-panel-blue">
+      <div class="hero__burst gb-ambient" aria-hidden="true"></div>
+      <div class="wrap hero__inner">
+        <span class="sticker sticker--magenta tilt-l hero__eyebrow">Now renting</span>
+        <h1 class="hero__title">
+          <span>The comedy video store.</span>
+          <span class="hero__twist">Without the late fees.</span>
+        </h1>
+        <p class="hero__lede">Improv, standup and sketch, shelved by form, team and theater. Pick a tape. Nobody's waiting on it.</p>
+        <div class="hero__actions">
+          <a class="btn btn--yellow" href="#aisles">Browse the aisles</a>
+          <span class="catalog hero__meta">Improv / Standup / Sketch</span>
+        </div>
+      </div>
+    </section>
+
+    <svg class="wave wave--to-cream" viewBox="0 0 1200 32" preserveAspectRatio="none" aria-hidden="true"><path d="M0,16 C100,0 200,32 300,16 C400,0 500,32 600,16 C700,0 800,32 900,16 C1000,0 1100,32 1200,16 L1200,32 L0,32 Z"/></svg>
+
+    <!-- ============================== AISLES ============================== -->
+    <section id="aisles" class="panel gb-panel-cream" aria-labelledby="aisles-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="aisles-title" class="section-title">Pick an aisle</h2>
+          <span class="sticker sticker--turquoise tilt-r">Three departments</span>
+        </div>
+        <p class="section-lede">Every set lives in one aisle and on one shelf. Walk in, find the form you like, grab what's on it.</p>
+
+        <div class="aisles">
+          <a class="aisle aisle--improv" href="#new-releases">
+            <div class="aisle__sign"><span class="aisle__name">Improv</span></div>
+            <p>Long-form, short-form and everything nobody can do twice.</p>
+            <span class="catalog aisle__shelves">Harold / Armando / Slacker / Montage</span>
+          </a>
+          <a class="aisle aisle--standup" href="#new-releases">
+            <div class="aisle__sign"><span class="aisle__name">Standup</span></div>
+            <p>One person, one mic, a tight ten they've told in four cities.</p>
+            <span class="catalog aisle__shelves">Showcases / Specials / Open Mics</span>
+          </a>
+          <a class="aisle aisle--sketch" href="#new-releases">
+            <div class="aisle__sign"><span class="aisle__name">Sketch</span></div>
+            <p>Written, rehearsed, and still somehow chaos by the third scene.</p>
+            <span class="catalog aisle__shelves">Revues / Shorts / House Shows</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <svg class="wave wave--to-blue" viewBox="0 0 1200 32" preserveAspectRatio="none" aria-hidden="true"><path d="M0,16 C100,32 200,0 300,16 C400,32 500,0 600,16 C700,32 800,0 900,16 C1000,32 1100,0 1200,16 L1200,32 L0,32 Z"/></svg>
+
+    <!-- ============================== NEW RELEASES ============================== -->
+    <section id="new-releases" class="panel gb-panel-blue" aria-labelledby="new-title">
+      <div class="wrap">
+
+        <div class="shelf">
+          <div class="shelf__head">
+            <h2 id="new-title" class="shelf-title">New Releases</h2>
+            <a class="catalog shelf__more" href="#new-releases">See the wall</a>
+          </div>
+          <div class="rail">
+
+            <a class="case" href="#">
+              <span class="sticker sticker--magenta tilt-l case__sticker">New release</span>
+              <div class="case__thumb" style="--thumb: var(--gb-magenta);"><span class="catalog case__runtime">52 min</span></div>
+              <div class="catalog case__band">Harold</div>
+              <div class="case__body">
+                <h3 class="case__title">Breakfast</h3>
+                <p class="case__team">No Scene Unturned</p>
+                <p class="catalog case__meta">UCB / 2019 / Full Set</p>
+              </div>
+            </a>
+
+            <a class="case" href="#">
+              <div class="case__thumb" style="--thumb: var(--gb-turquoise);"><span class="catalog case__runtime">44 min</span></div>
+              <div class="catalog case__band">Armando</div>
+              <div class="case__body">
+                <h3 class="case__title">Grandma's Funeral</h3>
+                <p class="case__team">The Big Something</p>
+                <p class="catalog case__meta">iO / 2021 / Full Set</p>
+              </div>
+            </a>
+
+            <a class="case" href="#">
+              <div class="case__thumb" style="--thumb: var(--gb-yellow);"><span class="catalog case__runtime">49 min</span></div>
+              <div class="catalog case__band">Slacker</div>
+              <div class="case__body">
+                <h3 class="case__title">DMV Line</h3>
+                <p class="case__team">Coalition Players</p>
+                <p class="catalog case__meta">Coalition / 2018 / Full Set</p>
+              </div>
+            </a>
+
+            <a class="case" href="#">
+              <div class="case__thumb" style="--thumb: var(--gb-magenta);"><span class="catalog case__runtime">6 min</span></div>
+              <div class="catalog case__band">Montage</div>
+              <div class="case__body">
+                <h3 class="case__title">The Longest Yawn</h3>
+                <p class="case__team">Westside Regulars</p>
+                <p class="catalog case__meta">Westside / 2022 / Scene Clip</p>
+              </div>
+            </a>
+
+            <a class="case" href="#">
+              <div class="case__thumb" style="--thumb: var(--gb-turquoise);"><span class="catalog case__runtime">41 min</span></div>
+              <div class="catalog case__band">Harold</div>
+              <div class="case__body">
+                <h3 class="case__title">Late Night at the Mainstage</h3>
+                <p class="case__team">House Team B</p>
+                <p class="catalog case__meta">Second City / 2020 / Full Set</p>
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+        <div class="shelf">
+          <div class="shelf__head">
+            <h2 class="shelf-title">Warmups</h2>
+            <a class="catalog shelf__more" href="#new-releases">See the shelf</a>
+          </div>
+          <div class="rail">
+
+            <a class="case" href="#">
+              <div class="case__thumb" style="--thumb: var(--gb-yellow);"><span class="catalog case__runtime">8 min</span></div>
+              <div class="catalog case__band">Warmup</div>
+              <div class="case__body">
+                <h3 class="case__title">Group Pass, Three Speeds</h3>
+                <p class="case__team">Westside Regulars</p>
+                <p class="catalog case__meta">Westside / 2023 / Exercise Demo</p>
+              </div>
+            </a>
+
+            <a class="case" href="#">
+              <div class="case__thumb" style="--thumb: var(--gb-turquoise);"><span class="catalog case__runtime">5 min</span></div>
+              <div class="catalog case__band">Object Work</div>
+              <div class="case__body">
+                <h3 class="case__title">The Invisible Fridge</h3>
+                <p class="case__team">No Context</p>
+                <p class="catalog case__meta">Second City / 2021 / Exercise Demo</p>
+              </div>
+            </a>
+
+            <a class="case" href="#">
+              <div class="case__thumb" style="--thumb: var(--gb-magenta);"><span class="catalog case__runtime">11 min</span></div>
+              <div class="catalog case__band">Group Game</div>
+              <div class="case__body">
+                <h3 class="case__title">Pattern Game Jam</h3>
+                <p class="case__team">The Overnight Shift</p>
+                <p class="catalog case__meta">UCB / 2020 / Exercise Demo</p>
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <svg class="wave wave--to-cream" viewBox="0 0 1200 32" preserveAspectRatio="none" aria-hidden="true"><path d="M0,16 C100,0 200,32 300,16 C400,0 500,32 600,16 C700,0 800,32 900,16 C1000,0 1100,32 1200,16 L1200,32 L0,32 Z"/></svg>
+
+    <!-- ============================== HOW IT WORKS ============================== -->
+    <section class="panel gb-panel-cream" aria-labelledby="how-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="how-title" class="section-title">How the store works</h2>
+        </div>
+        <p class="section-lede">No membership card. No drop box. Three steps, and the third one is optional.</p>
+
+        <ol class="counter" role="list">
+          <li class="counter__item">
+            <h3>Walk an aisle</h3>
+            <p>Improv, standup or sketch. Then a shelf: a form, a team, a theater.</p>
+          </li>
+          <li class="counter__item">
+            <h3>Pull a tape</h3>
+            <p>Full sets for a night in. Scene clips for a coffee break. Every case says which.</p>
+          </li>
+          <li class="counter__item">
+            <h3>Follow the team</h3>
+            <p>Liked the Harold? The team has more on the shelf, and so does their home theater.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <svg class="wave wave--to-blue" viewBox="0 0 1200 32" preserveAspectRatio="none" aria-hidden="true"><path d="M0,16 C100,32 200,0 300,16 C400,32 500,0 600,16 C700,32 800,0 900,16 C1000,32 1100,0 1200,16 L1200,32 L0,32 Z"/></svg>
+
+    <!-- ============================== STAFF PICKS ============================== -->
+    <section id="staff-picks" class="panel gb-panel-blue" aria-labelledby="picks-title">
+      <div class="wrap">
+        <div class="shelf">
+          <div class="shelf__head">
+            <h2 id="picks-title" class="shelf-title">Staff Picks</h2>
+            <span class="sticker sticker--turquoise tilt-r">Clerk approved</span>
+          </div>
+
+          <div class="spines">
+            <a class="spine" href="#" style="--h: 300px; --band: var(--gb-yellow);"><span class="spine__band">H</span><span class="spine__title">Breakfast / No Scene Unturned</span></a>
+            <a class="spine" href="#" style="--h: 270px; --band: var(--gb-magenta);"><span class="spine__band">A</span><span class="spine__title">Grandma's Funeral / Big Something</span></a>
+            <a class="spine" href="#" style="--h: 310px; --band: var(--gb-turquoise);"><span class="spine__band">S</span><span class="spine__title">DMV Line / Coalition Players</span></a>
+            <a class="spine" href="#" style="--h: 260px; --band: var(--gb-yellow);"><span class="spine__band">M</span><span class="spine__title">The Longest Yawn / Westside</span></a>
+            <a class="spine" href="#" style="--h: 290px; --band: var(--gb-magenta);"><span class="spine__band">H</span><span class="spine__title">Cagematch Late Show / House Team</span></a>
+            <a class="spine" href="#" style="--h: 280px; --band: var(--gb-turquoise);"><span class="spine__band">W</span><span class="spine__title">Group Pass / Westside Regulars</span></a>
+            <a class="spine" href="#" style="--h: 305px; --band: var(--gb-yellow);"><span class="spine__band">H</span><span class="spine__title">Late Night / House Team B</span></a>
+            <a class="spine" href="#" style="--h: 265px; --band: var(--gb-magenta);"><span class="spine__band">O</span><span class="spine__title">The Invisible Fridge / No Context</span></a>
+          </div>
+
+          <div class="pick-note">
+            <span class="catalog">This week's pick / Harold / 52 min</span>
+            <p class="pick-note__quote">Breakfast. The second beat is a group game about toast that should not work and does. Watch it before you watch anything else.</p>
+            <div><a class="btn btn--yellow" href="#">Watch set</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <svg class="wave wave--to-ink" viewBox="0 0 1200 32" preserveAspectRatio="none" aria-hidden="true"><path d="M0,16 C100,0 200,32 300,16 C400,0 500,32 600,16 C700,0 800,32 900,16 C1000,0 1100,32 1200,16 L1200,32 L0,32 Z"/></svg>
+
+  </main>
+
+  <!-- ============================== FOOTER ============================== -->
+  <footer class="site-footer gb-panel-ink">
+    <div class="wrap">
+      <p class="rewind">Be kind, rewind.</p>
+      <p class="catalog">Gutbuster / A Mindmeld Design project</p>
+    </div>
+  </footer>
+
+</body>
+</html>

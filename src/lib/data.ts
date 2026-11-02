@@ -5,6 +5,7 @@ import type {
   Show,
   Video,
   VideoWithContext,
+  FeedVideo,
   ImprovForm,
   CutType,
 } from "@/types/gutbuster";
@@ -142,8 +143,6 @@ export async function getVideosWithContext(): Promise<VideoWithContext[]> {
         ? theatersById.get(video.theaterId)
         : undefined;
 
-      console.log(video.title, "| theaterId:", video.theaterId, "| resolved theater:", theater);  // <-- ADD THIS LINE
-
       return {
         ...video,
         team,
@@ -152,6 +151,36 @@ export async function getVideosWithContext(): Promise<VideoWithContext[]> {
       };
     })
     .filter((v): v is VideoWithContext => v !== null);
+}
+
+// --- Mobile feed: every video, exactly as it sits in Airtable ------------
+// Unlike getVideosWithContext(), this never drops a video for missing a
+// Team. The feed is the "show me what's in the base" view, so a record
+// with gaps still appears, just with fewer lines of metadata.
+
+export async function getFeedVideos(): Promise<FeedVideo[]> {
+  const [videos, shows, teams, theaters] = await Promise.all([
+    getVideos(),
+    getShows(),
+    getTeams(),
+    getTheaters(),
+  ]);
+
+  const showsById = new Map(shows.map((s) => [s.id, s]));
+  const teamsById = new Map(teams.map((t) => [t.id, t]));
+  const theatersById = new Map(theaters.map((t) => [t.id, t]));
+
+  return videos.map((video) => {
+    const show = video.showId ? showsById.get(video.showId) : undefined;
+    const teamId = show?.teamId || video.teamId;
+    const theaterId = show?.performedAtId || video.theaterId;
+    return {
+      ...video,
+      show,
+      team: teamId ? teamsById.get(teamId) : undefined,
+      theater: theaterId ? theatersById.get(theaterId) : undefined,
+    };
+  });
 }
 
 export async function getFeaturedVideos(): Promise<VideoWithContext[]> {

@@ -109,3 +109,12 @@ export interface VideoWithContext extends Video {
   theater?: Theater; // resolved from the Show's performedAtId when a Show
                       // exists, otherwise from the Video's own theaterId
 }
+
+// Feed shape for the mobile home screen: a Video with whatever context
+// it has. Everything is optional, because the feed shows every record
+// in the Videos table as-is, including ones with no Team or Show yet.
+export interface FeedVideo extends Video {
+  team?: Team;
+  show?: Show;
+  theater?: Theater;
+}
