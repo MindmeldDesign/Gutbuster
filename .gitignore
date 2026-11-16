@@ -17,3 +17,6 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# raw Airtable CSV exports (scratch; content/snapshot.json is the source of truth)
+/content/csv/
