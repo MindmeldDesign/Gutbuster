@@ -101,6 +101,7 @@ export interface Video {
   embedUrl: string;
   sourcePlatform: "YouTube" | "Vimeo" | "TikTok" | "Instagram" | "DailyMotion" | "Twitch";
   videoQuality?: string;
+  hasSubtitles?: boolean;
   uploadDate?: string; // ISO date string
   tags?: string[]; // Featured, Object Work, Group Game, Warmup,
                     // etc. -- the Are.na-style cross-tagging layer.
