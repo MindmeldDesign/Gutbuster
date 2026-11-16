@@ -122,3 +122,20 @@ body {
 .gb-meta {
   letter-spacing: 0.2px;
 }
+
+/* Home feed filter chips (FeedFilter.tsx). Hard ink shadow at rest; a
+   press drops it to 2px. The selected chip is yellow, so it takes the
+   blue shadow, and stays pressed in. */
+.gb-chip {
+  box-shadow: 4px 4px 0 var(--gb-ink);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.gb-chip:active {
+  box-shadow: 2px 2px 0 var(--gb-ink);
+  transform: translate(2px, 2px);
+}
+.gb-chip-active,
+.gb-chip-active:active {
+  box-shadow: 2px 2px 0 var(--gb-blue);
+  transform: translate(2px, 2px);
+}

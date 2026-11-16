@@ -15,6 +15,28 @@ export const REVALIDATE_SECONDS =
 
 import { unstable_cache } from "next/cache";
 
+// --- Cut Type --------------------------------------------------------
+// Airtable's Cut Type options are Improv 101, Full Set, and Scene. The
+// old option names are mapped forward so the feed keeps working while
+// the options are renamed in Airtable, and any record still on an old
+// value lands in the right filter. Promo was retired: it maps to nothing,
+// so a promo shows only under "All". Anything unrecognized does the same
+// rather than crashing. An array is unwrapped too, in case the field is
+// ever switched to a type the API returns as a list (see Source Platform).
+
+const LEGACY_CUT_TYPES: Record<string, CutType> = {
+  "Improv 101": "Improv 101",
+  "Exercise Demo": "Improv 101",
+  "Full Set": "Full Set",
+  Scene: "Scene",
+  "Scene Clip": "Scene",
+};
+
+function normalizeCutType(raw: unknown): CutType | undefined {
+  const value = Array.isArray(raw) ? raw[0] : raw;
+  return typeof value === "string" ? LEGACY_CUT_TYPES[value.trim()] : undefined;
+}
+
 // --- Mappers: Airtable records -> our clean TypeScript types ----------
 
 function mapTheater(record: any): Theater {
@@ -60,7 +82,7 @@ function mapVideo(record: any): Video {
     showId: record.get("Show")?.[0] ?? undefined,
     teamId: record.get("Team")?.[0] ?? undefined,
     theaterId: record.get("Theater")?.[0] ?? undefined,
-    cutType: (record.get("Cut Type") as CutType) ?? undefined,
+    cutType: normalizeCutType(record.get("Cut Type")),
     embedUrl: record.get("Embed URL") ?? "",
     sourcePlatform: record.get("Source Platform") ?? "YouTube",
     videoQuality: record.get("Video Quality") ?? undefined,
@@ -188,9 +210,13 @@ export async function getFeaturedVideos(): Promise<VideoWithContext[]> {
   return all.filter((v) => v.tags?.includes("Featured"));
 }
 
-export async function getFullSetVideos(): Promise<VideoWithContext[]> {
+export async function getVideosByCutType(cutType: CutType): Promise<VideoWithContext[]> {
   const all = await getVideosWithContext();
-  return all.filter((v) => v.cutType === "Full Set");
+  return all.filter((v) => v.cutType === cutType);
+}
+
+export async function getFullSetVideos(): Promise<VideoWithContext[]> {
+  return getVideosByCutType("Full Set");
 }
 
 export async function getVideosByTag(tag: string): Promise<VideoWithContext[]> {

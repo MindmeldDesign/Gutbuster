@@ -59,7 +59,18 @@ export interface Show {
 // That's intentional, not duplication: each Video row is a distinct
 // viewable unit serving a different search/browse intent, even when
 // they point at the same underlying source recording.
-export type CutType = "Full Set" | "Scene Clip" | "Promo" | "Exercise Demo";
+//
+// The site sorts every video into exactly three kinds, and the home feed
+// filters on them: Improv 101 (teaching clips and exercise demos), Full
+// Set (a whole performance), and Scene (one scene cut from a set).
+export type CutType = "Improv 101" | "Full Set" | "Scene";
+
+// Order and labels for the home feed filter chips.
+export const CUT_TYPES: { value: CutType; label: string }[] = [
+  { value: "Improv 101", label: "Improv 101" },
+  { value: "Full Set", label: "Full Sets" },
+  { value: "Scene", label: "Scenes" },
+];
 
 export interface Video {
   id: string; // Airtable record ID
@@ -83,16 +94,15 @@ export interface Video {
                        // Only fill this in directly when there's no Show
                        // to borrow a Theater from (a standalone clip
                        // filmed at a specific venue).
-  cutType?: CutType; // Full Set / Scene Clip / Promo / Exercise Demo --
+  cutType?: CutType; // Improv 101 / Full Set / Scene --
                       // the single source of truth for what kind of
                       // recording this is. Feeds both Auto Title AND
-                      // the homepage's "Full Sets" row.
+                      // the home feed's filter chips.
   embedUrl: string;
-  sourcePlatform: "YouTube" | "Vimeo" | "TikTok" | "Instagram" | "DailyMotion" | "Twitch" | "Kick";
+  sourcePlatform: "YouTube" | "Vimeo" | "TikTok" | "Instagram" | "DailyMotion" | "Twitch";
   videoQuality?: string;
-  hasSubtitles?: boolean;
   uploadDate?: string; // ISO date string
-  tags?: string[]; // Featured, Promo, Object Work, Group Game, Warmup,
+  tags?: string[]; // Featured, Object Work, Group Game, Warmup,
                     // etc. -- the Are.na-style cross-tagging layer.
                     // NOTE: "Full Set" does NOT live here anymore --
                     // see Cut Type above. Tags is for cross-cutting

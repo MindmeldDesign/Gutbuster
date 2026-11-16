@@ -32,10 +32,11 @@ export default function FeedCard({ video, index }: { video: FeedVideo; index: nu
   const thumbnail = youTubeId ? `https://i.ytimg.com/vi/${youTubeId}/hqdefault.jpg` : null;
 
   const title = video.title || video.show?.title || "Untitled video";
-  const band =
-    video.show?.forms && video.show.forms.length > 0
-      ? video.show.forms.join(" / ")
-      : video.cutType ?? null;
+  // Band reads like a spine sticker: kind first, then form(s), e.g.
+  // "FULL SET / HAROLD". In a mixed feed the kind is the first thing
+  // you need to know about a tape.
+  const bandParts = [video.cutType, ...(video.show?.forms ?? [])].filter(Boolean);
+  const band = bandParts.length > 0 ? bandParts.join(" / ") : null;
   const year = getYear(video);
   const meta = [video.team?.name, video.theater?.name, year].filter(Boolean) as string[];
   const profileUrl = video.team?.iconUrl ?? video.theater?.iconUrl ?? null;
@@ -84,7 +85,7 @@ export default function FeedCard({ video, index }: { video: FeedVideo; index: nu
         </span>
       </div>
 
-      {/* Form band */}
+      {/* Kind / form band */}
       {band && (
         <div className="flex w-full bg-gb-blue px-2 py-0.5">
           <p className="pt-px font-catalog text-catalog font-bold uppercase text-gb-cream">

@@ -1,9 +1,10 @@
-import FeedCard from "@/components/FeedCard";
+import FeedFilter from "@/components/FeedFilter";
 import { getFeedVideos } from "@/lib/data";
 import type { FeedVideo } from "@/types/gutbuster";
 
 // Mobile home: every record in the Airtable Videos table, in the order
-// Airtable returns it, one card per video. No rows or filters yet.
+// Airtable returns it, one card per video, all kinds mixed together.
+// FeedFilter adds the Improv 101 / Full Sets / Scenes chips on top.
 //
 // revalidate: the page is rebuilt at most every 15 minutes in
 // production, matching the cache window in src/lib/data.ts, so Airtable
@@ -39,16 +40,7 @@ export default async function HomePage() {
     );
   }
 
-  return (
-    <div className="flex flex-col gap-4 p-4">
-      <p className="font-catalog text-catalog uppercase text-gb-text-light">
-        {videos.length} {videos.length === 1 ? "tape" : "tapes"} on the shelf
-      </p>
-      {videos.map((video, index) => (
-        <FeedCard key={video.id} video={video} index={index} />
-      ))}
-    </div>
-  );
+  return <FeedFilter videos={videos} />;
 }
 
 function EmptyState({ title, body }: { title: string; body: string }) {
