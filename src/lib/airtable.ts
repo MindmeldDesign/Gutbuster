@@ -23,7 +23,18 @@ function getBase(): Airtable.Base {
     );
   }
   if (!_base) {
-    _base = new Airtable({ apiKey }).base(baseId);
+    // Fail fast instead of hanging. By default the Airtable library waits
+    // up to 5 minutes per request and silently retries rate-limit (429)
+    // errors with backoff for up to 10 minutes. Next.js gives each page
+    // 60 seconds to render during a build, so a slow or rate-limited
+    // Airtable used to kill the whole Vercel build with a vague timeout.
+    // Now a slow request errors after 20s with a real message in the logs,
+    // and the page falls back to its "shelves didn't load" state.
+    _base = new Airtable({
+      apiKey,
+      requestTimeout: 20_000,
+      noRetryIfRateLimited: true,
+    }).base(baseId);
   }
   return _base;
 }
