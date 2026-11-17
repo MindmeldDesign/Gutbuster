@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import AppHeader from "@/components/AppHeader";
 import TabBar from "@/components/TabBar";
 import "./globals.css";
+import { tokenHex } from "@/lib/tokens";
 
 // --- Gutbuster type system (from the style guide) -----------------------
 // Display:   Bowlby One. The wordmark and big headings only.
@@ -49,7 +50,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#fff8e7",
+  themeColor: tokenHex("colors/gb-cream/500"), // matches the cream header
 };
 
 export default function RootLayout({

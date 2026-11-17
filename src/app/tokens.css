@@ -1,0 +1,381 @@
+/* ==========================================================================
+   Gutbuster design tokens. GENERATED, do not edit by hand.
+   Source: Gutbuster DS Figma library (design/tokens.json, synced 2026-11-17).
+   To change a value: change it in Figma, sync tokens, run `npm run tokens`.
+   ========================================================================== */
+
+:root {
+  /* Brand: base color ramps */
+  --gb-violet-50: #F0EAF8;
+  --gb-tangerine-50: #FFF1E7;
+  --gb-tangerine-100: #FFE4D1;
+  --gb-tangerine-200: #FFCAA3;
+  --gb-tangerine-300: #FFAF74;
+  --gb-tangerine-400: #FF9546;
+  --gb-tangerine-500: #FF7A18;
+  --gb-tangerine-600: #CC6213;
+  --gb-tangerine-700: #99490E;
+  --gb-tangerine-800: #66310A;
+  --gb-tangerine-900: #331805;
+  --gb-tangerine-950: #1A0C02;
+  --gb-violet-100: #E1D5F2;
+  --gb-violet-200: #C3ACE5;
+  --gb-violet-300: #A682D9;
+  --gb-violet-400: #8859CC;
+  --gb-violet-500: #6A2FBF;
+  --gb-violet-600: #552699;
+  --gb-violet-700: #401C73;
+  --gb-violet-800: #2A134C;
+  --gb-violet-900: #150926;
+  --gb-violet-950: #0B0513;
+  --gb-yellow-50: #FFFCE5;
+  --gb-yellow-100: #FFF9CC;
+  --gb-yellow-200: #FFF499;
+  --gb-yellow-300: #FEEE66;
+  --gb-yellow-400: #FEE933;
+  --gb-yellow-500: #FEE300;
+  --gb-yellow-600: #CBB600;
+  --gb-yellow-700: #988800;
+  --gb-yellow-800: #665B00;
+  --gb-yellow-900: #332D00;
+  --gb-yellow-950: #1A1700;
+  --gb-foundation-white: #FFF8E7;
+  --gb-foundation-black: #111111;
+  --gb-blue-50: #E5E7F3;
+  --gb-cream-50: #FFFEFD;
+  --gb-cream-100: #FFFEFA;
+  --gb-cream-200: #FFFCF5;
+  --gb-cream-300: #FFFBF1;
+  --gb-cream-400: #FFF9EC;
+  --gb-cream-500: #FFF8E7;
+  --gb-cream-525: #F2EBDB;
+  --gb-cream-550: #E6E0D0;
+  --gb-cream-600: #CCC6B9;
+  --gb-cream-700: #99958B;
+  --gb-cream-800: #66635C;
+  --gb-cream-900: #33322E;
+  --gb-cream-950: #1A1918;
+  --gb-blue-100: #CCD0E8;
+  --gb-blue-200: #99A1D1;
+  --gb-blue-300: #6672BA;
+  --gb-blue-400: #3343A3;
+  --gb-blue-500: #00148C;
+  --gb-blue-600: #001070;
+  --gb-blue-700: #000C54;
+  --gb-blue-800: #000838;
+  --gb-blue-900: #00041C;
+  --gb-blue-950: #00020E;
+  --gb-ink-50: #E7E7E7;
+  --gb-magenta-50: #FFEBF2;
+  --gb-magenta-100: #FFD8E6;
+  --gb-magenta-200: #FFB2CC;
+  --gb-magenta-300: #FF8BB3;
+  --gb-magenta-400: #FF6599;
+  --gb-magenta-500: #FF3E80;
+  --gb-magenta-600: #CC3266;
+  --gb-magenta-700: #99254D;
+  --gb-magenta-800: #661933;
+  --gb-magenta-900: #330C1A;
+  --gb-magenta-950: #1A060D;
+  --gb-ink-100: #CFCFCF;
+  --gb-ink-200: #A0A0A0;
+  --gb-ink-300: #707070;
+  --gb-ink-400: #414141;
+  --gb-ink-500: #111111;
+  --gb-ink-600: #0E0E0E;
+  --gb-ink-700: #0A0A0A;
+  --gb-ink-800: #070707;
+  --gb-ink-900: #030303;
+  --gb-ink-950: #020202;
+  --gb-turquoise-50: #E5F9F7;
+  --gb-turquoise-100: #CCF3F0;
+  --gb-turquoise-200: #99E7E0;
+  --gb-turquoise-300: #66DAD1;
+  --gb-turquoise-400: #33CEC1;
+  --gb-turquoise-500: #00C2B2;
+  --gb-turquoise-600: #009B8E;
+  --gb-turquoise-700: #00746B;
+  --gb-turquoise-800: #004E47;
+  --gb-turquoise-900: #002724;
+  --gb-turquoise-950: #001412;
+
+  /* Brand: spacing scale, px from Figma written as rem (16px = 1rem) */
+  --gb-scale-0: 0rem; /* 0px */
+  --gb-scale-5: 0.0125rem; /* 0.2px */
+  --gb-scale-25: 0.0625rem; /* 1px */
+  --gb-scale-50: 0.125rem; /* 2px */
+  --gb-scale-100: 0.25rem; /* 4px */
+  --gb-scale-200: 0.5rem; /* 8px */
+  --gb-scale-250: 0.625rem; /* 10px */
+  --gb-scale-300: 0.75rem; /* 12px */
+  --gb-scale-350: 0.875rem; /* 14px */
+  --gb-scale-400: 1rem; /* 16px */
+  --gb-scale-450: 1.125rem; /* 18px */
+  --gb-scale-500: 1.25rem; /* 20px */
+  --gb-scale-600: 1.5rem; /* 24px */
+  --gb-scale-650: 1.625rem; /* 26px */
+  --gb-scale-700: 1.75rem; /* 28px */
+  --gb-scale-800: 2rem; /* 32px */
+  --gb-scale-850: 2.125rem; /* 34px */
+  --gb-scale-900: 2.25rem; /* 36px */
+  --gb-scale-1000: 2.5rem; /* 40px */
+  --gb-scale-1100: 3rem; /* 48px */
+  --gb-scale-1200: 3.5rem; /* 56px */
+  --gb-scale-1300: 4rem; /* 64px */
+  --gb-scale-1350: 4.25rem; /* 68px */
+  --gb-scale-1400: 4.5rem; /* 72px */
+  --gb-scale-1500: 5rem; /* 80px */
+  --gb-scale-1550: 5.25rem; /* 84px */
+  --gb-scale-1600: 5.5rem; /* 88px */
+  --gb-scale-1700: 6rem; /* 96px */
+  --gb-scale-1750: 6.25rem; /* 100px */
+  --gb-scale-1800: 6.5rem; /* 104px */
+  --gb-scale-1900: 7rem; /* 112px */
+  --gb-scale-2000: 7.5rem; /* 120px */
+
+  /* Brand: the core color of each ramp (its 500 step) */
+  --gb-violet: var(--gb-violet-500);
+  --gb-tangerine: var(--gb-tangerine-500);
+  --gb-yellow: var(--gb-yellow-500);
+  --gb-blue: var(--gb-blue-500);
+  --gb-cream: var(--gb-cream-500);
+  --gb-ink: var(--gb-ink-500);
+  --gb-magenta: var(--gb-magenta-500);
+  --gb-turquoise: var(--gb-turquoise-500);
+
+  /* Mapped: role names. Components use these, not the ramps. */
+  --gb-background: var(--gb-cream-200);
+  --gb-card-bg: var(--gb-cream-50);
+  --gb-text: var(--gb-ink-500);
+  --gb-text-disabled: var(--gb-ink-200);
+  --gb-text-light: var(--gb-ink-300);
+  --gb-text-light-disabled: var(--gb-ink-200);
+  --gb-text-on-color: var(--gb-cream-500);
+  --gb-text-on-color-disabled: var(--gb-cream-200);
+  --gb-shadow: var(--gb-ink-500);
+  --gb-shadow-filter-chip: var(--gb-cream-600);
+  --gb-shadow-disabled: var(--gb-ink-200);
+  --gb-selected: var(--gb-turquoise-500);
+  --gb-background-hover: var(--gb-cream-525);
+  --gb-focus-ring: var(--gb-turquoise-700);
+  --gb-focus-ring-outer: var(--gb-cream-600);
+
+  /* Alias: type slots, rem mode */
+  --gb-type-hero-xl-size: 6.25rem;
+  --gb-type-hero-xl-line-height: 7.5rem;
+  --gb-type-hero-xl-weight: 400;
+  --gb-type-hero-xl-font: var(--font-display);
+  --gb-type-hero-lg-size: 5.25rem;
+  --gb-type-hero-lg-line-height: 6.25rem;
+  --gb-type-hero-lg-weight: 400;
+  --gb-type-hero-lg-font: var(--font-display);
+  --gb-type-hero-size: 4.25rem;
+  --gb-type-hero-line-height: 5rem;
+  --gb-type-hero-weight: 400;
+  --gb-type-hero-font: var(--font-display);
+  --gb-type-hero-sm-size: 3.5rem;
+  --gb-type-hero-sm-line-height: 4.25rem;
+  --gb-type-hero-sm-weight: 400;
+  --gb-type-hero-sm-font: var(--font-display);
+  --gb-type-section-lg-size: 3rem;
+  --gb-type-section-lg-line-height: 3.5rem;
+  --gb-type-section-lg-weight: 400;
+  --gb-type-section-lg-font: var(--font-display);
+  --gb-type-section-size: 2.5rem;
+  --gb-type-section-line-height: 3rem;
+  --gb-type-section-weight: 400;
+  --gb-type-section-font: var(--font-display);
+  --gb-type-shelf-size: 2rem;
+  --gb-type-shelf-line-height: 2.5rem;
+  --gb-type-shelf-weight: 400;
+  --gb-type-shelf-font: var(--font-display);
+  --gb-type-sub-loud-size: 1.75rem;
+  --gb-type-sub-loud-line-height: 2rem;
+  --gb-type-sub-loud-weight: 700;
+  --gb-type-sub-loud-font: var(--font-ui);
+  --gb-type-sub-quiet-size: 1.5rem;
+  --gb-type-sub-quiet-line-height: 1.75rem;
+  --gb-type-sub-quiet-weight: 700;
+  --gb-type-sub-quiet-font: var(--font-ui);
+  --gb-type-card-size: 1rem;
+  --gb-type-card-line-height: 1.125rem;
+  --gb-type-card-weight: 700;
+  --gb-type-card-font: var(--font-ui);
+  --gb-type-body-size: 1rem;
+  --gb-type-body-line-height: 1.5rem;
+  --gb-type-body-weight: 400;
+  --gb-type-body-font: var(--font-ui);
+  --gb-type-body-strong-size: 1rem;
+  --gb-type-body-strong-line-height: 1.5rem;
+  --gb-type-body-strong-weight: 700;
+  --gb-type-body-strong-font: var(--font-ui);
+  --gb-type-catalog-size: 0.75rem;
+  --gb-type-catalog-line-height: 0.75rem;
+  --gb-type-catalog-weight: 400;
+  --gb-type-catalog-font: var(--font-catalog);
+  --gb-type-catalog-strong-size: 0.75rem;
+  --gb-type-catalog-strong-line-height: 0.75rem;
+  --gb-type-catalog-strong-weight: 700;
+  --gb-type-catalog-strong-font: var(--font-catalog);
+}
+
+/* Tailwind utilities for the tokens above (bg-gb-*, text-gb-*, text-<slot>). */
+@theme inline {
+  --color-gb-violet-50: var(--gb-violet-50);
+  --color-gb-tangerine-50: var(--gb-tangerine-50);
+  --color-gb-tangerine-100: var(--gb-tangerine-100);
+  --color-gb-tangerine-200: var(--gb-tangerine-200);
+  --color-gb-tangerine-300: var(--gb-tangerine-300);
+  --color-gb-tangerine-400: var(--gb-tangerine-400);
+  --color-gb-tangerine-500: var(--gb-tangerine-500);
+  --color-gb-tangerine-600: var(--gb-tangerine-600);
+  --color-gb-tangerine-700: var(--gb-tangerine-700);
+  --color-gb-tangerine-800: var(--gb-tangerine-800);
+  --color-gb-tangerine-900: var(--gb-tangerine-900);
+  --color-gb-tangerine-950: var(--gb-tangerine-950);
+  --color-gb-violet-100: var(--gb-violet-100);
+  --color-gb-violet-200: var(--gb-violet-200);
+  --color-gb-violet-300: var(--gb-violet-300);
+  --color-gb-violet-400: var(--gb-violet-400);
+  --color-gb-violet-500: var(--gb-violet-500);
+  --color-gb-violet-600: var(--gb-violet-600);
+  --color-gb-violet-700: var(--gb-violet-700);
+  --color-gb-violet-800: var(--gb-violet-800);
+  --color-gb-violet-900: var(--gb-violet-900);
+  --color-gb-violet-950: var(--gb-violet-950);
+  --color-gb-yellow-50: var(--gb-yellow-50);
+  --color-gb-yellow-100: var(--gb-yellow-100);
+  --color-gb-yellow-200: var(--gb-yellow-200);
+  --color-gb-yellow-300: var(--gb-yellow-300);
+  --color-gb-yellow-400: var(--gb-yellow-400);
+  --color-gb-yellow-500: var(--gb-yellow-500);
+  --color-gb-yellow-600: var(--gb-yellow-600);
+  --color-gb-yellow-700: var(--gb-yellow-700);
+  --color-gb-yellow-800: var(--gb-yellow-800);
+  --color-gb-yellow-900: var(--gb-yellow-900);
+  --color-gb-yellow-950: var(--gb-yellow-950);
+  --color-gb-foundation-white: var(--gb-foundation-white);
+  --color-gb-foundation-black: var(--gb-foundation-black);
+  --color-gb-blue-50: var(--gb-blue-50);
+  --color-gb-cream-50: var(--gb-cream-50);
+  --color-gb-cream-100: var(--gb-cream-100);
+  --color-gb-cream-200: var(--gb-cream-200);
+  --color-gb-cream-300: var(--gb-cream-300);
+  --color-gb-cream-400: var(--gb-cream-400);
+  --color-gb-cream-500: var(--gb-cream-500);
+  --color-gb-cream-525: var(--gb-cream-525);
+  --color-gb-cream-550: var(--gb-cream-550);
+  --color-gb-cream-600: var(--gb-cream-600);
+  --color-gb-cream-700: var(--gb-cream-700);
+  --color-gb-cream-800: var(--gb-cream-800);
+  --color-gb-cream-900: var(--gb-cream-900);
+  --color-gb-cream-950: var(--gb-cream-950);
+  --color-gb-blue-100: var(--gb-blue-100);
+  --color-gb-blue-200: var(--gb-blue-200);
+  --color-gb-blue-300: var(--gb-blue-300);
+  --color-gb-blue-400: var(--gb-blue-400);
+  --color-gb-blue-500: var(--gb-blue-500);
+  --color-gb-blue-600: var(--gb-blue-600);
+  --color-gb-blue-700: var(--gb-blue-700);
+  --color-gb-blue-800: var(--gb-blue-800);
+  --color-gb-blue-900: var(--gb-blue-900);
+  --color-gb-blue-950: var(--gb-blue-950);
+  --color-gb-ink-50: var(--gb-ink-50);
+  --color-gb-magenta-50: var(--gb-magenta-50);
+  --color-gb-magenta-100: var(--gb-magenta-100);
+  --color-gb-magenta-200: var(--gb-magenta-200);
+  --color-gb-magenta-300: var(--gb-magenta-300);
+  --color-gb-magenta-400: var(--gb-magenta-400);
+  --color-gb-magenta-500: var(--gb-magenta-500);
+  --color-gb-magenta-600: var(--gb-magenta-600);
+  --color-gb-magenta-700: var(--gb-magenta-700);
+  --color-gb-magenta-800: var(--gb-magenta-800);
+  --color-gb-magenta-900: var(--gb-magenta-900);
+  --color-gb-magenta-950: var(--gb-magenta-950);
+  --color-gb-ink-100: var(--gb-ink-100);
+  --color-gb-ink-200: var(--gb-ink-200);
+  --color-gb-ink-300: var(--gb-ink-300);
+  --color-gb-ink-400: var(--gb-ink-400);
+  --color-gb-ink-500: var(--gb-ink-500);
+  --color-gb-ink-600: var(--gb-ink-600);
+  --color-gb-ink-700: var(--gb-ink-700);
+  --color-gb-ink-800: var(--gb-ink-800);
+  --color-gb-ink-900: var(--gb-ink-900);
+  --color-gb-ink-950: var(--gb-ink-950);
+  --color-gb-turquoise-50: var(--gb-turquoise-50);
+  --color-gb-turquoise-100: var(--gb-turquoise-100);
+  --color-gb-turquoise-200: var(--gb-turquoise-200);
+  --color-gb-turquoise-300: var(--gb-turquoise-300);
+  --color-gb-turquoise-400: var(--gb-turquoise-400);
+  --color-gb-turquoise-500: var(--gb-turquoise-500);
+  --color-gb-turquoise-600: var(--gb-turquoise-600);
+  --color-gb-turquoise-700: var(--gb-turquoise-700);
+  --color-gb-turquoise-800: var(--gb-turquoise-800);
+  --color-gb-turquoise-900: var(--gb-turquoise-900);
+  --color-gb-turquoise-950: var(--gb-turquoise-950);
+  --color-gb-violet: var(--gb-violet);
+  --color-gb-tangerine: var(--gb-tangerine);
+  --color-gb-yellow: var(--gb-yellow);
+  --color-gb-blue: var(--gb-blue);
+  --color-gb-cream: var(--gb-cream);
+  --color-gb-ink: var(--gb-ink);
+  --color-gb-magenta: var(--gb-magenta);
+  --color-gb-turquoise: var(--gb-turquoise);
+  --color-gb-background: var(--gb-background);
+  --color-gb-card-bg: var(--gb-card-bg);
+  --color-gb-text: var(--gb-text);
+  --color-gb-text-disabled: var(--gb-text-disabled);
+  --color-gb-text-light: var(--gb-text-light);
+  --color-gb-text-light-disabled: var(--gb-text-light-disabled);
+  --color-gb-text-on-color: var(--gb-text-on-color);
+  --color-gb-text-on-color-disabled: var(--gb-text-on-color-disabled);
+  --color-gb-shadow: var(--gb-shadow);
+  --color-gb-shadow-filter-chip: var(--gb-shadow-filter-chip);
+  --color-gb-shadow-disabled: var(--gb-shadow-disabled);
+  --color-gb-selected: var(--gb-selected);
+  --color-gb-background-hover: var(--gb-background-hover);
+  --color-gb-focus-ring: var(--gb-focus-ring);
+  --color-gb-focus-ring-outer: var(--gb-focus-ring-outer);
+  --text-hero-xl: var(--gb-type-hero-xl-size);
+  --text-hero-xl--line-height: var(--gb-type-hero-xl-line-height);
+  --text-hero-xl--font-weight: var(--gb-type-hero-xl-weight);
+  --text-hero-lg: var(--gb-type-hero-lg-size);
+  --text-hero-lg--line-height: var(--gb-type-hero-lg-line-height);
+  --text-hero-lg--font-weight: var(--gb-type-hero-lg-weight);
+  --text-hero: var(--gb-type-hero-size);
+  --text-hero--line-height: var(--gb-type-hero-line-height);
+  --text-hero--font-weight: var(--gb-type-hero-weight);
+  --text-hero-sm: var(--gb-type-hero-sm-size);
+  --text-hero-sm--line-height: var(--gb-type-hero-sm-line-height);
+  --text-hero-sm--font-weight: var(--gb-type-hero-sm-weight);
+  --text-section-lg: var(--gb-type-section-lg-size);
+  --text-section-lg--line-height: var(--gb-type-section-lg-line-height);
+  --text-section-lg--font-weight: var(--gb-type-section-lg-weight);
+  --text-section: var(--gb-type-section-size);
+  --text-section--line-height: var(--gb-type-section-line-height);
+  --text-section--font-weight: var(--gb-type-section-weight);
+  --text-shelf: var(--gb-type-shelf-size);
+  --text-shelf--line-height: var(--gb-type-shelf-line-height);
+  --text-shelf--font-weight: var(--gb-type-shelf-weight);
+  --text-sub-loud: var(--gb-type-sub-loud-size);
+  --text-sub-loud--line-height: var(--gb-type-sub-loud-line-height);
+  --text-sub-loud--font-weight: var(--gb-type-sub-loud-weight);
+  --text-sub-quiet: var(--gb-type-sub-quiet-size);
+  --text-sub-quiet--line-height: var(--gb-type-sub-quiet-line-height);
+  --text-sub-quiet--font-weight: var(--gb-type-sub-quiet-weight);
+  --text-card: var(--gb-type-card-size);
+  --text-card--line-height: var(--gb-type-card-line-height);
+  --text-card--font-weight: var(--gb-type-card-weight);
+  --text-body: var(--gb-type-body-size);
+  --text-body--line-height: var(--gb-type-body-line-height);
+  --text-body--font-weight: var(--gb-type-body-weight);
+  --text-body-strong: var(--gb-type-body-strong-size);
+  --text-body-strong--line-height: var(--gb-type-body-strong-line-height);
+  --text-body-strong--font-weight: var(--gb-type-body-strong-weight);
+  --text-catalog: var(--gb-type-catalog-size);
+  --text-catalog--line-height: var(--gb-type-catalog-line-height);
+  --text-catalog--font-weight: var(--gb-type-catalog-weight);
+  --text-catalog-strong: var(--gb-type-catalog-strong-size);
+  --text-catalog-strong--line-height: var(--gb-type-catalog-strong-line-height);
+  --text-catalog-strong--font-weight: var(--gb-type-catalog-strong-weight);
+}

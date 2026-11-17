@@ -1,54 +1,41 @@
 @import "tailwindcss";
+@import "./tokens.css";
 
 /* --------------------------------------------------------------------------
-   Gutbuster tokens (from the Gutbuster style guide).
-   The four core colors are locked. gb-black is kept as an alias of gb-ink
-   so the older desktop components (VideoCard, VideoRow, NavBar) still
-   compile while the mobile app is built out.
+   Gutbuster global styles.
+
+   Every color, type size, and spacing value comes from tokens.css, which is
+   generated from the Gutbuster DS Figma library (see design/tokens.json and
+   scripts/build-tokens.mjs). Nothing here defines a raw color. A value that
+   isn't in the library is marked NOT IN LIBRARY so it can be added in Figma
+   rather than living only in code.
    -------------------------------------------------------------------------- */
 
 :root {
-  --gb-yellow: #ffe400;
-  --gb-blue: #00148c;
-  --gb-cream: #fff8e7;
-  --gb-ink: #111111;
-  --gb-magenta: #ff3e80;
-  --gb-tangerine: #ff7a18;
-  --gb-turquoise: #00c2b2;
-  --gb-violet: #6b2fbf;
-
-  /* From the Figma file: page field, card body, muted meta text,
-     and the profile placeholder. */
-  --gb-paper: #fffbf1;
-  --gb-card: #fffefd;
-  --gb-text-light: #707070;
-  --gb-placeholder: #ccc5b9;
-
+  /* Older names still used by components, pointed at library roles.
+     Prefer the role names (gb-background, gb-card-bg, gb-text) in new code. */
+  --gb-paper: var(--gb-background);
+  --gb-card: var(--gb-card-bg);
   --gb-black: var(--gb-ink);
-  --background: var(--gb-paper);
-  --foreground: var(--gb-ink);
+  /* NOT IN LIBRARY: the round profile placeholder has no Mapped role.
+     cream/600 is the closest library value (was #CCC5B9). */
+  --gb-placeholder: var(--gb-cream-600);
+
+  --background: var(--gb-background);
+  --foreground: var(--gb-text);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
-  --color-gb-yellow: var(--gb-yellow);
-  --color-gb-blue: var(--gb-blue);
-  --color-gb-cream: var(--gb-cream);
-  --color-gb-ink: var(--gb-ink);
-  --color-gb-black: var(--gb-ink);
-  --color-gb-magenta: var(--gb-magenta);
-  --color-gb-tangerine: var(--gb-tangerine);
-  --color-gb-turquoise: var(--gb-turquoise);
-  --color-gb-violet: var(--gb-violet);
   --color-gb-paper: var(--gb-paper);
   --color-gb-card: var(--gb-card);
-  --color-gb-text-light: var(--gb-text-light);
+  --color-gb-black: var(--gb-black);
   --color-gb-placeholder: var(--gb-placeholder);
 
   /* Three roles: display (Bowlby One), interface (Space Grotesk),
-     catalog (Courier Prime). Variables come from next/font in layout.tsx. */
+     catalog (Courier Prime). Variables come from next/font in layout.tsx;
+     the type slots in tokens.css point at these. */
   --font-display: var(--font-bowlby), "Jost", Impact, sans-serif;
   --font-ui: var(--font-grotesk), "Jost", system-ui, sans-serif;
   --font-catalog: var(--font-courier), "Courier New", ui-monospace, monospace;
@@ -57,13 +44,6 @@
   --font-sans: var(--font-bowlby), Arial, sans-serif;
   --font-body: var(--font-grotesk), sans-serif;
   --font-label: var(--font-courier), monospace;
-
-  --text-catalog: 0.75rem;
-  --text-catalog--line-height: 0.75rem;
-  --text-body: 1rem;
-  --text-body--line-height: 1.5rem;
-  --text-card: 1rem;
-  --text-card--line-height: 1.125rem;
 }
 
 html {
@@ -78,10 +58,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Focus is never removed: ink ring with a 2px gap on light fields. */
+/* Focus is never removed: ink ring with a 2px gap on light fields.
+   NOT IN LIBRARY: the 3px ring width (the scale has 2px and 4px). */
 :focus-visible {
-  outline: 3px solid var(--gb-ink);
-  outline-offset: 2px;
+  outline: 3px solid var(--gb-text);
+  outline-offset: var(--gb-scale-50);
 }
 
 /* Safe areas for the installed (home screen) web app on notched phones */
@@ -89,28 +70,29 @@ body {
   padding-top: env(safe-area-inset-top, 0px);
 }
 .safe-bottom {
-  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(var(--gb-scale-200) + env(safe-area-inset-bottom, 0px));
 }
 
 /* Legacy utility kept for the older desktop components */
 .gb-shadow {
-  box-shadow: 4px 4px 0px var(--gb-blue);
+  box-shadow: var(--gb-scale-100) var(--gb-scale-100) 0 var(--gb-blue);
 }
 .gb-shadow:hover {
-  box-shadow: 6px 6px 0px var(--gb-blue);
-  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--gb-blue);
+  transform: translate(calc(-1 * var(--gb-scale-50)), calc(-1 * var(--gb-scale-50)));
 }
 
 /* --- Mobile app pieces from the Figma "F-Home" frame ------------------- */
 
-/* Wordmark in the top bar: Bowlby One at 15px, per the Figma frame. */
+/* Wordmark in the top bar: Bowlby One.
+   NOT IN LIBRARY: 15px (the scale has 14px and 16px). */
 .gb-wordmark {
   font-size: 15px;
 }
 
-/* Hard offset shadow on feed cards: 4px down and right, ink. */
+/* Hard offset shadow on feed cards: 4px down and right. */
 .gb-card-shadow {
-  box-shadow: 4px 4px 0 var(--gb-ink);
+  box-shadow: var(--gb-scale-100) var(--gb-scale-100) 0 var(--gb-shadow);
 }
 
 /* Video thumbnail ratio from the Figma card (155 by 87). */
@@ -118,24 +100,23 @@ body {
   aspect-ratio: 155 / 87;
 }
 
-/* Card metadata tracking from the Figma text style (0.2px). */
+/* Card metadata tracking, scale/5 (0.2px) in the library. */
 .gb-meta {
-  letter-spacing: 0.2px;
+  letter-spacing: var(--gb-scale-5);
 }
 
-/* Home feed filter chips (FeedFilter.tsx). Hard ink shadow at rest; a
-   press drops it to 2px. The selected chip is yellow, so it takes the
-   blue shadow, and stays pressed in. */
+/* Home feed filter chips (FeedFilter.tsx). Replaced in the next step by
+   the Figma Filter Chip component; colors already point at library roles. */
 .gb-chip {
-  box-shadow: 4px 4px 0 var(--gb-ink);
+  box-shadow: var(--gb-scale-100) var(--gb-scale-100) 0 var(--gb-shadow);
   transition: transform 0.15s, box-shadow 0.15s;
 }
 .gb-chip:active {
-  box-shadow: 2px 2px 0 var(--gb-ink);
-  transform: translate(2px, 2px);
+  box-shadow: var(--gb-scale-50) var(--gb-scale-50) 0 var(--gb-shadow);
+  transform: translate(var(--gb-scale-50), var(--gb-scale-50));
 }
 .gb-chip-active,
 .gb-chip-active:active {
-  box-shadow: 2px 2px 0 var(--gb-blue);
-  transform: translate(2px, 2px);
+  box-shadow: var(--gb-scale-50) var(--gb-scale-50) 0 var(--gb-blue);
+  transform: translate(var(--gb-scale-50), var(--gb-scale-50));
 }
