@@ -109,6 +109,11 @@ export interface Video {
                     // see Cut Type above. Tags is for cross-cutting
                     // labels that aren't already captured by a
                     // dedicated field.
+  source?: string; // optional credit typed in Airtable ("TEDxPaloAlto").
+                    // Overrides the channel when both exist.
+  channel?: string; // who posted it, looked up from the link by the
+                     // importer (YouTube/Vimeo oEmbed), never typed.
+  channelUrl?: string; // link to that channel
 }
 
 // Convenience shape for rendering: a Video joined with its performing

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T02:05:28.516Z",
+  "generatedAt": "2026-11-17T02:19:21.131Z",
   "source": "csv",
   "counts": {
     "theaters": 7,
@@ -200,7 +200,9 @@
       "uploadDate": "2025-06-23",
       "tags": [
         "Spotlight"
-      ]
+      ],
+      "channel": "Hot Computer",
+      "channelUrl": "https://www.youtube.com/@HotComputer"
     },
     {
       "id": "recOgSLYCVw56izqG",
@@ -214,7 +216,9 @@
       "hasSubtitles": false,
       "tags": [
         "Spotlight"
-      ]
+      ],
+      "channel": "James Heaney",
+      "channelUrl": "https://www.youtube.com/@TheRealJamesHeaney"
     },
     {
       "id": "recwO6GmBMpUMmPyQ",
@@ -226,7 +230,9 @@
       "embedUrl": "https://youtu.be/iK-_16RRfxo?si=qyvmffExtj_rBuNb",
       "sourcePlatform": "YouTube",
       "hasSubtitles": false,
-      "tags": []
+      "tags": [],
+      "channel": "James Heaney",
+      "channelUrl": "https://www.youtube.com/@TheRealJamesHeaney"
     },
     {
       "id": "recoJ779k2ezEUNDx",
@@ -238,7 +244,9 @@
       "embedUrl": "https://youtu.be/tMDBqRaHrZE?si=-QwR-T7P0Vlr5krz",
       "sourcePlatform": "YouTube",
       "hasSubtitles": false,
-      "tags": []
+      "tags": [],
+      "channel": "James Heaney",
+      "channelUrl": "https://www.youtube.com/@TheRealJamesHeaney"
     },
     {
       "id": "rec6VxqAEBpW77sTw",
@@ -250,7 +258,9 @@
       "embedUrl": "https://youtu.be/z1i6U4dBWq0?si=o4qEpWKF3_fvZFug",
       "sourcePlatform": "YouTube",
       "hasSubtitles": false,
-      "tags": []
+      "tags": [],
+      "channel": "James Heaney",
+      "channelUrl": "https://www.youtube.com/@TheRealJamesHeaney"
     },
     {
       "id": "rec6gTMhB1zgHmwSt",
@@ -262,7 +272,9 @@
       "embedUrl": "https://youtu.be/_wXo-Yya738?si=IIjVc8Ei_qNNjg-_",
       "sourcePlatform": "YouTube",
       "hasSubtitles": false,
-      "tags": []
+      "tags": [],
+      "channel": "James Heaney",
+      "channelUrl": "https://www.youtube.com/@TheRealJamesHeaney"
     },
     {
       "id": "recCuQiDJHcodj8Lm",
@@ -274,7 +286,9 @@
       "embedUrl": "https://youtu.be/XL4zQdq_deI?si=34HxtcBWvEwW1ymi",
       "sourcePlatform": "YouTube",
       "hasSubtitles": false,
-      "tags": []
+      "tags": [],
+      "channel": "James Heaney",
+      "channelUrl": "https://www.youtube.com/@TheRealJamesHeaney"
     },
     {
       "id": "recg5c2jJsvkpgGUR",
@@ -288,7 +302,9 @@
       "hasSubtitles": false,
       "tags": [
         "Spotlight"
-      ]
+      ],
+      "channel": "Didyouseethewords",
+      "channelUrl": "https://www.youtube.com/@Didyouseethewords"
     },
     {
       "id": "rec66yfYx0o6XAtbS",
@@ -299,7 +315,9 @@
       "hasSubtitles": false,
       "tags": [
         "Spotlight"
-      ]
+      ],
+      "channel": "theoffcamerashow",
+      "channelUrl": "https://www.youtube.com/@theoffcamerashow"
     },
     {
       "id": "rec5tlYBfQUude8Ct",
@@ -310,7 +328,9 @@
       "hasSubtitles": false,
       "tags": [
         "TED Talks"
-      ]
+      ],
+      "channel": "TEDx Talks",
+      "channelUrl": "https://www.youtube.com/@TEDx"
     },
     {
       "id": "recIdEduBbGFoBHLR",
@@ -321,7 +341,9 @@
       "hasSubtitles": false,
       "tags": [
         "TED Talks"
-      ]
+      ],
+      "channel": "TEDx Talks",
+      "channelUrl": "https://www.youtube.com/@TEDx"
     },
     {
       "id": "recak3mZh3X4mrk0I",
@@ -334,7 +356,9 @@
       "uploadDate": "2010-11-06",
       "tags": [
         "Bits"
-      ]
+      ],
+      "channel": "TheJasonChin",
+      "channelUrl": "https://www.youtube.com/@TheJasonChin"
     },
     {
       "id": "recbBkDYAhqJ14ibB",
@@ -346,7 +370,9 @@
       "embedUrl": "https://www.youtube.com/watch?v=DmaIxgqaIk0",
       "sourcePlatform": "YouTube",
       "hasSubtitles": false,
-      "tags": []
+      "tags": [],
+      "channel": "F**k This Month",
+      "channelUrl": "https://www.youtube.com/@FThisMonth"
     },
     {
       "id": "recMszk6YHA8LmJTZ",
@@ -358,7 +384,9 @@
       "embedUrl": "https://www.youtube.com/watch?v=ISfil3a1S78&list=PL85w3P20Bmo7nAKrg9Ywk0M_KpJQZ-Fkd&index=2",
       "sourcePlatform": "YouTube",
       "hasSubtitles": false,
-      "tags": []
+      "tags": [],
+      "channel": "Third Best",
+      "channelUrl": "https://www.youtube.com/@thirdbestv"
     }
   ]
 }

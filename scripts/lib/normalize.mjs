@@ -128,13 +128,20 @@ export function buildSnapshot(tables, { source }) {
       hasSubtitles: checkbox(f["Subtitles"]),
       uploadDate: isoDate(f["Upload Date"]),
       tags: list(f["Tags"]),
+      // Who to credit when there's no team: the Source field in Airtable
+      // when filled in, otherwise the channel the video was posted by.
+      source: text(f["Source"]),
+      channel: text(f.__channel),
+      channelUrl: text(f.__channelUrl),
     };
 
     if (!video.embedUrl) warn(`Video "${label}" has no Embed URL.`);
     if (!rawCut) warn(`Video "${label}" has no Cut Type, so it only shows under All.`);
     else if (!cutType) warn(`Video "${label}" has Cut Type "${rawCut}", which isn't Improv 101, Full sets, or Scenes.`);
     const show = video.showId ? showsById.get(video.showId) : undefined;
-    if (!show?.teamId && !video.teamId) warn(`Video "${label}" has no Show or Team, so nothing shows under its title.`);
+    if (!show?.teamId && !video.teamId && !video.source && !video.channel) {
+      warn(`Video "${label}" has no Team, Source, or channel, so nothing shows under its title. Fill in Source in Airtable.`);
+    }
 
     return video;
   });

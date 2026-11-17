@@ -24,6 +24,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseCsv } from "./lib/csv.mjs";
 import { buildSnapshot } from "./lib/normalize.mjs";
+import { lookupChannels } from "./lib/oembed.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const csvDir = join(root, "content", "csv");
@@ -151,6 +152,23 @@ for (const [key, t] of Object.entries(TABLES)) {
     return { id, fields: out };
   });
 }
+
+// --- Channels: who posted each video (cached, see lib/oembed.mjs) ------------
+
+const urlOf = (f) => (f["URL"] ?? f["Embed URL"] ?? "").trim();
+const { channels, fetched, failures } = await lookupChannels(
+  tables.videos.map(({ fields }) => urlOf(fields)),
+  join(root, "content", "oembed-cache.json")
+);
+for (const { fields } of tables.videos) {
+  const hit = channels[urlOf(fields)];
+  if (hit) {
+    fields.__channel = hit.channel;
+    fields.__channelUrl = hit.channelUrl;
+  }
+}
+if (fetched > 0) console.log(`Looked up ${fetched} new channel name${fetched === 1 ? "" : "s"}.`);
+for (const f of failures) warnings.push(`Couldn't look up the channel for ${f}. It'll retry next import.`);
 
 // --- Build + write -------------------------------------------------------
 
