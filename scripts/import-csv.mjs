@@ -39,6 +39,33 @@ const TABLES = {
 
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
+// Splits a linked-record cell into names. Airtable separates names with
+// commas and wraps any name that itself contains a comma in double quotes
+// (doubling quotes inside it), e.g.  "Love, Death, & Bowling",Geology
+function splitLinkedNames(cell) {
+  const names = [];
+  let cur = "";
+  let quoted = false;
+  for (let i = 0; i < cell.length; i++) {
+    const ch = cell[i];
+    if (quoted) {
+      if (ch === '"' && cell[i + 1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') quoted = false;
+      else cur += ch;
+    } else if (ch === '"' && cur.trim() === "") {
+      quoted = true;
+      cur = "";
+    } else if (ch === ",") {
+      names.push(cur.trim());
+      cur = "";
+    } else {
+      cur += ch;
+    }
+  }
+  names.push(cur.trim());
+  return names.filter(Boolean);
+}
+
 // Airtable writes attachments as "file.png (https://...)", comma-separated.
 // Only the first one is used. These URLs expire after a few hours.
 function firstAttachmentUrl(cell) {
@@ -108,9 +135,7 @@ for (const [key, t] of Object.entries(TABLES)) {
         out[field] = [];
         continue;
       }
-      // Try the whole cell first, since a name may itself contain a comma.
-      const whole = nameIndex[target].get(cell);
-      const names = whole ? [cell] : cell.split(",").map((s) => s.trim()).filter(Boolean);
+      const names = splitLinkedNames(cell);
       out[field] = names
         .map((name) => {
           const linkedId = nameIndex[target].get(name);

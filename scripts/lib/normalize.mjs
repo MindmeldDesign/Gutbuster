@@ -10,20 +10,27 @@
 // sync gets IDs from Airtable directly.
 
 // --- Cut Type ---------------------------------------------------------
-// The site's three kinds. Old option names map forward so a record that
-// still says "Scene Clip" lands in Scenes. Promo was retired: it maps to
+// Airtable's Cut Type options are "Improv 101", "Full sets", and "Scenes".
+// The site stores one value per video ("Improv 101", "Full Set", "Scene"),
+// since a single tape is one full set or one scene; the filter chips add
+// the plural labels. Matching ignores case and extra spaces, so "Full Sets"
+// and "full sets" land the same way. Retired names (Exercise Demo, Scene
+// Clip, the old singular options) still map forward. Promo maps to
 // nothing, and the report lists those videos.
 const CUT_TYPES = {
-  "Improv 101": "Improv 101",
-  "Exercise Demo": "Improv 101",
-  "Full Set": "Full Set",
-  Scene: "Scene",
-  "Scene Clip": "Scene",
+  "improv 101": "Improv 101",
+  "exercise demo": "Improv 101",
+  "full sets": "Full Set",
+  "full set": "Full Set",
+  scenes: "Scene",
+  scene: "Scene",
+  "scene clip": "Scene",
 };
 
 export function normalizeCutType(raw) {
   const value = Array.isArray(raw) ? raw[0] : raw;
-  return typeof value === "string" ? CUT_TYPES[value.trim()] : undefined;
+  if (typeof value !== "string") return undefined;
+  return CUT_TYPES[value.trim().replace(/\s+/g, " ").toLowerCase()];
 }
 
 // --- Field helpers ----------------------------------------------------
@@ -77,7 +84,7 @@ export function buildSnapshot(tables, { source }) {
     location: text(f["City"]),
     subscriberCount: number(f["Subscriber Count"]),
     iconUrl: text(f.__iconUrl),
-    theaterInfo: text(f["Theater Info"]),
+    theaterInfo: text(f["Bio"]) ?? text(f["Theater Info"]), // field renamed to Bio in Airtable
   }));
 
   const teams = tables.teams.map(({ id, fields: f }) => ({
@@ -115,7 +122,7 @@ export function buildSnapshot(tables, { source }) {
       teamId: firstLink(f["Team"]),
       theaterId: firstLink(f["Theater"]),
       cutType,
-      embedUrl: text(f["Embed URL"]) ?? "",
+      embedUrl: text(f["URL"]) ?? text(f["Embed URL"]) ?? "", // field renamed to URL in Airtable
       sourcePlatform: text(f["Source Platform"]) ?? "YouTube",
       videoQuality: text(f["Video Quality"]),
       hasSubtitles: checkbox(f["Subtitles"]),
@@ -125,7 +132,7 @@ export function buildSnapshot(tables, { source }) {
 
     if (!video.embedUrl) warn(`Video "${label}" has no Embed URL.`);
     if (!rawCut) warn(`Video "${label}" has no Cut Type, so it only shows under All.`);
-    else if (!cutType) warn(`Video "${label}" has Cut Type "${rawCut}", which isn't Improv 101, Full Set, or Scene.`);
+    else if (!cutType) warn(`Video "${label}" has Cut Type "${rawCut}", which isn't Improv 101, Full sets, or Scenes.`);
     const show = video.showId ? showsById.get(video.showId) : undefined;
     if (!show?.teamId && !video.teamId) warn(`Video "${label}" has no Show or Team, so nothing shows under its title.`);
 

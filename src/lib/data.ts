@@ -16,7 +16,7 @@ export const REVALIDATE_SECONDS =
 import { unstable_cache } from "next/cache";
 
 // --- Cut Type --------------------------------------------------------
-// Airtable's Cut Type options are Improv 101, Full Set, and Scene. The
+// Airtable's Cut Type options are Improv 101, Full sets, and Scenes. The
 // old option names are mapped forward so the feed keeps working while
 // the options are renamed in Airtable, and any record still on an old
 // value lands in the right filter. Promo was retired: it maps to nothing,
@@ -25,16 +25,19 @@ import { unstable_cache } from "next/cache";
 // ever switched to a type the API returns as a list (see Source Platform).
 
 const LEGACY_CUT_TYPES: Record<string, CutType> = {
-  "Improv 101": "Improv 101",
-  "Exercise Demo": "Improv 101",
-  "Full Set": "Full Set",
-  Scene: "Scene",
-  "Scene Clip": "Scene",
+  "improv 101": "Improv 101",
+  "exercise demo": "Improv 101",
+  "full sets": "Full Set",
+  "full set": "Full Set",
+  scenes: "Scene",
+  scene: "Scene",
+  "scene clip": "Scene",
 };
 
 function normalizeCutType(raw: unknown): CutType | undefined {
   const value = Array.isArray(raw) ? raw[0] : raw;
-  return typeof value === "string" ? LEGACY_CUT_TYPES[value.trim()] : undefined;
+  if (typeof value !== "string") return undefined;
+  return LEGACY_CUT_TYPES[value.trim().replace(/\s+/g, " ").toLowerCase()];
 }
 
 // --- Mappers: Airtable records -> our clean TypeScript types ----------
