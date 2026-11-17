@@ -1,4 +1,20 @@
-import { base, TABLES } from "./airtable";
+// Gutbuster's data layer. Every page and component reads data from here.
+//
+// The site never calls Airtable. It reads content/snapshot.json, a copy of
+// the Airtable base made by `npm run import:csv` (or, later, `npm run sync`)
+// and committed to git. Next.js bundles that file at build time, so dev,
+// previews, builds, and production all cost zero Airtable API calls, and
+// new content goes live through the same branch -> preview -> merge path
+// as code.
+//
+// Updating content: change Airtable, re-import, commit content/snapshot.json.
+// See scripts/import-csv.mjs.
+//
+// The functions below keep the names and shapes they had when they read
+// Airtable directly (still async, so callers didn't change), and the
+// mapping from Airtable's field names now lives in scripts/lib/normalize.mjs.
+
+import snapshotJson from "../../content/snapshot.json";
 import type {
   Theater,
   Team,
@@ -10,207 +26,81 @@ import type {
   CutType,
 } from "@/types/gutbuster";
 
-export const REVALIDATE_SECONDS =
-  process.env.NODE_ENV === "development" ? 10 : 900;
-
-import { unstable_cache } from "next/cache";
-
-// --- Cut Type --------------------------------------------------------
-// Airtable's Cut Type options are Improv 101, Full sets, and Scenes. The
-// old option names are mapped forward so the feed keeps working while
-// the options are renamed in Airtable, and any record still on an old
-// value lands in the right filter. Promo was retired: it maps to nothing,
-// so a promo shows only under "All". Anything unrecognized does the same
-// rather than crashing. An array is unwrapped too, in case the field is
-// ever switched to a type the API returns as a list (see Source Platform).
-
-const LEGACY_CUT_TYPES: Record<string, CutType> = {
-  "improv 101": "Improv 101",
-  "exercise demo": "Improv 101",
-  "full sets": "Full Set",
-  "full set": "Full Set",
-  scenes: "Scene",
-  scene: "Scene",
-  "scene clip": "Scene",
-};
-
-function normalizeCutType(raw: unknown): CutType | undefined {
-  const value = Array.isArray(raw) ? raw[0] : raw;
-  if (typeof value !== "string") return undefined;
-  return LEGACY_CUT_TYPES[value.trim().replace(/\s+/g, " ").toLowerCase()];
+interface Snapshot {
+  generatedAt: string;
+  source: string;
+  theaters: Theater[];
+  teams: Team[];
+  shows: Show[];
+  videos: Video[];
 }
 
-// --- Mappers: Airtable records -> our clean TypeScript types ----------
+const snapshot = snapshotJson as unknown as Snapshot;
 
-function mapTheater(record: any): Theater {
+// --- Raw tables ------------------------------------------------------------
+
+export async function getTheaters(): Promise<Theater[]> {
+  return snapshot.theaters;
+}
+
+export async function getTeams(): Promise<Team[]> {
+  return snapshot.teams;
+}
+
+export async function getShows(): Promise<Show[]> {
+  return snapshot.shows;
+}
+
+export async function getVideos(): Promise<Video[]> {
+  return snapshot.videos;
+}
+
+// When the snapshot was made, for a "catalog updated" line if ever wanted.
+export function getSnapshotDate(): string {
+  return snapshot.generatedAt;
+}
+
+// --- Lookups ---------------------------------------------------------------
+
+const showsById = new Map(snapshot.shows.map((s) => [s.id, s]));
+const teamsById = new Map(snapshot.teams.map((t) => [t.id, t]));
+const theatersById = new Map(snapshot.theaters.map((t) => [t.id, t]));
+
+// Team comes from the Show when there is one, otherwise from the Video's
+// own Team link. Same rule for Theater (the Show's venue wins).
+function resolve(video: Video) {
+  const show = video.showId ? showsById.get(video.showId) : undefined;
+  const teamId = show?.teamId || video.teamId;
+  const theaterId = show?.performedAtId || video.theaterId;
   return {
-    id: record.id,
-    name: record.get("Name") ?? "",
-    location: record.get("City") ?? undefined,
-    subscriberCount: record.get("Subscriber Count") ?? undefined,
-    iconUrl: record.get("Icon")?.[0]?.url ?? undefined,
-    theaterInfo: record.get("Theater Info") ?? undefined,
+    show,
+    team: teamId ? teamsById.get(teamId) : undefined,
+    theater: theaterId ? theatersById.get(theaterId) : undefined,
   };
 }
 
-function mapTeam(record: any): Team {
-  return {
-    id: record.id,
-    name: record.get("Name") ?? "",
-    homeTheaterId: record.get("Home Theater")?.[0] ?? undefined,
-    subscriberCount: record.get("Subscriber Count") ?? undefined,
-    iconUrl: record.get("Icon")?.[0]?.url ?? undefined,
-    bio: record.get("Bio") ?? undefined,
-  };
-}
+// --- Joined data -----------------------------------------------------------
 
-function mapShow(record: any): Show {
-  return {
-    id: record.id,
-    title: record.get("Title") ?? "",
-    teamId: record.get("Team")?.[0] ?? "",
-    performedAtId: record.get("Performed At")?.[0] ?? undefined,
-    datePerformed: record.get("Date Performed") ?? undefined,
-    suggestion: record.get("Suggestion") ?? undefined,
-    forms: (record.get("Form") ?? []) as ImprovForm[],
-    style: record.get("Style") ?? [],
-    speed: record.get("Speed") ?? [],
-  };
-}
-
-function mapVideo(record: any): Video {
-  return {
-    id: record.id,
-    title: record.get("Auto Title") || record.get("Video Title") || "",
-    showId: record.get("Show")?.[0] ?? undefined,
-    teamId: record.get("Team")?.[0] ?? undefined,
-    theaterId: record.get("Theater")?.[0] ?? undefined,
-    cutType: normalizeCutType(record.get("Cut Type")),
-    embedUrl: record.get("Embed URL") ?? "",
-    sourcePlatform: record.get("Source Platform") ?? "YouTube",
-    videoQuality: record.get("Video Quality") ?? undefined,
-    hasSubtitles: record.get("Subtitles") ?? false,
-    uploadDate: record.get("Upload Date") ?? undefined,
-    tags: record.get("Tags") ?? [],
-  };
-}
-
-// --- Cached fetch functions --------------------------------------------
-
-export const getTheaters = unstable_cache(
-  async (): Promise<Theater[]> => {
-    const records = await base(TABLES.theaters).select().all();
-    return records.map(mapTheater);
-  },
-  ["gutbuster-theaters"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["theaters"] }
-);
-
-export const getTeams = unstable_cache(
-  async (): Promise<Team[]> => {
-    const records = await base(TABLES.teams).select().all();
-    return records.map(mapTeam);
-  },
-  ["gutbuster-teams"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["teams"] }
-);
-
-export const getShows = unstable_cache(
-  async (): Promise<Show[]> => {
-    const records = await base(TABLES.shows).select().all();
-    return records.map(mapShow);
-  },
-  ["gutbuster-shows"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["shows"] }
-);
-
-export const getVideos = unstable_cache(
-  async (): Promise<Video[]> => {
-    const records = await base(TABLES.videos).select().all();
-    return records.map(mapVideo);
-  },
-  ["gutbuster-videos"],
-  { revalidate: REVALIDATE_SECONDS, tags: ["videos"] }
-);
-
-// --- Joined/derived data -------------------------------------------------
-
+// Only videos with a Team (directly or through their Show). Used by the older
+// row components, which always show a team badge.
 export async function getVideosWithContext(): Promise<VideoWithContext[]> {
-  const [videos, shows, teams, theaters] = await Promise.all([
-    getVideos(),
-    getShows(),
-    getTeams(),
-    getTheaters(),
-  ]);
-
-  const showsById = new Map(shows.map((s) => [s.id, s]));
-  const teamsById = new Map(teams.map((t) => [t.id, t]));
-  const theatersById = new Map(theaters.map((t) => [t.id, t]));
-
-  return videos
-    .map((video) => {
-      const show = video.showId ? showsById.get(video.showId) : undefined;
-
-      const team = show
-        ? teamsById.get(show.teamId)
-        : video.teamId
-        ? teamsById.get(video.teamId)
-        : undefined;
-      if (!team) return null;
-
-      // Theater resolution: Show's venue is authoritative when a Show
-      // exists, otherwise fall back to the Video's own direct Theater
-      // link -- this is what makes standalone/Spotlight clips (which
-      // may have no Show) still resolve a theater and city.
-      const theater = show?.performedAtId
-        ? theatersById.get(show.performedAtId)
-        : video.theaterId
-        ? theatersById.get(video.theaterId)
-        : undefined;
-
-      return {
-        ...video,
-        team,
-        ...(show ? { show } : {}),
-        ...(theater ? { theater } : {}),
-      };
-    })
-    .filter((v): v is VideoWithContext => v !== null);
-}
-
-// --- Mobile feed: every video, exactly as it sits in Airtable ------------
-// Unlike getVideosWithContext(), this never drops a video for missing a
-// Team. The feed is the "show me what's in the base" view, so a record
-// with gaps still appears, just with fewer lines of metadata.
-
-export async function getFeedVideos(): Promise<FeedVideo[]> {
-  const [videos, shows, teams, theaters] = await Promise.all([
-    getVideos(),
-    getShows(),
-    getTeams(),
-    getTheaters(),
-  ]);
-
-  const showsById = new Map(shows.map((s) => [s.id, s]));
-  const teamsById = new Map(teams.map((t) => [t.id, t]));
-  const theatersById = new Map(theaters.map((t) => [t.id, t]));
-
-  return videos.map((video) => {
-    const show = video.showId ? showsById.get(video.showId) : undefined;
-    const teamId = show?.teamId || video.teamId;
-    const theaterId = show?.performedAtId || video.theaterId;
-    return {
-      ...video,
-      show,
-      team: teamId ? teamsById.get(teamId) : undefined,
-      theater: theaterId ? theatersById.get(theaterId) : undefined,
-    };
+  return snapshot.videos.flatMap((video) => {
+    const { show, team, theater } = resolve(video);
+    if (!team) return [];
+    return [{ ...video, team, ...(show ? { show } : {}), ...(theater ? { theater } : {}) }];
   });
 }
 
+// Every video, with whatever context it has. The home feed uses this, so a
+// talk or demo with no team still appears (credited by its Source/channel).
+export async function getFeedVideos(): Promise<FeedVideo[]> {
+  return snapshot.videos.map((video) => ({ ...video, ...resolve(video) }));
+}
+
+// "Spotlight" is the tag Airtable uses for featured videos (was "Featured").
 export async function getFeaturedVideos(): Promise<VideoWithContext[]> {
   const all = await getVideosWithContext();
-  return all.filter((v) => v.tags?.includes("Featured"));
+  return all.filter((v) => v.tags?.includes("Spotlight"));
 }
 
 export async function getVideosByCutType(cutType: CutType): Promise<VideoWithContext[]> {

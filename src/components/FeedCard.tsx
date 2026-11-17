@@ -38,7 +38,10 @@ export default function FeedCard({ video, index }: { video: FeedVideo; index: nu
   const bandParts = [video.cutType, ...(video.show?.forms ?? [])].filter(Boolean);
   const band = bandParts.length > 0 ? bandParts.join(" / ") : null;
   const year = getYear(video);
-  const meta = [video.team?.name, video.theater?.name, year].filter(Boolean) as string[];
+  // Credit line: the team for performances; for talks and demos with no
+  // team, the Source typed in Airtable, otherwise the channel that posted it.
+  const credit = video.team?.name ?? video.source ?? video.channel;
+  const meta = [credit, video.theater?.name, year].filter(Boolean) as string[];
   const profileUrl = video.team?.iconUrl ?? video.theater?.iconUrl ?? null;
 
   const card = (

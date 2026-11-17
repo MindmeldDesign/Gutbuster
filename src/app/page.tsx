@@ -1,53 +1,27 @@
 import FeedFilter from "@/components/FeedFilter";
 import { getFeedVideos } from "@/lib/data";
-import type { FeedVideo } from "@/types/gutbuster";
 
-// Mobile home: every record in the Airtable Videos table, in the order
-// Airtable returns it, one card per video, all kinds mixed together.
-// FeedFilter adds the Improv 101 / Full Sets / Scenes chips on top.
+// Mobile home: every video in the content snapshot, all kinds mixed
+// together, in Airtable's order. FeedFilter adds the Improv 101 /
+// Full sets / Scenes chips on top.
 //
-// revalidate: the page is rebuilt at most every 15 minutes in
-// production, matching the cache window in src/lib/data.ts, so Airtable
-// is never hit per visitor.
-export const revalidate = 900;
+// Fully static: the page is built once from content/snapshot.json and
+// changes only when a new snapshot is committed and deployed. There's no
+// runtime data fetch, so no loading or "Airtable didn't answer" state.
 
 export default async function HomePage() {
-  let videos: FeedVideo[] = [];
-  let failed = false;
-
-  try {
-    videos = await getFeedVideos();
-  } catch (error) {
-    console.error("Could not load videos from Airtable:", error);
-    failed = true;
-  }
-
-  if (failed) {
-    return (
-      <EmptyState
-        title="The shelves didn't load."
-        body="Airtable didn't answer. Check the API key and base ID, then refresh."
-      />
-    );
-  }
+  const videos = await getFeedVideos();
 
   if (videos.length === 0) {
     return (
-      <EmptyState
-        title="Nothing on the shelves yet."
-        body="Add a row to the Videos table in Airtable and it shows up here."
-      />
+      <div className="flex flex-col gap-2 p-4 pt-10">
+        <h1 className="font-ui text-xl font-bold text-gb-ink">Nothing on the shelves yet.</h1>
+        <p className="text-base text-gb-ink">
+          Add a row to the Videos table in Airtable, run the import, and commit the snapshot.
+        </p>
+      </div>
     );
   }
 
   return <FeedFilter videos={videos} />;
-}
-
-function EmptyState({ title, body }: { title: string; body: string }) {
-  return (
-    <div className="flex flex-col gap-2 p-4 pt-10">
-      <h1 className="font-ui text-xl font-bold text-gb-ink">{title}</h1>
-      <p className="text-base text-gb-ink">{body}</p>
-    </div>
-  );
 }

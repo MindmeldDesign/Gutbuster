@@ -68,7 +68,7 @@ export type CutType = "Improv 101" | "Full Set" | "Scene";
 // Order and labels for the home feed filter chips.
 export const CUT_TYPES: { value: CutType; label: string }[] = [
   { value: "Improv 101", label: "Improv 101" },
-  { value: "Full Set", label: "Full Sets" },
+  { value: "Full Set", label: "Full sets" },
   { value: "Scene", label: "Scenes" },
 ];
 
