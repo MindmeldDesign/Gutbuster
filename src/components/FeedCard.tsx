@@ -42,7 +42,10 @@ export default function FeedCard({ video, index }: { video: FeedVideo; index: nu
   // team, the Source typed in Airtable, otherwise the channel that posted it.
   const credit = video.team?.name ?? video.source ?? video.channel;
   const meta = [credit, video.theater?.name, year].filter(Boolean) as string[];
-  const profileUrl = video.team?.iconUrl ?? video.theater?.iconUrl ?? null;
+  // Round picture: the team's icon for performances; for talks and demos
+  // with no team, the channel's logo. The theater's icon fills in otherwise.
+  const profileUrl =
+    (video.team ? video.team.iconUrl : video.channelLogo) ?? video.theater?.iconUrl ?? null;
 
   const card = (
     <article className="gb-card-shadow relative flex w-full flex-col">
@@ -101,8 +104,10 @@ export default function FeedCard({ video, index }: { video: FeedVideo; index: nu
       <div className="flex w-full items-start gap-1 bg-gb-card px-2 py-1">
         <div className="size-12 shrink-0 overflow-hidden rounded-full bg-gb-placeholder">
           {profileUrl && (
+            // no-referrer: YouTube's image server refuses logo requests that
+            // say which site they came from (hotlink protection).
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={profileUrl} alt="" className="size-full object-cover" />
+            <img src={profileUrl} alt="" referrerPolicy="no-referrer" className="size-full object-cover" />
           )}
         </div>
 

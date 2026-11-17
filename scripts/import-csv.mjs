@@ -26,11 +26,14 @@ import { parseCsv } from "./lib/csv.mjs";
 import { buildSnapshot } from "./lib/normalize.mjs";
 import { lookupChannels } from "./lib/oembed.mjs";
 import { saveIcons } from "./lib/media.mjs";
+import { lookupChannelLogos } from "./lib/channel-logos.mjs";
+import { loadEnvLocal } from "./lib/env.mjs";
 
 const refreshIcons = process.argv.includes("--refresh-icons");
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const csvDir = join(root, "content", "csv");
+loadEnvLocal(join(root, ".env.local"));
 const outFile = join(root, "content", "snapshot.json");
 
 // table key -> CSV file, primary field, and which fields link where
@@ -172,6 +175,28 @@ for (const { fields } of tables.videos) {
 }
 if (fetched > 0) console.log(`Looked up ${fetched} new channel name${fetched === 1 ? "" : "s"}.`);
 for (const f of failures) warnings.push(`Couldn't look up the channel for ${f}. It'll retry next import.`);
+
+// --- Channel logos: only for videos with no team (see lib/channel-logos.mjs) ---
+// A video's team comes through its Show or its own Team link. Videos with a
+// team keep the team's own icon, so a channel owner's picture never stands
+// in for a team's identity.
+
+const showTeam = new Map(tables.shows.map(({ id, fields }) => [id, (fields["Team"] ?? [])[0]]));
+const teamless = tables.videos.filter(({ fields }) => {
+  const viaShow = (fields["Show"] ?? []).map((s) => showTeam.get(s)).find(Boolean);
+  return !viaShow && !(fields["Team"] ?? [])[0];
+});
+const logoResult = await lookupChannelLogos(
+  teamless.map(({ fields }) => fields.__channelUrl),
+  join(root, "content", "channel-cache.json"),
+  process.env.YOUTUBE_API_KEY
+);
+for (const { fields } of teamless) fields.__channelLogo = logoResult.logos.get(fields.__channelUrl);
+if (logoResult.fetched > 0) console.log(`Looked up ${logoResult.fetched} channel logo${logoResult.fetched === 1 ? "" : "s"}.`);
+if (logoResult.skippedForKey > 0) {
+  warnings.push(`Skipped ${logoResult.skippedForKey} channel logo lookup${logoResult.skippedForKey === 1 ? "" : "s"}: add YOUTUBE_API_KEY to .env.local.`);
+}
+for (const f of logoResult.failures) warnings.push(`Couldn't look up the channel logo for ${f}.`);
 
 // --- Icons: save locally, since Airtable's links expire (see lib/media.mjs) ---
 

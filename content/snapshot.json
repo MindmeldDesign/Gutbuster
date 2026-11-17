@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T02:26:05.919Z",
+  "generatedAt": "2026-11-17T03:29:06.219Z",
   "source": "csv",
   "counts": {
     "theaters": 7,
@@ -318,7 +318,8 @@
       ],
       "source": "Off Camera with Sam Jones",
       "channel": "theoffcamerashow",
-      "channelUrl": "https://www.youtube.com/@theoffcamerashow"
+      "channelUrl": "https://www.youtube.com/@theoffcamerashow",
+      "channelLogo": "https://yt3.ggpht.com/ytc/AIdro_l8o9STW9EzxoUmGTY3B62hFTMmGJx-CrLRRxMZn-4xnWk=s240-c-k-c0x00ffffff-no-rj"
     },
     {
       "id": "rec5tlYBfQUude8Ct",
@@ -332,7 +333,8 @@
       ],
       "source": "Matt Abrahams",
       "channel": "TEDx Talks",
-      "channelUrl": "https://www.youtube.com/@TEDx"
+      "channelUrl": "https://www.youtube.com/@TEDx",
+      "channelLogo": "https://yt3.ggpht.com/1gDPO-4YPWFErfn3yQBnv0yxpkmiud1m5CrorApkOqUYdNd9FrZQ9xB9C9VmDt4EsgArnlwqAQc=s240-c-k-c0x00ffffff-no-rj"
     },
     {
       "id": "recIdEduBbGFoBHLR",
@@ -346,7 +348,8 @@
       ],
       "source": "Matt Abrahams",
       "channel": "TEDx Talks",
-      "channelUrl": "https://www.youtube.com/@TEDx"
+      "channelUrl": "https://www.youtube.com/@TEDx",
+      "channelLogo": "https://yt3.ggpht.com/1gDPO-4YPWFErfn3yQBnv0yxpkmiud1m5CrorApkOqUYdNd9FrZQ9xB9C9VmDt4EsgArnlwqAQc=s240-c-k-c0x00ffffff-no-rj"
     },
     {
       "id": "recak3mZh3X4mrk0I",
@@ -362,7 +365,8 @@
       ],
       "source": "Jason Chin",
       "channel": "TheJasonChin",
-      "channelUrl": "https://www.youtube.com/@TheJasonChin"
+      "channelUrl": "https://www.youtube.com/@TheJasonChin",
+      "channelLogo": "https://yt3.ggpht.com/ytc/AIdro_nvw2_Wv1ZQ20QHxuhslHfP2BuzwZ8CHTJkejm81T4=s240-c-k-c0x00ffffff-no-rj"
     },
     {
       "id": "recbBkDYAhqJ14ibB",

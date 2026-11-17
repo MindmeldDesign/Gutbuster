@@ -114,6 +114,9 @@ export interface Video {
   channel?: string; // who posted it, looked up from the link by the
                      // importer (YouTube/Vimeo oEmbed), never typed.
   channelUrl?: string; // link to that channel
+  channelLogo?: string; // the channel's profile picture (YouTube's own URL,
+                         // refreshed every 30 days). Only set for videos
+                         // with no team; teams use their own icon.
 }
 
 // Convenience shape for rendering: a Video joined with its performing

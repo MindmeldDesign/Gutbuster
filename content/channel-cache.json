@@ -1,0 +1,14 @@
+{
+  "https://www.youtube.com/@TEDx": {
+    "logo": "https://yt3.ggpht.com/1gDPO-4YPWFErfn3yQBnv0yxpkmiud1m5CrorApkOqUYdNd9FrZQ9xB9C9VmDt4EsgArnlwqAQc=s240-c-k-c0x00ffffff-no-rj",
+    "fetchedAt": "2026-11-17T03:29:05.590Z"
+  },
+  "https://www.youtube.com/@TheJasonChin": {
+    "logo": "https://yt3.ggpht.com/ytc/AIdro_nvw2_Wv1ZQ20QHxuhslHfP2BuzwZ8CHTJkejm81T4=s240-c-k-c0x00ffffff-no-rj",
+    "fetchedAt": "2026-11-17T03:29:05.590Z"
+  },
+  "https://www.youtube.com/@theoffcamerashow": {
+    "logo": "https://yt3.ggpht.com/ytc/AIdro_l8o9STW9EzxoUmGTY3B62hFTMmGJx-CrLRRxMZn-4xnWk=s240-c-k-c0x00ffffff-no-rj",
+    "fetchedAt": "2026-11-17T03:29:05.590Z"
+  }
+}

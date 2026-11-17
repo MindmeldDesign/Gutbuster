@@ -133,6 +133,7 @@ export function buildSnapshot(tables, { source }) {
       source: text(f["Source"]),
       channel: text(f.__channel),
       channelUrl: text(f.__channelUrl),
+      channelLogo: text(f.__channelLogo), // only set for videos with no team
     };
 
     if (!video.embedUrl) warn(`Video "${label}" has no Embed URL.`);
