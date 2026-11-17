@@ -25,6 +25,9 @@ import { fileURLToPath } from "node:url";
 import { parseCsv } from "./lib/csv.mjs";
 import { buildSnapshot } from "./lib/normalize.mjs";
 import { lookupChannels } from "./lib/oembed.mjs";
+import { saveIcons } from "./lib/media.mjs";
+
+const refreshIcons = process.argv.includes("--refresh-icons");
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const csvDir = join(root, "content", "csv");
@@ -170,16 +173,37 @@ for (const { fields } of tables.videos) {
 if (fetched > 0) console.log(`Looked up ${fetched} new channel name${fetched === 1 ? "" : "s"}.`);
 for (const f of failures) warnings.push(`Couldn't look up the channel for ${f}. It'll retry next import.`);
 
+// --- Icons: save locally, since Airtable's links expire (see lib/media.mjs) ---
+
+for (const [key, kind] of [["teams", "teams"], ["theaters", "theaters"]]) {
+  const { paths, saved, failures } = await saveIcons(
+    tables[key].map(({ id, fields }) => ({ id, name: fields.Name, url: fields.__iconUrl })),
+    kind,
+    join(root, "public"),
+    { refresh: refreshIcons }
+  );
+  for (const { id, fields } of tables[key]) fields.__iconUrl = paths.get(id);
+  if (saved > 0) console.log(`Saved ${saved} ${kind === "teams" ? "team" : "theater"} icon${saved === 1 ? "" : "s"} to public/media/${kind}/.`);
+  for (const f of failures) warnings.push(`Couldn't save the ${f}.`);
+}
+
 // --- Build + write -------------------------------------------------------
 
 const { snapshot, warnings: checks } = buildSnapshot(tables, { source: "csv" });
 warnings.push(...checks);
 
+// Only rewrite the file when the content changed. Otherwise the new
+// generatedAt timestamp alone would show up as a change in git.
 mkdirSync(dirname(outFile), { recursive: true });
-writeFileSync(outFile, JSON.stringify(snapshot, null, 2) + "\n");
+const withoutTime = ({ generatedAt, ...rest }) => JSON.stringify(rest);
+const previous = existsSync(outFile) ? JSON.parse(readFileSync(outFile, "utf8")) : null;
+const changed = !previous || withoutTime(previous) !== withoutTime(snapshot);
+if (changed) writeFileSync(outFile, JSON.stringify(snapshot, null, 2) + "\n");
 
 const c = snapshot.counts;
-console.log(`Wrote content/snapshot.json: ${c.videos} videos, ${c.shows} shows, ${c.teams} teams, ${c.theaters} theaters.`);
+console.log(
+  `${changed ? "Wrote" : "No changes to"} content/snapshot.json: ${c.videos} videos, ${c.shows} shows, ${c.teams} teams, ${c.theaters} theaters.`
+);
 if (warnings.length === 0) {
   console.log("No warnings. Clean import.");
 } else {
