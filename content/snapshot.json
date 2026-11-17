@@ -1,0 +1,364 @@
+{
+  "generatedAt": "2026-11-17T02:05:28.516Z",
+  "source": "csv",
+  "counts": {
+    "theaters": 7,
+    "teams": 8,
+    "shows": 10,
+    "videos": 14
+  },
+  "theaters": [
+    {
+      "id": "recVrL9h2DM1KL330",
+      "name": "Upright Citizens Brigade (UCB)",
+      "location": "Chicago, IL"
+    },
+    {
+      "id": "reclAr5gpasHmmncG",
+      "name": "Coalition Theater",
+      "location": "Richmond, VA"
+    },
+    {
+      "id": "rec56bapDKomCN5O4",
+      "name": "Westside Comedy Theater",
+      "location": "Santa Monica, CA"
+    },
+    {
+      "id": "recPiUBBnkzPItGIi",
+      "name": "CATCh",
+      "location": "Charlotte, NC"
+    },
+    {
+      "id": "recZV99ljiBuGevDo",
+      "name": "iO Chicago",
+      "location": "Chicago, IL"
+    },
+    {
+      "id": "recsHOppxlmqbc1ky",
+      "name": "The Elysian Theater",
+      "location": "Los Angeles, CA"
+    },
+    {
+      "id": "recCYyObu3hlSW3Ub",
+      "name": "DSP Studios",
+      "location": "Los Angeles, CA"
+    }
+  ],
+  "teams": [
+    {
+      "id": "rechQpMMr1etM4S9y",
+      "name": "Wolf Night",
+      "homeTheaterId": "reclAr5gpasHmmncG"
+    },
+    {
+      "id": "reci86au4ffsZ6RxY",
+      "name": "Babe",
+      "homeTheaterId": "reclAr5gpasHmmncG"
+    },
+    {
+      "id": "recpquVlXTbVoYGMN",
+      "name": "Hot Computer"
+    },
+    {
+      "id": "recElhH4xDJ4NICh6",
+      "name": "Bear Supply"
+    },
+    {
+      "id": "recBuGrUXJM3ktbaO",
+      "name": "Sunday Supper",
+      "homeTheaterId": "recPiUBBnkzPItGIi"
+    },
+    {
+      "id": "recR6ltU63s0bNEbL",
+      "name": "The Movies",
+      "homeTheaterId": "reclAr5gpasHmmncG"
+    },
+    {
+      "id": "recY43jzvud7vAvgU",
+      "name": "ASSSSCAT",
+      "homeTheaterId": "recVrL9h2DM1KL330"
+    },
+    {
+      "id": "recAFK3Zk3oOMWcK0",
+      "name": "F**k This Month",
+      "homeTheaterId": "recsHOppxlmqbc1ky"
+    }
+  ],
+  "shows": [
+    {
+      "id": "recuqNnDZIWzXIlVI",
+      "title": "Love, Death, & Bowling",
+      "teamId": "recpquVlXTbVoYGMN",
+      "performedAtId": "reclAr5gpasHmmncG",
+      "datePerformed": "2025-06-07",
+      "forms": [
+        "Slacker"
+      ],
+      "style": [],
+      "speed": []
+    },
+    {
+      "id": "rec6jRCebp3e6HbmT",
+      "title": "Geology",
+      "teamId": "recElhH4xDJ4NICh6",
+      "performedAtId": "rec56bapDKomCN5O4",
+      "suggestion": "Geology",
+      "forms": [],
+      "style": [],
+      "speed": []
+    },
+    {
+      "id": "recMqwVLJ3V19FFU6",
+      "title": "Armadillo",
+      "teamId": "recElhH4xDJ4NICh6",
+      "performedAtId": "rec56bapDKomCN5O4",
+      "suggestion": "Armadillo",
+      "forms": [],
+      "style": [],
+      "speed": []
+    },
+    {
+      "id": "recHdoKvoyfccK2rb",
+      "title": "Cheese",
+      "teamId": "recElhH4xDJ4NICh6",
+      "performedAtId": "rec56bapDKomCN5O4",
+      "suggestion": "Cheese",
+      "forms": [],
+      "style": [],
+      "speed": []
+    },
+    {
+      "id": "recokiMAwcrVDt852",
+      "title": "Carnival",
+      "teamId": "recElhH4xDJ4NICh6",
+      "performedAtId": "rec56bapDKomCN5O4",
+      "suggestion": "Carnival",
+      "forms": [],
+      "style": [],
+      "speed": []
+    },
+    {
+      "id": "rechew2Be4EdcWdID",
+      "title": "Look",
+      "teamId": "recElhH4xDJ4NICh6",
+      "performedAtId": "rec56bapDKomCN5O4",
+      "suggestion": "Look",
+      "forms": [],
+      "style": [],
+      "speed": []
+    },
+    {
+      "id": "rechG4ONbmqp0L9QQ",
+      "title": "Space",
+      "teamId": "recElhH4xDJ4NICh6",
+      "performedAtId": "rec56bapDKomCN5O4",
+      "suggestion": "Space",
+      "forms": [],
+      "style": [],
+      "speed": []
+    },
+    {
+      "id": "rec3Qn3Gx81OVv4ES",
+      "title": "A.S.S.S.S.C.A.T.: Improv",
+      "teamId": "recY43jzvud7vAvgU",
+      "performedAtId": "recVrL9h2DM1KL330",
+      "forms": [],
+      "style": [],
+      "speed": []
+    },
+    {
+      "id": "reccPSVEoVjIkspHz",
+      "title": "March 2026",
+      "teamId": "recAFK3Zk3oOMWcK0",
+      "performedAtId": "recsHOppxlmqbc1ky",
+      "datePerformed": "2025-08-06",
+      "forms": [],
+      "style": [],
+      "speed": []
+    },
+    {
+      "id": "rec4Rzo0gfIPLisOn",
+      "title": "February 2026",
+      "teamId": "recAFK3Zk3oOMWcK0",
+      "performedAtId": "recCYyObu3hlSW3Ub",
+      "forms": [],
+      "style": [],
+      "speed": []
+    }
+  ],
+  "videos": [
+    {
+      "id": "rec4RuhXu1j09lLei",
+      "title": "Love, Death, & Bowling",
+      "showId": "recuqNnDZIWzXIlVI",
+      "teamId": "recpquVlXTbVoYGMN",
+      "theaterId": "reclAr5gpasHmmncG",
+      "cutType": "Full Set",
+      "embedUrl": "https://youtu.be/p7_4q3qtTso?si=Pzqh-e8T3KpnCBe7",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "uploadDate": "2025-06-23",
+      "tags": [
+        "Spotlight"
+      ]
+    },
+    {
+      "id": "recOgSLYCVw56izqG",
+      "title": "Geology",
+      "showId": "rec6jRCebp3e6HbmT",
+      "teamId": "recElhH4xDJ4NICh6",
+      "theaterId": "rec56bapDKomCN5O4",
+      "cutType": "Full Set",
+      "embedUrl": "https://youtu.be/pAKa1IlGpd8?si=0_71NL3IYHoeN-Ae",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": [
+        "Spotlight"
+      ]
+    },
+    {
+      "id": "recwO6GmBMpUMmPyQ",
+      "title": "Armadillo",
+      "showId": "recMqwVLJ3V19FFU6",
+      "teamId": "recElhH4xDJ4NICh6",
+      "theaterId": "rec56bapDKomCN5O4",
+      "cutType": "Full Set",
+      "embedUrl": "https://youtu.be/iK-_16RRfxo?si=qyvmffExtj_rBuNb",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": []
+    },
+    {
+      "id": "recoJ779k2ezEUNDx",
+      "title": "Cheese",
+      "showId": "recHdoKvoyfccK2rb",
+      "teamId": "recElhH4xDJ4NICh6",
+      "theaterId": "rec56bapDKomCN5O4",
+      "cutType": "Full Set",
+      "embedUrl": "https://youtu.be/tMDBqRaHrZE?si=-QwR-T7P0Vlr5krz",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": []
+    },
+    {
+      "id": "rec6VxqAEBpW77sTw",
+      "title": "Carnival",
+      "showId": "recokiMAwcrVDt852",
+      "teamId": "recElhH4xDJ4NICh6",
+      "theaterId": "rec56bapDKomCN5O4",
+      "cutType": "Full Set",
+      "embedUrl": "https://youtu.be/z1i6U4dBWq0?si=o4qEpWKF3_fvZFug",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": []
+    },
+    {
+      "id": "rec6gTMhB1zgHmwSt",
+      "title": "Look",
+      "showId": "rechew2Be4EdcWdID",
+      "teamId": "recElhH4xDJ4NICh6",
+      "theaterId": "rec56bapDKomCN5O4",
+      "cutType": "Full Set",
+      "embedUrl": "https://youtu.be/_wXo-Yya738?si=IIjVc8Ei_qNNjg-_",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": []
+    },
+    {
+      "id": "recCuQiDJHcodj8Lm",
+      "title": "Space",
+      "showId": "rechG4ONbmqp0L9QQ",
+      "teamId": "recElhH4xDJ4NICh6",
+      "theaterId": "rec56bapDKomCN5O4",
+      "cutType": "Full Set",
+      "embedUrl": "https://youtu.be/XL4zQdq_deI?si=34HxtcBWvEwW1ymi",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": []
+    },
+    {
+      "id": "recg5c2jJsvkpgGUR",
+      "title": "A.S.S.S.S.C.A.T.: Improv",
+      "showId": "rec3Qn3Gx81OVv4ES",
+      "teamId": "recY43jzvud7vAvgU",
+      "theaterId": "recVrL9h2DM1KL330",
+      "cutType": "Full Set",
+      "embedUrl": "https://youtu.be/P4HTxmqNTCY?si=dvk4WFeI591qgiW7",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": [
+        "Spotlight"
+      ]
+    },
+    {
+      "id": "rec66yfYx0o6XAtbS",
+      "title": "Keegan-Michael Key On Improv",
+      "cutType": "Improv 101",
+      "embedUrl": "https://youtu.be/coZARWbdNls?si=8ZVvDWNmV3dzPaUk",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": [
+        "Spotlight"
+      ]
+    },
+    {
+      "id": "rec5tlYBfQUude8Ct",
+      "title": "Speaking Up Without Freaking Out | Matt Abrahams | TEDxPaloAlto",
+      "cutType": "Improv 101",
+      "embedUrl": "https://youtu.be/XIXvKKEQQJo?si=kd3n-fayaX3HEQtU",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": [
+        "TED Talks"
+      ]
+    },
+    {
+      "id": "recIdEduBbGFoBHLR",
+      "title": "Think Fast. Talk Smart | Matt Abrahams | TEDxMontaVistaHighSchool",
+      "cutType": "Improv 101",
+      "embedUrl": "https://youtu.be/o3K_HbpWNpg?si=1EOIcxbbRya9QRrS",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": [
+        "TED Talks"
+      ]
+    },
+    {
+      "id": "recak3mZh3X4mrk0I",
+      "title": "Deep Sea Entry Object Work",
+      "theaterId": "recZV99ljiBuGevDo",
+      "cutType": "Scene",
+      "embedUrl": "https://youtu.be/kr5xjoOnAec?si=sqpGDIp1M5hDlCnp&t=35",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "uploadDate": "2010-11-06",
+      "tags": [
+        "Bits"
+      ]
+    },
+    {
+      "id": "recbBkDYAhqJ14ibB",
+      "title": "March 2026",
+      "showId": "reccPSVEoVjIkspHz",
+      "teamId": "recAFK3Zk3oOMWcK0",
+      "theaterId": "recsHOppxlmqbc1ky",
+      "cutType": "Full Set",
+      "embedUrl": "https://www.youtube.com/watch?v=DmaIxgqaIk0",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": []
+    },
+    {
+      "id": "recMszk6YHA8LmJTZ",
+      "title": "February 2026",
+      "showId": "rec4Rzo0gfIPLisOn",
+      "teamId": "recAFK3Zk3oOMWcK0",
+      "theaterId": "recCYyObu3hlSW3Ub",
+      "cutType": "Full Set",
+      "embedUrl": "https://www.youtube.com/watch?v=ISfil3a1S78&list=PL85w3P20Bmo7nAKrg9Ywk0M_KpJQZ-Fkd&index=2",
+      "sourcePlatform": "YouTube",
+      "hasSubtitles": false,
+      "tags": []
+    }
+  ]
+}
